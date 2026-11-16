@@ -1,0 +1,167 @@
+---
+title: "Linear models"
+subtitle: "Tutorial 4"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(broom)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data
+
+`rhythm_metrics` comes from a simulated study of speech rhythm. Eight speakers of each of six languages read sentences, told a story and spoke freely, and each of the 1200 speech samples has two measures we use today: the speech rate (`rate`, in syllables per second) and ΔC (`delta_c`, in ms). ΔC is the standard deviation of the durations of the consonant intervals in a sample, one of the **rhythm metrics** that phoneticians use to compare languages.
+
+```{r}
+glimpse(rhythm_metrics)
+```
+
+Today's question: does ΔC change with speech rate?
+
+---
+
+## 1. Look before you fit
+
+### 1.1 A scatterplot
+
+Plot `delta_c` against `rate` with `geom_point()`, with speech rate on the `x` axis. Label both axes in words, with units. Do faster samples have a larger or a smaller ΔC?
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+### 1.2 Add the line
+
+Add the **regression line** with `geom_smooth(method = "lm")`.
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+---
+
+## 2. Fitting the model
+
+### 2.1 `lm()`
+
+Fit a linear model of `delta_c` as a function of `rate` and save it as `m`. Print its coefficients with `coef()`.
+
+```{r}
+
+```
+
+### 2.2 Read the coefficients
+
+Complete the sentence: "With every extra syllable per second, ΔC changes by ___ ms." Then say what the **intercept** means here. Is it a useful number?
+
+### 2.3 Model fit
+
+Find `R²` with `glance()`. What does it tell you?
+
+```{r}
+
+```
+
+---
+
+## 3. Predictions and residuals
+
+### 3.1 Predictions
+
+Which ΔC does the model predict for samples spoken at 4 and at 6 syllables per second? Use `predict()`, with the two rates in a tibble passed to `newdata`.
+
+```{r}
+
+```
+
+### 3.2 Residuals
+
+Use `augment()` to add the **fitted values** and the **residuals** to the data. Plot the residuals (`.resid`) against the fitted values (`.fitted`) and add a horizontal line at 0 with `geom_hline()`. Are the residuals spread evenly around 0?
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+### 3.3 Bonus: a hidden group
+
+Draw the scatterplot again, with the points coloured by `material` and one line per material: `geom_smooth(method = "lm", se = FALSE)`. Are the lines within each material steeper or shallower than the line of `m`?
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+### 3.4 Bonus: R² by hand
+
+`R²` compares the residuals of `m` with those of an **intercept-only model**, `delta_c ~ 1`, which predicts the mean ΔC for every sample. Fit it and compute `R²` by hand as 1 minus the sum of the squared residuals of `m`, divided by the sum of the squared residuals of the intercept-only model. Do you get the same number as `glance()`?
+
+```{r}
+
+```
+
+---
+
+## 4. Weekly assignment
+
+::: {.assignment .alert .alert-info}
+Exercises 4.1 to 4.3 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
+:::
+
+`freq_length` from `simling` has 400 words from a simulated lexical decision task. For each word, it gives its log10 frequency (`log_freq`) and the mean reaction time to it (`rt`, in ms).
+
+### 4.1 Frequency and reaction time
+
+Make a scatterplot of `rt` against `log_freq`, with the regression line and both axes labelled in words, with units. Do frequent words get faster or slower responses?
+
+```{r}
+
+```
+
+### 4.2 The model
+
+Fit a linear model of `rt` as a function of `log_freq` and print its coefficients. Report the slope in a sentence, with its units. What does the intercept mean here, and is it a useful number?
+
+```{r}
+
+```
+
+### 4.3 How far can you predict?
+
+Predict the reaction time for words with a log frequency of 2 and of 5. Then predict it for a log frequency of 8. Would you trust the third prediction? Explain why in one or two sentences.
+
+```{r}
+
+```

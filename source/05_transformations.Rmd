@@ -1,0 +1,692 @@
+---
+title: "Transformations"
+subtitle: "Centering, standardising, correlation and logarithms"
+author: "Dr Massimiliano Canzi"
+knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
+output:
+  revealjs::revealjs_presentation:
+    theme: black
+    css: theme-dark.css
+    highlight: zenburn
+    mathjax: null
+    incremental: true
+    transition: fade
+    background_transition: fade
+    self_contained: true
+    reveal_options:
+      width: 1050
+      height: 700
+      slideNumber: "c/t"
+      showSlideNumber: all
+      controls: true
+      touch: true
+      transitionSpeed: fast
+      navigationMode: linear
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      comment = "",
+                      fig.width = 10, fig.height = 4.4, out.width = "100%")
+
+library(tidyverse)
+library(simling)
+library(broom)
+
+source("slides_setup.R", local = knitr::knit_global())
+
+options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
+
+words <- megastudy
+m     <- lm(rt ~ aoa, data = words)
+b0    <- coef(m)[1]
+b1    <- coef(m)[2]
+r2    <- glance(m)$r.squared
+```
+
+# Transforming variables
+
+<style>
+  :root {
+    --footer-text:  "Transformations";
+    --qr:           `r qr_css`;
+    --lecture:      `r lecture_label`;
+  }
+</style>
+
+::: {.fact}
+`Did you know:` the blue whale is the [largest animal]{.hl} known to have lived. The biggest accurately measured one, a female, was 29.5 m long and weighed 180 tonnes.
+
+_Sources: Encyclopaedia Britannica; WWF_
+:::
+
+## Today
+
+- Why we transform variables
+- Linear transformations: units, centering, standardising
+- Correlation: Pearson's r, and what it hides
+- Logarithms: for predictors and for outcomes
+- A note on the word "normalising"
+
+## Data from {simling}
+
+From today, most examples use data sets from the {simling} package: simulated linguistic data, so we know the true effects.
+
+```{r, eval = FALSE}
+remotes::install_github("mcanzi/simling")
+library(simling)
+?megastudy
+```
+
+. . .
+
+`megastudy`: item norms for 6000 words, as in large lexical decision megastudies. One row per word, with its mean reaction time (`rt`, in ms) and its age of acquisition (`aoa`, in years).
+
+## A model like last week's
+
+```{r}
+tidy(m)[, 1:3]
+```
+
+. . .
+
+Each extra year of age of acquisition goes with responses `r round(b1, 1)` ms slower, and a word learned at age 0 would take `r round(b0)` ms.
+
+. . .
+
+The model is fine, but its intercept describes a word learned at birth, far outside the data. Today we fix that, and change the scale of the slope, without touching the fit.
+
+## Why transform?
+
+| Goal | Example | Transformation |
+|:--|:--|:--|
+| Coefficients that are easier to read | slope per month, intercept for a word of average age of acquisition | units, centering |
+| Predictors on a common scale | age of acquisition (years) against word length (letters) | standardising |
+| A shape the linear model can handle | skewed reaction times, word frequencies | logarithm |
+
+. . .
+
+The data stay the same. A transformation changes the scale on which we describe them.
+
+## Linear vs non-linear {.smaller}
+
+A [linear]{.hl} transformation adds, subtracts, multiplies or divides by a constant. A non-linear one, such as the logarithm, changes the shape of the distribution.
+
+```{r, echo = FALSE, fig.height = 4.0}
+rt <- tibble(rt_ms = zipf_rt$rt)
+
+bind_rows(
+  tibble(scale = "Milliseconds",       value = rt$rt_ms),
+  tibble(scale = "Seconds (÷ 1000)",   value = rt$rt_ms / 1000),
+  tibble(scale = "z-score",            value = as.numeric(scale(rt$rt_ms))),
+  tibble(scale = "log(milliseconds)",  value = log(rt$rt_ms))
+) |>
+  mutate(scale = fct_inorder(scale),
+         type  = if_else(scale == "log(milliseconds)", "non-linear", "linear")) |>
+  ggplot(aes(x = value, fill = type)) +
+  geom_histogram(bins = 40, colour = floor_col) +
+  facet_wrap(~ scale, nrow = 1, scales = "free_x") +
+  scale_fill_manual(values = c(linear = kingfisher, `non-linear` = hornbill)) +
+  labs(x = NULL, y = "Count", fill = NULL)
+```
+
+Reaction times from `zipf_rt` on four scales. The three linear ones are the same histogram with different numbers on the axis. Only the log changes the shape.
+
+# Linear transformations
+
+::: {.fact}
+`Did you know:` a nursing blue whale calf gains up to [90 kg]{.hl} a day: that is 3.75 kg an hour, or 0.09 tonnes a day. Same calf, different units.
+
+_Source: Encyclopaedia Britannica_
+:::
+
+## Changing units
+
+```{r}
+words <- words |> mutate(aoa_months = aoa * 12)
+
+coef(lm(rt ~ aoa, data = words))
+coef(lm(rt ~ aoa_months, data = words))
+```
+
+. . .
+
+Multiply the predictor by 12, and the slope is divided by 12: `r round(b1 / 12, 2)` ms per month.
+
+. . .
+
+The line and its `R²` (`r round(r2, 2)`) stay the same; the numbers are just easier to read.
+
+## Where is the intercept?
+
+```{r, echo = FALSE, fig.height = 4.2}
+ggplot(words, aes(x = aoa, y = rt)) +
+  geom_point(colour = pandan, alpha = 0.15, size = 1) +
+  geom_abline(intercept = b0, slope = b1, colour = hornbill, linewidth = 1.2) +
+  geom_vline(xintercept = 0, colour = moss) +
+  annotate("point", x = 0, y = b0, colour = hornbill, size = 4) +
+  annotate("text", x = 0.4, y = b0, hjust = 0, colour = hornbill, size = 5.5,
+           label = paste("intercept =", round(b0), "ms at age 0")) +
+  scale_x_continuous(limits = c(0, 18)) +
+  labs(x = "Age of acquisition (years)", y = "Reaction time (ms)")
+```
+
+The intercept is where the line crosses `x = 0`: far outside the data.
+
+## Centering {.smaller}
+
+Subtract the mean, so that 0 means "a word of average age of acquisition":
+
+```{r}
+words <- words |>
+  mutate(aoa_c = aoa - mean(aoa))
+
+coef(lm(rt ~ aoa_c, data = words))
+mean(words$rt)
+```
+
+. . .
+
+The slope does not change. The intercept is now the mean reaction time: the predicted value for a word of average age of acquisition.
+
+## Centering
+
+```{r, echo = FALSE, fig.height = 4.2}
+ggplot(words, aes(x = aoa_c, y = rt)) +
+  geom_vline(xintercept = 0, colour = moss) +
+  geom_point(colour = pandan, alpha = 0.15, size = 1) +
+  geom_smooth(method = "lm", colour = hornbill, fill = hornbill, linewidth = 1.4) +
+  annotate("point", x = 0, y = mean(words$rt), colour = mist, size = 4) +
+  labs(x = "Age of acquisition (years), centred: 0 = average", y = "Reaction time (ms)")
+```
+
+The data and the line are unchanged, and only the `x` axis has moved. The intercept (white) sits in the middle of the data.
+
+## Centre on any meaningful value {.smaller}
+
+The mean is not the only choice. Subtract any value that makes 0 meaningful:
+
+```{r}
+words <- words |> mutate(aoa_6 = aoa - 6)
+coef(lm(rt ~ aoa_6, data = words))
+```
+
+. . .
+
+The intercept is now the predicted reaction time for a word learned at age 6, when most children start school.
+
+. . .
+
+In linguistic data:
+
+| Centred predictor | The intercept describes |
+|:--|:--|
+| `age - 18` | an 18-year-old speaker |
+| `year - 2000` | the year 2000 |
+| `trial - 1` | the first trial |
+
+## Standardising
+
+A __z-score__: subtract the mean, then divide by the standard deviation.
+
+<div class="formula">z = (x − mean) / SD</div>
+
+```{r}
+words <- words |>
+  mutate(aoa_z = (aoa - mean(aoa)) / sd(aoa))
+
+coef(lm(rt ~ aoa_z, data = words))
+```
+
+. . .
+
+The slope is now the change in reaction time for a word acquired one standard deviation later.
+
+## What a z-score says
+
+```{r, echo = FALSE, fig.height = 3.4}
+aoa_m <- mean(words$aoa); aoa_s <- sd(words$aoa)
+ggplot(words, aes(x = aoa)) +
+  geom_histogram(binwidth = 0.5, fill = kingfisher, colour = floor_col, alpha = 0.8) +
+  geom_vline(xintercept = aoa_m + (-2:2) * aoa_s, colour = hornbill, linetype = c("dotted", "dotted", "solid", "dotted", "dotted")) +
+  annotate("label", x = aoa_m + (-2:2) * aoa_s, y = Inf, vjust = 1.3, label = paste("z =", -2:2),
+           fill = floor_col, colour = hornbill, label.size = 0, size = 4.5) +
+  labs(x = "Age of acquisition (years)", y = "Count")
+```
+
+A z-score says how many standard deviations a value lies from the mean: `z = 0` is average, `z = -2` is two SDs below it. From lecture 3, about 95% of values in a normal distribution lie between `z = -2` and `z = 2`.
+
+## Comparing predictors {.smaller}
+
+Which predicts reaction time more strongly: age of acquisition (years) or word length (letters)?
+
+```{r}
+c(coef(lm(rt ~ aoa,    data = words))[2],
+  coef(lm(rt ~ length, data = words))[2])
+```
+
+. . .
+
+Years and letters cannot be compared. Standardise both. `scale()` computes z-scores, but returns a matrix, so wrap it in `as.numeric()`:
+
+```{r}
+words <- words |> mutate(length_z = as.numeric(scale(length)))
+c(coef(lm(rt ~ aoa_z,    data = words))[2],
+  coef(lm(rt ~ length_z, data = words))[2])
+```
+
+. . .
+
+In raw units, length looked slightly stronger. Per standard deviation, age of acquisition goes with the larger change in reaction time.
+
+## Speaker normalisation {.smaller}
+
+A classic linguistic use of z-scores: vowel formants.
+
+. . .
+
+Speakers with longer vocal tracts have lower formants overall. Raw F1 and F2 mix up which vowel and which speaker.
+
+```{r}
+formants
+```
+
+`formants`: 20 tokens of /i a u/ from each of two speakers. Every formant of speaker B is 1.2 times the same formant of speaker A.
+
+## Raw formants
+
+```{r, echo = FALSE, fig.height = 4.6}
+ggplot(formants, aes(x = f2, y = f1, colour = speaker, shape = vowel)) +
+  geom_point(size = 3, alpha = 0.8) +
+  scale_x_reverse() + scale_y_reverse() +
+  labs(x = "F2 (Hz)", y = "F1 (Hz)", colour = "Speaker", shape = "Vowel") +
+  guides(shape = guide_legend(override.aes = list(colour = mist)))
+```
+
+The same vowels from two speakers land in different places.
+
+## Lobanov normalisation
+
+z-score each formant within each speaker (Lobanov, 1971). With `.by` from lecture 2:
+
+```{r}
+formants_z <- formants |>
+  mutate(across(c(f1, f2), \(x) as.numeric(scale(x))),
+         .by = speaker)
+```
+
+. . .
+
+`.by = speaker`: each speaker's F1 and F2 are z-scored using that speaker's own mean and SD.
+
+## After normalisation
+
+```{r, echo = FALSE, fig.height = 4.4}
+ggplot(formants_z, aes(x = f2, y = f1, colour = speaker, shape = vowel)) +
+  geom_point(size = 3, alpha = 0.8) +
+  scale_x_reverse() + scale_y_reverse() +
+  labs(x = "F2 (z, within speaker)", y = "F1 (z, within speaker)",
+       colour = "Speaker", shape = "Vowel") +
+  guides(shape = guide_legend(override.aes = list(colour = mist)))
+```
+
+After normalisation, the vowels overlap across speakers.
+
+## Discussion
+
+Lobanov normalisation removes the differences between speakers, so that vowels can be compared across them.
+
+- When could those differences be exactly what you want to study?
+- What would you lose by normalising in that case?
+
+## Linear transformations: summary {.smaller}
+
+```{r, echo = FALSE}
+fit <- function(f) coef(lm(f, data = words))
+tibble(
+  predictor = c("aoa", "aoa_months", "aoa_c", "aoa_6", "aoa_z"),
+  `0 means` = c("age 0", "age 0", "average age of acquisition", "age 6", "average age of acquisition"),
+  intercept = c(fit(rt ~ aoa)[1], fit(rt ~ aoa_months)[1], fit(rt ~ aoa_c)[1],
+                fit(rt ~ aoa_6)[1], fit(rt ~ aoa_z)[1]),
+  slope     = c(fit(rt ~ aoa)[2], fit(rt ~ aoa_months)[2], fit(rt ~ aoa_c)[2],
+                fit(rt ~ aoa_6)[2], fit(rt ~ aoa_z)[2]),
+  `slope per` = c("1 year", "1 month", "1 year", "1 year", "1 SD"),
+  R2        = round(r2, 2)
+) |>
+  mutate(across(intercept:slope, \(x) round(x, 3))) |>
+  knitr::kable()
+```
+
+. . .
+
+Linear transformations change what the numbers mean, while the fit stays the same.
+
+# Correlation
+
+::: {.fact}
+`Did you know:` the heart of a blue whale that washed ashore in Newfoundland, Canada, in 2014 weighed about [180 kg]{.hl}. It is now on display at the Royal Ontario Museum in Toronto.
+
+_Source: Royal Ontario Museum_
+:::
+
+## Pearson's r {.smaller}
+
+The __correlation coefficient__ r measures how closely two variables follow a straight line.
+
+```{r, echo = FALSE, fig.height = 3.6}
+set.seed(2)
+make_r <- function(r, n = 150) {
+  x <- rnorm(n); y <- r * x + sqrt(1 - r^2) * rnorm(n)
+  tibble(x, y, label = paste("r =", r))
+}
+bind_rows(make_r(-0.8), make_r(0), make_r(0.4), make_r(0.9)) |>
+  mutate(label = fct_inorder(label)) |>
+  ggplot(aes(x, y)) +
+  geom_point(colour = kingfisher, alpha = 0.6, size = 1.6) +
+  facet_wrap(~ label, nrow = 1) +
+  labs(x = NULL, y = NULL) +
+  theme(axis.text = element_blank())
+```
+
+- From -1 (perfect negative) through 0 (no linear relation) to +1 (perfect positive)
+- It has no units: it is the same whether you measure in years, months or days
+
+## `cor()` in R {.smaller}
+
+```{r}
+cor(words$rt, words$aoa)
+```
+
+. . .
+
+`language_attitudes`: 320 respondents rate dialect speakers on 1 to 5 scales. Some skipped items:
+
+```{r}
+cor(language_attitudes$friendly, language_attitudes$warm)
+cor(language_attitudes$friendly, language_attitudes$warm, use = "complete.obs")
+```
+
+## Correlations per group
+
+Per group, with `summarise()` and `.by`:
+
+```{r}
+language_attitudes |>
+  summarise(r = cor(friendly, warm, use = "complete.obs"), .by = dialect_speaker)
+```
+
+## Correlation and regression {.smaller}
+
+Standardise both variables, and the regression slope is the correlation:
+
+```{r}
+words <- words |> mutate(rt_z = as.numeric(scale(rt)))
+
+coef(lm(rt_z ~ aoa_z, data = words))
+cor(words$rt, words$aoa)
+```
+
+. . .
+
+And in simple regression, `R² = r²`:
+
+```{r}
+cor(words$rt, words$aoa)^2
+glance(m)$r.squared
+```
+
+## Same r, different data {.smaller}
+
+Anscombe's quartet (1973), built into R as `anscombe`:
+
+```{r, echo = FALSE, fig.height = 4.2}
+quartet <- anscombe |>
+  pivot_longer(everything(), names_to = c(".value", "set"), names_pattern = "(.)(.)") |>
+  mutate(set = paste("Data set", set))
+
+quartet_r <- quartet |>
+  summarise(r = cor(x, y), .by = set) |>
+  mutate(label = paste("r =", round(r, 2)))
+
+ggplot(quartet, aes(x, y)) +
+  geom_smooth(method = "lm", se = FALSE, colour = hornbill, linewidth = 1, fullrange = TRUE) +
+  geom_point(colour = pandan, size = 3) +
+  geom_text(data = quartet_r, aes(x = 5, y = 12.5, label = label),
+            colour = mist, hjust = 0, size = 5) +
+  facet_wrap(~ set, nrow = 1) +
+  labs(x = NULL, y = NULL)
+```
+
+Four data sets with the same means, the same regression line and the same correlation, __r = 0.82__. Only one of them looks like a straight-line relationship. Always plot first.
+
+## Correlation by group {.smaller}
+
+F1 and F2 in the formant data:
+
+```{r}
+cor(formants$f1, formants$f2)
+formants |> summarise(r = cor(f1, f2), .by = vowel)
+```
+
+. . .
+
+Negative overall, positive within every vowel: Simpson's paradox, as with last week's penguins. Across vowels, a high F1 goes with a low F2 (/a/ against /i/). Within a vowel, speaker B has both formants higher. A correlation describes only the data you give it, and says nothing about the process behind them.
+
+## Correlation is not causation
+
+In children, shoe size and vocabulary size are correlated: children with bigger feet tend to know more words.
+
+. . .
+
+Bigger feet do not teach words. Both grow with a third variable: age.
+
+. . .
+
+A correlation, or a regression slope, tells us that two variables go together. Whether one causes the other is a question for the design of the study.
+
+## Discussion
+
+Suppose children who are read to at home every day know more words than children who are not.
+
+- Does reading aloud cause vocabulary growth? What else could explain the correlation?
+- What kind of study would let you decide?
+
+# Logarithms
+
+::: {.fact}
+`Did you know:` blue whale calls can reach [188 decibels]{.hl}. Decibels are a logarithmic scale: every 10 dB more means ten times the sound intensity.
+
+_Source: WWF_
+:::
+
+## Magnitudes {.smaller}
+
+Some linguistic variables span many orders of magnitude. Word frequency is the classic example:
+
+```{r}
+zipf_rt
+range(zipf_rt$freq)
+```
+
+. . .
+
+`zipf_rt`: 2000 words with their frequency per million words and a lexical decision time (`rt`, in ms). The most frequent word is about `r round(max(zipf_rt$freq) / min(zipf_rt$freq))` times more frequent than the least frequent one.
+
+## What is a logarithm? {.smaller}
+
+A logarithm answers one question: how many times do I multiply the base by itself to get this number? `log10(1000)` is 3, because 10 × 10 × 10 = 1000.
+
+. . .
+
+So the log turns multiplying into adding: each step of 1 on the log scale is one more multiplication by the base.
+
+. . .
+
+```{r}
+log10(1000)        # 10^3 = 1000
+log2(8)            # 2^3  = 8
+log(exp(2))        # natural log, base e = 2.718...
+exp(log(50))       # exp() undoes log()
+```
+
+## Which base?
+
+| Function | Base | One unit means |
+|---|---|---|
+| `log10()` | 10 | a tenfold increase |
+| `log2()` | 2 | a doubling |
+| `log()` | e ≈ 2.718 | the default in R and in most models |
+
+. . .
+
+The base changes only the numbers on the axis, and the shape stays the same: `log10(x)` is just `log(x) / log(10)`. Choose the base that is easiest to explain.
+
+## Zeros and negatives
+
+```{r}
+log(0)
+log(-5)
+```
+
+. . .
+
+The log is only defined for positive numbers.
+
+. . .
+
+Frequency counts often contain zeros (a word that never occurs in a corpus). A common fix is to add 1 first:
+
+```{r}
+log1p(c(0, 9, 99))     # same as log(c(0, 9, 99) + 1)
+```
+
+## Logging a predictor
+
+```{r, echo = FALSE, fig.height = 4.2}
+bind_rows(
+  mutate(zipf_rt, x = freq,        scale = "Raw frequency"),
+  mutate(zipf_rt, x = log10(freq), scale = "log10(frequency)")
+) |>
+  mutate(scale = fct_inorder(scale)) |>
+  ggplot(aes(x = x, y = rt)) +
+  geom_point(colour = kingfisher, alpha = 0.3, size = 1.5) +
+  geom_smooth(method = "lm", colour = hornbill, linewidth = 1.2, se = FALSE) +
+  facet_wrap(~ scale, scales = "free_x") +
+  labs(x = NULL, y = "Reaction time (ms)")
+```
+
+On the raw scale, most words are squeezed against zero and a straight line fits badly. On the log scale, the relationship is close to linear.
+
+## Logging a predictor
+
+```{r}
+m_freq <- lm(rt ~ log10(freq), data = zipf_rt)
+coef(m_freq)
+```
+
+. . .
+
+Each tenfold increase in frequency (10 → 100 → 1000) goes with responses about `r round(-coef(m_freq)[2])` ms faster.
+
+. . .
+
+Frequency effects in language are usually [multiplicative]{.hl}: going from 10 to 100 matters about as much as going from 100,000 to 1,000,000.
+
+## Logging the outcome {.smaller}
+
+Reaction times are positive and [right-skewed]{.hl} (lecture 3). So are the residuals of a model fitted to raw RTs:
+
+```{r, echo = FALSE, fig.height = 3.8}
+m_log <- lm(log(rt) ~ log10(freq), data = zipf_rt)
+
+bind_rows(
+  tibble(model = "lm(rt ~ log10(freq))",      resid = as.numeric(scale(residuals(m_freq)))),
+  tibble(model = "lm(log(rt) ~ log10(freq))", resid = as.numeric(scale(residuals(m_log))))
+) |>
+  mutate(model = fct_inorder(model)) |>
+  ggplot(aes(x = resid, fill = model)) +
+  geom_histogram(bins = 40, colour = floor_col) +
+  facet_wrap(~ model) +
+  scale_fill_manual(values = c(orchid, pandan)) +
+  labs(x = "Residuals (z-scored)", y = "Count") +
+  theme(legend.position = "none")
+```
+
+After the log, the residuals are much more symmetric: closer to what the linear model assumes (lecture 4).
+
+## Reading a log outcome {.smaller}
+
+```{r}
+m_log <- lm(log(rt) ~ log10(freq), data = zipf_rt)
+coef(m_log)
+exp(coef(m_log)[2])
+```
+
+. . .
+
+On the log scale, effects multiply. Each tenfold increase in frequency multiplies the RT by `r round(exp(coef(m_log)[2]), 3)`: responses about `r round((1 - exp(coef(m_log)[2])) * 100, 1)`% faster.
+
+. . .
+
+Back to milliseconds with `exp()`:
+
+```{r}
+exp(predict(m_log, newdata = tibble(freq = c(1, 10, 100, 1000))))
+```
+
+## When to log
+
+- The variable is positive and [right-skewed]{.hl}: RTs, durations, frequencies, counts
+- Effects are plausibly [multiplicative]{.hl}: "x% faster" rather than "x ms faster"
+- The residuals of the raw model are skewed or funnel-shaped
+
+. . .
+
+The log is not a cure-all. Report which variables you transformed and why, and interpret the coefficients on the transformed scale.
+
+# The word "normalising"
+
+## A slippery word {.smaller}
+
+"Normalising" is used for several different operations:
+
+| What people mean | What it does |
+|:--|:--|
+| [z-scoring]{.hl} | subtracts the mean and divides by the SD |
+| min-max scaling | squeezes values into the range 0 to 1 |
+| a normalising transformation | makes a distribution look more normal, e.g. a log |
+| speaker normalisation | removes vocal tract differences in phonetics, e.g. Lobanov |
+
+. . .
+
+```{r}
+x <- c(4, 8, 15, 16, 23, 42)
+(x - min(x)) / (max(x) - min(x))     # min-max scaling
+```
+
+. . .
+
+In your write-up, avoid the word on its own. Say exactly what you did: "F1 and F2 were z-scored within speaker (Lobanov, 1971)". See also Winter (2019), section 5.7.
+
+## Summary
+
+::: {.takeaway}
+- __Units__ and __centering__ change what the intercept and slope mean; the fit stays the same
+- __Standardising__ puts variables on a common scale: slopes per SD
+- __Correlation__ is the slope between two z-scored variables: unitless, from −1 to 1
+- The same r can come from very different data, so always plot
+- __Logarithms__ turn multiplicative effects into additive ones, and tame skew
+- Name your transformation precisely, instead of just writing "normalised"
+:::
+
+## Slides and code
+
+<div class="qr-block">
+<img src="`r qr_uri`" alt="QR code linking to these slides">
+<div>
+<p>These slides</p>
+<p class="qr-link">mcanzi.de/statistics/<wbr>`r lecture_file`</p>
+<p>Code, data and all lectures</p>
+<p class="qr-link">github.com/mcanzi/statistics</p>
+</div>
+</div>

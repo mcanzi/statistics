@@ -1,0 +1,565 @@
+---
+title: "Linear models"
+subtitle: "Intercepts, slopes and residuals"
+author: "Dr Massimiliano Canzi"
+knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
+output:
+  revealjs::revealjs_presentation:
+    theme: black
+    css: theme-dark.css
+    highlight: zenburn
+    mathjax: null
+    incremental: true
+    transition: fade
+    background_transition: fade
+    self_contained: true
+    reveal_options:
+      width: 1050
+      height: 700
+      slideNumber: "c/t"
+      showSlideNumber: all
+      controls: true
+      touch: true
+      transitionSpeed: fast
+      navigationMode: linear
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      comment = "",
+                      fig.width = 10, fig.height = 4.6, out.width = "100%")
+
+library(tidyverse)
+library(palmerpenguins)
+library(broom)
+
+source("slides_setup.R", local = knitr::knit_global())
+
+options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
+
+pengs   <- drop_na(penguins, flipper_length_mm, body_mass_g)
+m       <- lm(flipper_length_mm ~ body_mass_g, data = pengs)
+b0      <- coef(m)[1]
+b1      <- coef(m)[2]
+r2      <- glance(m)$r.squared
+```
+
+# From one variable to two
+
+<style>
+  :root {
+    --footer-text:  "Linear models";
+    --qr:           `r qr_css`;
+    --lecture:      `r lecture_label`;
+  }
+</style>
+
+::: {.fact}
+`Did you know:` an Alpine ibex hoof has a hard, thin rim around a [soft, spongy sole]{.hl}, and the ibex can move its two toes independently, placing each one on a different edge of the rock.
+
+_Source: ALPECOLE, University of Zurich_
+:::
+
+## Today
+
+- From the mean to the conditional mean
+- Intercepts, slopes and residuals
+- Fitting a line with least squares and `lm()`
+- Reading a model and making predictions
+- Measuring how well the line fits with `R²`
+- Checking the model, and a warning about groups
+
+## Last week: one variable
+
+```{r, echo = FALSE, fig.height = 3.9}
+ggplot(pengs, aes(x = seq_along(flipper_length_mm), y = flipper_length_mm)) +
+  geom_hline(yintercept = mean(pengs$flipper_length_mm), colour = hornbill, linewidth = 1.2) +
+  geom_point(colour = pandan, alpha = 0.5, size = 2) +
+  labs(x = "Penguin", y = "Flipper length (mm)")
+```
+
+The mean (`r round(mean(pengs$flipper_length_mm))` mm) is the [simplest model]{.hl} of a variable: it predicts the same flipper length for every penguin. Most penguins are some distance away from it.
+
+## Today: two variables
+
+```{r, echo = FALSE, fig.height = 3.4}
+ggplot(pengs, aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_point(colour = pandan, alpha = 0.35, size = 2) +
+  stat_summary_bin(fun = mean, bins = 10, geom = "point",
+                   colour = hornbill, size = 5) +
+  stat_summary_bin(fun = mean, bins = 10, geom = "line",
+                   colour = hornbill, linewidth = 1) +
+  labs(x = "Body mass (g)", y = "Flipper length (mm)")
+```
+
+If we know a penguin's body mass, we can do better: the [conditional mean]{.hl} is the mean flipper length of penguins with a given body mass (orange). The conditional means lie close to a straight line.
+
+## Outcome and predictor
+
+[Simple linear regression]{.hl} models one continuous outcome with one predictor (Winter, 2019).
+
+
+:::: {.columns}
+
+::: {.column width="52%"}
+- The [outcome]{.hl} (dependent or response variable, `y`) is what you measure
+- The [predictor]{.hl} (independent variable, `x`) is what you manipulate, or measure alongside, to see whether the outcome changes with it
+:::
+
+::: {.column width="48%"}
+| Outcome | Predictor |
+|:--|:--|
+| Reaction time | Word frequency |
+| Vowel duration | Speaking rate |
+| Pitch (f0) | Speaker age |
+| Reading speed | Font size |
+:::
+
+::::
+
+# Intercepts & slopes
+
+::: {.fact}
+`Did you know:` Alpine ibex climb near-vertical [slopes]{.hl}. In the Italian Alps, females scale the concrete walls of dams such as the Cingino dam to lick the salts that form on them.
+
+_Source: Water Power Magazine_
+:::
+
+## The equation of a line
+
+:::: {.columns}
+
+::: {.column width="50%"}
+<div class="formula">y = b₀ + b₁ · x + e</div>
+
+- The [intercept]{.hl} `b₀` is where the line crosses the vertical axis, at `x = 0`
+- The [slope]{.hl} `b₁` is how much `y` changes when `x` goes up by 1
+- The [error]{.hl} `e` is the part of each observation the line misses
+:::
+
+::: {.column width="50%"}
+```{r, echo = FALSE, fig.width = 5, fig.height = 4.6}
+ggplot() +
+  geom_vline(xintercept = 0, colour = moss) +
+  geom_abline(intercept = 2, slope = 0.5, colour = hornbill, linewidth = 1.4) +
+  annotate("segment", x = 4, xend = 5, y = 4, yend = 4, colour = orchid, linewidth = 1.1) +
+  annotate("segment", x = 5, xend = 5, y = 4, yend = 4.5, colour = orchid, linewidth = 1.1) +
+  annotate("text", x = 4.5, y = 3.7, label = "+1", colour = orchid, size = 5.5) +
+  annotate("text", x = 5.2, y = 4.25, label = "b[1] == 0.5", parse = TRUE, colour = orchid, hjust = 0, size = 5.5) +
+  annotate("point", x = 0, y = 2, colour = mist, size = 4) +
+  annotate("text", x = 0.25, y = 1.6, label = "b[0] == 2", parse = TRUE, colour = mist, hjust = 0, size = 5.5) +
+  coord_cartesian(xlim = c(-1, 7), ylim = c(0, 6)) +
+  labs(x = "x", y = "y")
+```
+:::
+
+::::
+
+## Moving and tilting the line
+
+```{r, echo = FALSE, fig.height = 4.1}
+lines <- tibble(
+  panel = rep(c("Same intercept, different slopes", "Same slope, different intercepts"), each = 2),
+  b0 = c(3, 3, 1, 3.5), b1 = c(0.8, -0.3, 0.4, 0.4), line = c("a", "b", "a", "b"),
+  label = c("b[1] == 0.8", "b[1] == -0.3", "b[0] == 1", "b[0] == 3.5"),
+  lx = c(4.4, 4.4, 0.25, 0.25), ly = c(6.1, 2.2, 0.55, 3.05)
+)
+ggplot(lines) +
+  geom_vline(xintercept = 0, colour = moss) +
+  geom_abline(aes(intercept = b0, slope = b1, colour = line), linewidth = 1.4, show.legend = FALSE) +
+  geom_point(aes(x = 0, y = b0), colour = mist, size = 3.5) +
+  geom_text(aes(x = lx, y = ly, label = label, colour = line), parse = TRUE, hjust = 0, size = 5.5, show.legend = FALSE) +
+  scale_colour_manual(values = c(a = orchid, b = kingfisher)) +
+  facet_wrap(~ panel) +
+  coord_cartesian(xlim = c(-1, 6.5), ylim = c(0, 7)) +
+  labs(x = "x", y = "y")
+```
+
+The intercept moves the line up or down. The slope tilts it: positive slopes rise, negative slopes fall.
+
+## Which line?
+
+```{r, echo = FALSE, fig.height = 4.1}
+xm <- mean(pengs$body_mass_g); ym <- mean(pengs$flipper_length_mm)
+candidates <- tibble(line = c("A", "B", "C"), b1 = c(b1 * 0.4, b1, b1 * 1.6)) |>
+  mutate(b0 = ym - b1 * xm)
+ggplot(pengs, aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_point(colour = pandan, alpha = 0.4, size = 2) +
+  geom_abline(data = candidates, aes(intercept = b0, slope = b1, colour = line), linewidth = 1.3) +
+  scale_colour_manual(values = c(A = kingfisher, B = hornbill, C = orchid)) +
+  labs(x = "Body mass (g)", y = "Flipper length (mm)", colour = NULL) +
+  theme(legend.position = "right")
+```
+
+All three lines go through the middle of the data. Which one describes it best, and how would you decide?
+
+## Residuals
+
+```{r, echo = FALSE, fig.height = 3.0}
+set.seed(4)
+few <- augment(m) |> slice_sample(n = 30)
+ggplot(few, aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_abline(intercept = b0, slope = b1, colour = hornbill, linewidth = 1.2) +
+  geom_segment(aes(xend = body_mass_g, yend = .fitted), colour = orchid, linewidth = 0.8) +
+  geom_point(colour = pandan, size = 3) +
+  labs(x = "Body mass (g)", y = "Flipper length (mm)")
+```
+
+<div class="formula">residual = observed − fitted</div>
+
+Each pink segment is a [residual]{.hl}: how far a penguin's flipper is from the length the line predicts. Points above the line have positive residuals, points below negative ones.
+
+## Least squares
+
+The [least squares]{.hl} method picks the line with the smallest sum of squared residuals.
+
+```{r}
+sum(residuals(m)^2)
+
+guess <- 140 + 0.014 * pengs$body_mass_g
+sum((pengs$flipper_length_mm - guess)^2)
+```
+
+. . .
+
+Squaring makes every residual positive, so misses above and below the line cannot cancel out. It also counts one large miss as worse than several small ones.
+
+## Searching for the best line
+
+```{r, echo = FALSE, fig.height = 3.6}
+search <- tibble(slope = seq(b1 * 0.3, b1 * 1.7, length.out = 101)) |>
+  mutate(sq = map_dbl(slope, \(k) sum((pengs$flipper_length_mm - (ym + k * (pengs$body_mass_g - xm)))^2)))
+ggplot(search, aes(x = slope, y = sq / 1000)) +
+  geom_line(colour = kingfisher, linewidth = 1.3) +
+  geom_vline(xintercept = b1, colour = hornbill, linetype = "dashed") +
+  annotate("point", x = b1, y = min(search$sq) / 1000, colour = hornbill, size = 4) +
+  labs(x = "Slope of a line through the middle of the data", y = "Sum of squared residuals (× 1,000)")
+```
+
+Each point on the curve is one candidate line. The sum of squared residuals is smallest at a slope of `r round(b1, 4)`. That is line B from the previous slide, and it is the line `lm()` finds.
+
+# Linear models in R
+
+::: {.fact}
+`Did you know:` a male Alpine ibex weighs about 90 kg, and his horns grow to about 92 cm on average. A female weighs 35 to 49 kg, with horns of about 34 cm. A model of horn length would need very different [intercepts]{.hl} for the two sexes.
+
+_Source: Gran Paradiso National Park_
+:::
+
+## `lm()` in `R`
+
+`lm()` fits a [linear model]{.hl}. The [formula]{.hl} `outcome ~ predictor` reads "flipper length as a function of body mass".
+
+```{r}
+m <- lm(flipper_length_mm ~ body_mass_g, data = pengs)
+m
+```
+
+. . .
+
+`pengs` is `penguins` without the rows that lack either measurement, made with `drop_na()` from last week.
+
+## `summary()` {.smaller}
+
+```{r}
+summary(m)
+```
+
+## Reading `summary()`
+
+| Part of the output | What it tells you |
+|:--|:--|
+| `Residuals` | How far the points are from the line: the median should be close to 0 |
+| `Coefficients`, `Estimate` | The intercept `b₀` and the slope `b₁` |
+| `Std. Error`, `t value`, <code>Pr(&gt;&#124;t&#124;)</code> | How certain the estimates are: lecture 9 |
+| `Residual standard error` | The typical size of a residual, in mm |
+| `Multiple R-squared` | How much of the variation the model accounts for: later today |
+
+## Reading the coefficients
+
+```{r}
+coefficients(m)
+```
+
+. . .
+
+- Each extra kilogram of body mass goes with flippers `r round(b1 * 1000, 1)` mm longer (`r round(b1, 4)` mm per gram)
+- A penguin weighing 0 g would have flippers `r round(b0, 1)` mm long. No penguin weighs 0 g, so next week [centering]{.hl} will give the intercept a meaning
+
+## Residuals average zero
+
+The points above the line balance the points below it, so the residuals average zero:
+
+```{r}
+mean(residuals(m))
+```
+
+. . .
+
+`e-16` means "times 10 to the power of −16", so this mean is zero up to rounding error.
+
+## `{broom}`: models as tibbles
+
+`tidy()` gives one row per coefficient and `glance()` one row per model:
+
+```{r}
+tidy(m)
+glance(m)[, 1:4]
+```
+
+## `augment()`: one row per penguin
+
+```{r}
+augment(m)[, 1:4]
+```
+
+. . .
+
+`augment()` adds the fitted value and the residual of every penguin to the data. All three `{broom}` functions return tibbles, ready for `{dplyr}` and `{ggplot2}`.
+
+## Plotting the model
+
+```{r, eval = FALSE}
+ggplot(pengs, aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+```{r, echo = FALSE, fig.height = 2.7}
+ggplot(pengs, aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_point(colour = pandan, alpha = 0.4, size = 2) +
+  geom_smooth(method = "lm", colour = hornbill, fill = hornbill, linewidth = 1.3) +
+  labs(x = "Body mass (g)", y = "Flipper length (mm)")
+```
+
+`geom_smooth(method = "lm")` fits the same model as `lm()`. The band shows how uncertain the line is: lecture 9.
+
+## Predictions
+
+```{r}
+new_penguins <- tibble(body_mass_g = c(3000, 4000, 5000))
+predict(m, newdata = new_penguins)
+```
+
+. . .
+
+Each prediction is `b₀ + b₁ · x`. For 4000 g: `r round(b0, 1)` + `r round(b1, 4)` × 4000 = `r round(b0 + b1 * 4000, 1)` mm.
+
+## Stay within the data
+
+```{r, echo = FALSE, fig.height = 3.7}
+ggplot(pengs, aes(x = body_mass_g, y = flipper_length_mm)) +
+  annotate("rect", xmin = min(pengs$body_mass_g), xmax = max(pengs$body_mass_g), ymin = -Inf, ymax = Inf, fill = vine, alpha = 0.6) +
+  geom_abline(intercept = b0, slope = b1, colour = hornbill, linewidth = 1, linetype = "dashed") +
+  geom_segment(x = min(pengs$body_mass_g), xend = max(pengs$body_mass_g),
+               y = b0 + b1 * min(pengs$body_mass_g), yend = b0 + b1 * max(pengs$body_mass_g),
+               colour = hornbill, linewidth = 1.4) +
+  geom_point(colour = pandan, alpha = 0.4, size = 1.8) +
+  coord_cartesian(xlim = c(0, 8000)) +
+  labs(x = "Body mass (g)", y = "Flipper length (mm)")
+```
+
+The data cover `r min(pengs$body_mass_g)` to `r max(pengs$body_mass_g)` g (shaded). Outside that range the dashed line is a guess: it gives a weightless penguin `r round(b0)` mm flippers.
+
+# Model fit
+
+::: {.fact}
+`Did you know:` an Alpine ibex horn adds one segment a year, so you can count a male's age on it. In males aged 1 to 6, age accounted for 50% of the [variance]{.hl} in yearly horn growth. Warm springs with early plant growth gave longer segments.
+
+_Sources: Giacometti et al. (2002), Journal of Mammalogy; Büntgen et al. (2014), Ecology Letters_
+:::
+
+## The `1` in a formula
+
+The `1` in a formula stands for the intercept, and `R` adds it for you.
+
+```{r}
+coef(lm(flipper_length_mm ~ 1 + body_mass_g, data = pengs))
+m0 <- lm(flipper_length_mm ~ 1, data = pengs)
+coef(m0)
+```
+
+. . .
+
+So `y ~ x` and `y ~ 1 + x` fit the same model. `y ~ 1` fits an [intercept-only model]{.hl}: its one estimate is the mean flipper length, the model from last week.
+
+## The mean as a baseline
+
+```{r, echo = FALSE, fig.height = 3.3}
+bind_rows(`The mean: y ~ 1` = mutate(few, pred = mean(pengs$flipper_length_mm)),
+          `The line: y ~ x` = mutate(few, pred = .fitted), .id = "model") |>
+  mutate(model = fct_inorder(model)) |>
+  ggplot(aes(x = body_mass_g, y = flipper_length_mm)) +
+  geom_line(aes(y = pred), colour = hornbill, linewidth = 1.2) +
+  geom_segment(aes(xend = body_mass_g, yend = pred), colour = orchid, linewidth = 0.8) +
+  geom_point(colour = pandan, size = 2.5) +
+  facet_wrap(~ model) +
+  labs(x = "Body mass (g)", y = "Flipper length (mm)")
+```
+
+The left panel shows each penguin's distance from the mean, the residuals of `y ~ 1`. With our line (right, same 30 penguins) the residuals are much shorter.
+
+## `R²` step by step
+
+<div class="formula">R² = 1 − <span class="sym">Σ</span>e²<sub>line</sub> / <span class="sym">Σ</span>e²<sub>mean</sub></div>
+
+```{r}
+sq_mean <- sum(residuals(m0)^2)
+sq_line <- sum(residuals(m)^2)
+1 - sq_line / sq_mean
+```
+
+. . .
+
+`Σe²` is a sum of squared residuals, as in least squares. [R²]{.hl} is the proportion of the squared misses of the mean that the line removes, here `r round(r2 * 100)`%.
+
+## Reading `R²`
+
+```{r}
+glance(m)$r.squared
+```
+
+. . .
+
+This is the `Multiple R-squared` in `summary()`: `r round(r2 * 100)`% of the variation in flipper length goes with body mass.
+
+. . .
+
+It runs from 0, when the line does no better than the mean, to 1, when every point lies on the line. In linguistics much lower values are normal, because speakers and listeners vary for many reasons besides any one predictor.
+
+## Discussion
+
+Body mass accounts for `r round(r2 * 100)`% of the variation in flipper length. Suppose a study finds that word frequency accounts for 5% of the variation in reaction times.
+
+- Is that model useless?
+- What might account for the other 95%?
+
+# Checking the model
+
+::: {.fact}
+`Did you know:` by the 19th century, Alpine ibex had been hunted out of the Alps except in the Italian king's hunting reserve, today Gran Paradiso National Park. In the early 1900s, young ibex were smuggled from there into Switzerland, where the first [reintroduction]{.hl} followed in 1911.
+
+_Sources: Gran Paradiso National Park; Springer Nature Research Communities_
+:::
+
+## Are the residuals normal?
+
+```{r, echo = FALSE, fig.height = 3.9}
+ggplot(augment(m), aes(x = .resid)) +
+  geom_histogram(bins = 30, fill = orchid, colour = floor_col) +
+  geom_vline(xintercept = 0, colour = mist, linetype = "dashed") +
+  labs(x = "Residual (mm)", y = "Count")
+```
+
+Linear models assume that the residuals are roughly [normal]{.hl}, symmetric and centred on zero, and these residuals are close enough.
+
+## Is the spread constant?
+
+```{r, echo = FALSE, fig.height = 3.6}
+set.seed(11)
+funnel <- tibble(.fitted = runif(300, 170, 230)) |>
+  mutate(.resid = rnorm(300, 0, (.fitted - 165) / 4))
+bind_rows(`Our model` = select(augment(m), .fitted, .resid),
+          `A problem: a funnel` = funnel, .id = "panel") |>
+  mutate(panel = fct_inorder(panel)) |>
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_hline(yintercept = 0, colour = mist, linetype = "dashed") +
+  geom_point(colour = kingfisher, alpha = 0.6, size = 1.8) +
+  facet_wrap(~ panel) +
+  labs(x = "Fitted flipper length (mm)", y = "Residual (mm)")
+```
+
+The residuals should also have about the [same spread]{.hl} all along the line. On the right, the misses grow with the fitted values. Chapter 4 of Winter (2019) covers both checks.
+
+# Grouped data
+
+::: {.fact}
+`Did you know:` outside the mating season, adult male and female Alpine ibex live in [separate groups]{.hl}, and males join groups of males of a similar age.
+
+_Source: Villaret & Bon (1995), Ethology_
+:::
+
+## A warning: three species
+
+Bill length by bill depth, all penguins together:
+
+```{r, echo = FALSE, fig.height = 3.9}
+bills <- drop_na(penguins, bill_length_mm, bill_depth_mm)
+ggplot(bills, aes(x = bill_depth_mm, y = bill_length_mm)) +
+  geom_point(colour = pandan, alpha = 0.5, size = 2) +
+  geom_smooth(method = "lm", colour = mist, fill = mist, linewidth = 1.4) +
+  labs(x = "Bill depth (mm)", y = "Bill length (mm)")
+```
+
+The slope is negative: penguins with deeper bills seem to have shorter ones.
+
+## A warning: three species
+
+```{r, echo = FALSE, fig.height = 3.9}
+ggplot(bills, aes(x = bill_depth_mm, y = bill_length_mm)) +
+  geom_point(aes(colour = species), alpha = 0.5, size = 2) +
+  geom_smooth(method = "lm", colour = mist, se = FALSE, linewidth = 1.2, linetype = "dashed") +
+  geom_smooth(aes(colour = species, fill = species), method = "lm", linewidth = 1.4) +
+  labs(x = "Bill depth (mm)", y = "Bill length (mm)", colour = NULL, fill = NULL) +
+  theme(legend.position = "right")
+```
+
+Within every species the slope is positive. Leaving species out reversed the relationship: this is [Simpson's paradox]{.hl}. Lectures 6 and 7 show how to add species to the model.
+
+# Your turn
+
+## Exercises
+
+With `penguins`, after `drop_na()` on the columns you use:
+
+1. Fit a model of `bill_length_mm` as a function of `flipper_length_mm`
+2. Report the slope in a sentence. What does the intercept mean here?
+3. What is `R²`? Compute it by hand with an intercept-only model
+4. Predict the bill length of penguins with 190 and 220 mm flippers
+5. Bonus: plot the residuals against the fitted values with `augment()`, coloured by `species`. What do you see?
+
+## Solutions {.smaller}
+
+```{r}
+bill_data <- drop_na(penguins, bill_length_mm, flipper_length_mm)
+
+m_bill <- lm(bill_length_mm ~ flipper_length_mm, data = bill_data)
+coef(m_bill)
+
+m_bill0 <- lm(bill_length_mm ~ 1, data = bill_data)
+1 - sum(residuals(m_bill)^2) / sum(residuals(m_bill0)^2)
+glance(m_bill)$r.squared
+```
+
+## Solutions {.smaller}
+
+```{r, fig.height = 2.8}
+predict(m_bill, newdata = tibble(flipper_length_mm = c(190, 220)))
+
+augment(m_bill, data = bill_data) |>
+  ggplot(aes(x = .fitted, y = .resid, colour = species)) +
+  geom_point()
+```
+
+## Summary
+
+::: {.takeaway}
+- `y = b₀ + b₁ · x + e` predicts the [conditional mean]{.hl} of `y` from `x`
+- The [intercept]{.hl} is the prediction at `x = 0`; the [slope]{.hl} is the change in `y` when `x` goes up by 1
+- [Least squares]{.hl} picks the line with the smallest sum of squared residuals, and `lm(y ~ x)` finds it
+- [R²]{.hl} is the proportion of variation the line accounts for, compared with the intercept-only model `y ~ 1`
+- Check that the residuals are roughly normal, with the same spread along the line
+- Predict only within the range of the data, and look for groups that a single line hides
+:::
+
+## Slides and code
+
+<div class="qr-block">
+<img src="`r qr_uri`" alt="QR code linking to these slides">
+<div>
+<p>These slides</p>
+<p class="qr-link">mcanzi.de/statistics/<wbr>`r lecture_file`</p>
+<p>Code, data and all lectures</p>
+<p class="qr-link">github.com/mcanzi/statistics</p>
+</div>
+</div>

@@ -1,0 +1,511 @@
+---
+title: "Course introduction"
+subtitle: "Organisation, R and RStudio, and first steps in R"
+author: "Dr Massimiliano Canzi"
+knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
+output:
+  revealjs::revealjs_presentation:
+    theme: black
+    css: theme-dark.css
+    highlight: zenburn
+    incremental: true
+    transition: fade
+    background_transition: fade
+    self_contained: true
+    reveal_options:
+      width: 1050
+      height: 700
+      slideNumber: "c/t"
+      showSlideNumber: all
+      controls: true
+      touch: true
+      transitionSpeed: fast
+      navigationMode: linear
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = TRUE,
+                      comment = "")
+library(tidyverse)
+
+source("slides_setup.R", local = knitr::knit_global())
+options(width = 70)
+```
+
+# Introduction
+
+<style>
+  :root {
+    --footer-text:  "massimiliano.canzi@uni-konstanz.de";
+    --qr:           `r qr_css`;
+    --lecture:      `r lecture_label`;
+  }
+</style>
+
+::: {.fact}
+`Did you know:` the aye-aye, a lemur from [Madagascar]{.hl}, finds insect larvae by tapping on wood with its long, thin middle finger and listening for hollow tunnels. Then it gnaws a hole and hooks the larvae out with the same finger.
+
+_Source: Duke Lemur Center_
+:::
+
+## Who I am
+
+Dr Massimiliano Canzi, Max for short.
+
+<div style="display:grid; grid-template-columns: 6.5em 1fr; gap: 0.55em 1em; margin-top: 0.6em;">
+<div style="color: var(--pandan); font-weight: 700;">Now</div><div>Data scientist and manager of the LingLab, Universität Konstanz, since 2021</div>
+<div style="color: var(--pandan); font-weight: 700;">Studied</div><div>Linguistics in Milan (BA), Manchester (MA) and York (MSc); PhD in Manchester</div>
+<div style="color: var(--pandan); font-weight: 700;">Research</div><div>How listeners perceive speech and how speakers produce it, with experiments and quantitative methods</div>
+<div style="color: var(--pandan); font-weight: 700;">Also</div><div>Forensic speech science, and a lot of <code>R</code></div>
+</div>
+
+## Some of my research
+
+- _What PMN?_ How listeners process a phonological mismatch when the speech carries no meaning
+- Whether what we know about a speaker's body changes how we hear their voice
+- How loud speech differs acoustically from speech at a normal level
+
+. . .
+
+All three needed the tools of this course: experiments with many participants and items, and regression models to make sense of them.
+
+## Who are you?
+
+Tell us, briefly:
+
+- Your name and your programme
+- The data you work with, or would like to work with
+- Your experience with `R`: none, some, lots
+- One thing you would like to take away from this course
+
+# The course
+
+::: {.fact}
+`Did you know:` aye-ayes have [incisors that never stop growing]{.hl}, like a rodent's. No other primate has them.
+
+_Source: Duke Lemur Center_
+:::
+
+## How the course works
+
+| | When | What happens |
+|:--|:--|:--|
+| Lecture | Fridays, 11:45 | New concepts, and the code that goes with them |
+| Tutorial | Wednesdays, 13:30 | You practise, with help at hand |
+| Office hours | Fridays, 10:00–11:30, by appointment | Questions about the course or your own data |
+
+. . .
+
+Announcements, homework and submissions are on Ilias.
+
+## Assessment
+
+| Component | Weight |
+|---|---|
+| Final assignment | 90% |
+| Homework: four of the five exercises count | 10% |
+
+. . .
+
+The homework exercises are short, a few questions each, and practise what we covered in class.
+
+## The final assignment
+
+You analyse a set of linguistic data and write it up as a scientific report of about 3000 words, in the style of an experimental paper.
+
+. . .
+
+You hand in one file that contains the text of your paper alongside the code of your analysis. Anyone who opens it can rerun your analysis and get the same numbers.
+
+## Your own work
+
+- The text and the code you submit must be your own
+- Cite every source you build on (papers, books, tutorials, code you adapt), and if in doubt, ask before you submit
+
+. . .
+
+As The Smiths warn in _Cemetry Gates_ (1986): plagiarism tends to get noticed.
+
+## Dissertations
+
+I can supervise up to two dissertations per semester as first supervisor, and up to two as second supervisor.
+
+. . .
+
+If you would like to write a quantitative dissertation, get in touch early.
+
+## Slides and materials
+
+The slides are written in R Markdown and shown with `reveal.js`. Each week you get:
+
+- the slides (.html)
+- the code behind them (.Rmd)
+- the homework exercises
+
+. . .
+
+Open the .Rmd in RStudio and run it yourself: every number, table and plot on the slides comes from that code. Slides and code are also online, at `github.com/mcanzi/statistics`.
+
+## The book
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge.
+
+. . .
+
+- Written for linguists, with linguistic data throughout, and uses `R` and the `tidyverse`, like this course
+- Builds everything around the [linear model]{.hl}
+
+## Syllabus
+
+Each lecture follows one or more chapters of Winter (2019).
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; gap: 1.6em; align-items: start;">
+<div>
+
+| | Lecture | Chapter |
+|---|---|---|
+| 1 | Course introduction | 1 |
+| 2 | Data wrangling | 2 |
+| 3 | Descriptive statistics | 3 |
+| 4 | Linear models | 4 |
+| 5 | Transformations | 5 |
+| 6 | Multiple regression | 6 |
+| 7 | Categorical predictors | 7 |
+
+</div>
+<div>
+
+| | Lecture | Chapter |
+|---|---|---|
+| 8 | Interactions | 8 |
+| 9 | Significance testing | 9 |
+| 10 | Mixed models 1 | 14 |
+| 11 | Mixed models 2 | 15 |
+| 12 | Mixed logistic regression | 12, 15.8 |
+| 13 | Power and model building | 10, 11, 16 |
+
+</div>
+</div>
+
+# Getting started
+
+::: {.fact}
+`Did you know:` the aye-aye is the world's largest [nocturnal primate]{.hl}, at 2.5 to 2.8 kg. In parts of Madagascar many people see it as a bad omen (_fady_) that must be killed on sight.
+
+_Source: Duke Lemur Center_
+:::
+
+## Software
+
+You need two free programs:
+
+1. `R`, the language itself. Download it from [CRAN](https://cloud.r-project.org/)
+2. `RStudio`, the program you write and run R code in. Download it from [Posit](https://docs.posit.co/ide/user/download.html)
+
+. . .
+
+RStudio needs R to work, so install R first.
+
+## RStudio at a glance
+
+<div style="display:grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 12px; height: 450px; font-size: 0.75em; margin-top: 0.4em;">
+<div style="background: var(--understory); border-left: 3px solid var(--pandan); border-radius: 6px; padding: 0.6em 0.8em;"><strong>Source</strong><br>Your scripts and <code>.Rmd</code> files. Code here is saved.</div>
+<div style="background: var(--understory); border-left: 3px solid var(--kingfisher); border-radius: 6px; padding: 0.6em 0.8em;"><strong>Environment</strong><br>The objects you have created: data sets, values, models.</div>
+<div style="background: var(--understory); border-left: 3px solid var(--hornbill); border-radius: 6px; padding: 0.6em 0.8em;"><strong>Console</strong><br>Where R runs your code and prints results. Code here is not saved.</div>
+<div style="background: var(--understory); border-left: 3px solid var(--orchid); border-radius: 6px; padding: 0.6em 0.8em;"><strong>Files, Plots, Packages, Help</strong><br>Your folders, your plots, installed packages and the documentation.</div>
+</div>
+
+## Install the packages (once)
+
+Type this in the RStudio `Console`:
+
+```{r, eval=FALSE}
+install.packages(c("tidyverse", "palmerpenguins", "swirl"))
+```
+
+. . .
+
+Check that everything worked:
+
+```{r, eval=FALSE}
+R.version.string          # your version of R
+packageVersion("dplyr")   # should be 1.2.0 or newer
+```
+
+. . .
+
+You [install]{.hl} a package once. You [load]{.hl} it with `library()` in every session.
+
+# First steps in R
+
+::: {.fact}
+`Did you know:` the aye-aye's thin middle finger sits on a [ball-and-socket joint]{.hl}, like a human shoulder, so it can swivel in almost any direction while it probes for larvae.
+
+_Source: Duke Lemur Center_
+:::
+
+## Hello, world {.smaller}
+
+```{r}
+print("Hello, world!")
+```
+
+. . .
+
+R is also a calculator:
+
+```{r}
+2 + 2
+10 / 4
+(3 + 2) * 4
+```
+
+. . .
+
+Brackets work as in maths: without them, `3 + 2 * 4` gives `r 3 + 2 * 4`.
+
+## Your first script
+
+Code typed in the `Console` is gone once you close RStudio. Write it in a [script]{.hl} instead: _File > New File > R Script_.
+
+. . .
+
+```{r}
+# everything after a hash is a comment: R ignores it
+2 + 2   # comments can also follow code
+```
+
+. . .
+
+Run the current line with `Ctrl + Enter` (`Cmd + Enter` on a Mac). Save the script, and you can rerun the whole analysis tomorrow.
+
+## Storing values
+
+`<-` stores a value in an [object]{.hl} (read it as "gets"):
+
+```{r}
+x <- 2 * 3
+x
+x + 1
+```
+
+. . .
+
+- The object now appears in your `Environment`
+- Names are [case sensitive]{.hl}: `x` and `X` are two different objects
+- Names cannot start with a number or contain spaces: `word_freq` works, word freq does not
+
+## Vectors {.smaller}
+
+`c()` combines values into a `vector`. Arithmetic works on every element at once:
+
+```{r}
+ages <- c(23, 31, 19, 45)
+ages * 12
+mean(ages)
+```
+
+. . .
+
+Sequences of numbers:
+
+```{r}
+1:10
+seq(0, 100, by = 25)
+```
+
+## Indexing {.smaller}
+
+Square brackets pick out elements by position:
+
+```{r}
+x <- c(4, 8, 15, 16, 23, 42)
+x[1]
+x[2:4]
+x[-1]          # everything except the first
+```
+
+. . .
+
+Or by a condition:
+
+```{r}
+x[x > 15]
+```
+
+## Logical vectors {.smaller}
+
+A comparison returns `TRUE` or `FALSE` for each element:
+
+```{r}
+x > 15
+```
+
+. . .
+
+`TRUE` counts as 1 and `FALSE` as 0, so you can count and take proportions:
+
+```{r}
+sum(x > 15)    # how many?
+mean(x > 15)   # what proportion?
+```
+
+. . .
+
+Comparisons: `==` equal, `!=` not equal, `>`, `<`, `>=`, `<=`
+
+## Text and categories
+
+Text goes in `"quotes"`: a `character` vector.
+
+```{r}
+words <- c("cat", "dog", "cat", "bird", "cat")
+table(words)
+```
+
+. . .
+
+A `factor` stores categories, with a fixed set of `levels`:
+
+```{r}
+animal <- factor(words)
+levels(animal)
+```
+
+. . .
+
+Levels are sorted alphabetically by default: this matters later.
+
+## Data frames {.smaller}
+
+A [data frame]{.hl} is a table whose columns are vectors of equal length:
+
+```{r}
+d <- data.frame(word = c("cat", "dog", "bird"),
+                freq = c(120, 95, 30))
+d
+```
+
+. . .
+
+```{r}
+d$freq          # one column
+d[2, ]          # second row, all columns
+```
+
+## Functions and arguments
+
+A function takes [arguments]{.hl} inside its brackets. Name them to make code readable:
+
+```{r}
+round(3.14159, digits = 2)
+```
+
+. . .
+
+`NA` marks a missing value. Most summaries return `NA` if one is present, unless you say otherwise:
+
+```{r}
+mean(c(4, NA, 8))
+mean(c(4, NA, 8), na.rm = TRUE)
+```
+
+## Getting help
+
+- `?mean` opens the help page for `mean()`: read the Arguments, and run the Examples at the bottom
+- Copy an error message into a search engine, where someone has almost always seen it before, or ask in the tutorial or in office hours
+
+. . .
+
+R and its packages are written by researchers. Cite them in your work:
+
+```{r, eval=FALSE}
+citation()                 # how to cite R
+citation("tidyverse")      # how to cite a package
+```
+
+## `swirl`
+
+`swirl` teaches you R, inside R. Its interactive lessons range from the basics to modelling, and some of your homework will use them ([swirlstats.com](https://swirlstats.com/students.html)).
+
+. . .
+
+You installed it already. To start a lesson:
+
+```{r, eval=FALSE}
+library(swirl)
+swirl()
+```
+
+The first time, `swirl` asks you to choose and install a course.
+
+. . .
+
+Inside a lesson: `bye()` quits and saves your progress, `skip()` skips a question, `main()` goes back to the menu.
+
+## The `tidyverse`
+
+The `tidyverse` is a collection of R packages, created by [Hadley Wickham](https://hadley.nz/) and colleagues, for importing, reshaping and plotting data.
+
+. . .
+
+It replaces many base R functions with alternatives that are easier to read and write. Think of it as a dialect of R, with base R as the standard variety.
+
+. . .
+
+We start using it next week. It builds on everything you saw today: vectors, data frames and functions.
+
+# Statistics
+
+::: {.fact}
+`Did you know:` aye-ayes have a sixth finger. Next to each thumb is a small [pseudothumb]{.hl}, with its own fingerprint, that helps them grip branches.
+
+_Source: Hartstone-Rose et al. (2019), American Journal of Physical Anthropology_
+:::
+
+## Discussion
+
+Two researchers receive the same recordings and the same research question, and analyse them independently.
+
+- Will they reach the same conclusion?
+- Which decisions in an analysis are the researcher's to make?
+
+## Objective or subjective?
+
+Coretta et al. (2023) gave one speech production data set and one research question to 46 teams of analysts.
+
+. . .
+
+- The teams reported substantially different effect sizes and interpretations
+- Neither prior beliefs nor expertise explained the differences
+
+. . .
+
+Every analysis involves choices like these. Statistics makes them explicit, so others can check them.
+
+## What you will learn
+
+By the end of the course you will be able to:
+
+- describe and plot linguistic data in R
+- build, interpret and check regression models, from simple linear models to mixed effects and logistic regression
+- report an analysis so that others can follow it and reproduce it
+
+## Your turn
+
+Open `RStudio`, start a new script, and run the code from today's slides line by line.
+
+. . .
+
+Then change things: other numbers, other words, a missing value. Seeing what breaks is the quickest way to learn what each piece does.
+
+## Slides and code
+
+<div class="qr-block">
+<img src="`r qr_uri`" alt="QR code linking to these slides">
+<div>
+<p>These slides</p>
+<p class="qr-link">mcanzi.de/statistics/<wbr>`r lecture_file`</p>
+<p>Code, data and all lectures</p>
+<p class="qr-link">github.com/mcanzi/statistics</p>
+</div>
+</div>

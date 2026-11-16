@@ -1,0 +1,252 @@
+---
+title: "Linear models"
+subtitle: "Tutorial 4"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(broom)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data {.smaller}
+
+`rhythm_metrics` comes from a simulated study of speech rhythm. Eight speakers of each of six languages read sentences, told a story and spoke freely, and each of the 1200 speech samples has two measures we use today: the speech rate (`rate`, in syllables per second) and ΔC (`delta_c`, in ms). ΔC is the standard deviation of the durations of the consonant intervals in a sample, one of the **rhythm metrics** that phoneticians use to compare languages.
+
+```{r}
+glimpse(rhythm_metrics)
+```
+
+Today's question: does ΔC change with speech rate?
+
+---
+
+## 1. Look before you fit
+
+### 1.1 A scatterplot
+
+Plot `delta_c` against `rate` with `geom_point()`, with speech rate on the `x` axis. Label both axes in words, with units. Do faster samples have a larger or a smaller ΔC?
+
+::: solution
+
+```{r scatter, eval = FALSE}
+rhythm_metrics |>
+  ggplot(aes(x = rate, y = delta_c)) +
+  geom_point(colour = "plum2", alpha = 0.3) +
+  xlab("Speech rate (syllables per second)") + ylab("ΔC (ms)")
+```
+
+:::
+
+::: solution
+
+```{r, ref.label = "scatter", echo = FALSE}
+```
+
+The faster the sample, the smaller ΔC tends to be. The points form a roughly straight cloud, so a line is a reasonable first model.
+
+:::
+
+### 1.2 Add the line
+
+Add the **regression line** with `geom_smooth(method = "lm")`.
+
+::: solution
+
+```{r scatter-line, eval = FALSE}
+rhythm_metrics |>
+  ggplot(aes(x = rate, y = delta_c)) +
+  geom_point(colour = "plum2", alpha = 0.3) +
+  geom_smooth(method = "lm") +
+  xlab("Speech rate (syllables per second)") + ylab("ΔC (ms)")
+```
+
+:::
+
+::: solution
+
+```{r, ref.label = "scatter-line", echo = FALSE}
+```
+
+:::
+
+---
+
+## 2. Fitting the model
+
+### 2.1 `lm()`
+
+Fit a linear model of `delta_c` as a function of `rate` and save it as `m`. Print its coefficients with `coef()`.
+
+::: solution
+
+```{r}
+m <- lm(delta_c ~ rate, data = rhythm_metrics)
+coef(m)
+```
+
+:::
+
+### 2.2 Read the coefficients
+
+Complete the sentence: "With every extra syllable per second, ΔC changes by ___ ms." Then say what the **intercept** means here. Is it a useful number?
+
+::: solution
+
+With every extra syllable per second, ΔC falls by `r round(abs(coef(m)["rate"]), 1)` ms.
+
+The intercept, `r round(coef(m)[1], 1)` ms, is the predicted ΔC for a sample spoken at 0 syllables per second, that is, for no speech at all. The slowest sample in the data has `r min(rhythm_metrics$rate)` syllables per second, so the intercept lies far outside the data. It only sets the height of the line.
+
+:::
+
+### 2.3 Model fit
+
+Find `R²` with `glance()`. What does it tell you?
+
+::: solution
+
+```{r}
+glance(m)$r.squared
+```
+
+Speech rate accounts for about `r round(100 * glance(m)$r.squared)`% of the variance in ΔC. The rest comes from everything the model leaves out: the language, the speaker, the kind of speech material and random variation.
+
+:::
+
+---
+
+## 3. Predictions and residuals
+
+### 3.1 Predictions
+
+Which ΔC does the model predict for samples spoken at 4 and at 6 syllables per second? Use `predict()`, with the two rates in a tibble passed to `newdata`.
+
+::: solution
+
+```{r}
+predict(m, newdata = tibble(rate = c(4, 6)))
+```
+
+Two syllables per second more means a ΔC about `r round(2 * abs(coef(m)["rate"]))` ms smaller, which is twice the slope.
+
+:::
+
+### 3.2 Residuals
+
+Use `augment()` to add the **fitted values** and the **residuals** to the data. Plot the residuals (`.resid`) against the fitted values (`.fitted`) and add a horizontal line at 0 with `geom_hline()`. Are the residuals spread evenly around 0?
+
+::: solution
+
+```{r residuals, eval = FALSE}
+augment(m) |>
+  ggplot(aes(x = .fitted, y = .resid)) +
+  geom_point(colour = "plum2", alpha = 0.3) +
+  geom_hline(yintercept = 0) +
+  xlab("Fitted ΔC (ms)") + ylab("Residual (ms)")
+```
+
+:::
+
+::: solution
+
+```{r, ref.label = "residuals", echo = FALSE}
+```
+
+The residuals scatter around 0 with about the same spread across the fitted values, with no curve or funnel.
+
+:::
+
+### 3.3 Bonus: a hidden group
+
+Draw the scatterplot again, with the points coloured by `material` and one line per material: `geom_smooth(method = "lm", se = FALSE)`. Are the lines within each material steeper or shallower than the line of `m`?
+
+::: {.solution .smaller}
+
+```{r}
+rhythm_metrics |>
+  ggplot(aes(x = rate, y = delta_c, colour = material)) +
+  geom_point(alpha = 0.3) +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlab("Speech rate (syllables per second)") + ylab("ΔC (ms)") +
+  theme(legend.position = "right")
+```
+
+:::
+
+::: {.solution .smaller}
+
+```{r}
+rhythm_metrics |>
+  summarise(slope = coef(lm(delta_c ~ rate))[2], .by = material)
+```
+
+All the lines within a material are shallower than the line of `m`, with its slope of `r round(coef(m)["rate"], 1)` ms per syllable per second. Sentences built from simple syllables are read fastest and have few consonant clusters, so they have a small ΔC; spontaneous speech is slowest and has a large ΔC. Across materials, these differences add to the effect of rate. In the simulation, ΔC falls by 6 ms per syllable per second (`?rhythm_metrics`). Lecture 6 shows how to put both predictors in one model.
+
+:::
+
+### 3.4 Bonus: R² by hand
+
+`R²` compares the residuals of `m` with those of an **intercept-only model**, `delta_c ~ 1`, which predicts the mean ΔC for every sample. Fit it and compute `R²` by hand as 1 minus the sum of the squared residuals of `m`, divided by the sum of the squared residuals of the intercept-only model. Do you get the same number as `glance()`?
+
+::: solution
+
+```{r}
+m0 <- lm(delta_c ~ 1, data = rhythm_metrics)
+1 - sum(residuals(m)^2) / sum(residuals(m0)^2)
+glance(m)$r.squared
+```
+
+The two numbers are the same.
+
+:::
+
+---
+
+## 4. Weekly assignment
+
+::: {.assignment .alert .alert-info}
+Exercises 4.1 to 4.3 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
+:::
+
+`freq_length` from `simling` has 400 words from a simulated lexical decision task. For each word, it gives its log10 frequency (`log_freq`) and the mean reaction time to it (`rt`, in ms).
+
+### 4.1 Frequency and reaction time
+
+Make a scatterplot of `rt` against `log_freq`, with the regression line and both axes labelled in words, with units. Do frequent words get faster or slower responses?
+
+```{r}
+
+```
+
+### 4.2 The model
+
+Fit a linear model of `rt` as a function of `log_freq` and print its coefficients. Report the slope in a sentence, with its units. What does the intercept mean here, and is it a useful number?
+
+```{r}
+
+```
+
+### 4.3 How far can you predict?
+
+Predict the reaction time for words with a log frequency of 2 and of 5. Then predict it for a log frequency of 8. Would you trust the third prediction? Explain why in one or two sentences.
+
+```{r}
+
+```

@@ -1,0 +1,602 @@
+---
+title: "Power and model building"
+subtitle: "p-values, power, uncertainty and building models"
+author: "Dr Massimiliano Canzi"
+knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
+output:
+  revealjs::revealjs_presentation:
+    theme: black
+    css: theme-dark.css
+    highlight: zenburn
+    mathjax: null
+    incremental: true
+    transition: fade
+    background_transition: fade
+    self_contained: true
+    reveal_options:
+      width: 1050
+      height: 700
+      slideNumber: "c/t"
+      showSlideNumber: all
+      controls: true
+      touch: true
+      transitionSpeed: fast
+      navigationMode: linear
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      comment = "",
+                      fig.width = 10, fig.height = 4.4, out.width = "100%")
+
+library(tidyverse)
+library(simling)
+
+source("slides_setup.R", local = knitr::knit_global())
+
+options(width = 72, pillar.print_min = 5, pillar.print_max = 5)
+```
+
+# What p-values are not
+
+<style>
+  :root {
+    --footer-text:  "Power and model building";
+    --qr:           `r qr_css`;
+    --lecture:      `r lecture_label`;
+  }
+</style>
+
+::: {.fact}
+`Did you know:` slow lorises are the only known [venomous primates]{.hl}. Glands on the inside of their elbows make a secretion that turns venomous when mixed with saliva.
+
+_Source: San Diego Zoo Wildlife Alliance_
+:::
+
+## Today
+
+The key points of three chapters of Winter (2019):
+
+| Chapter | Topics |
+|:--|:--|
+| 10 | what p-values are not; power; Type I, II, M and S errors; multiple testing; stopping rules |
+| 11 | confidence intervals, testing predictors with several levels, plotting uncertainty |
+| 16 | strategies for model building, reproducible research |
+
+. . .
+
+Most of today is simulation: we make up a world where we know the truth, and see how our methods behave in it.
+
+## So far
+
+Lecture 9 introduced p-values, standard errors and confidence intervals, and showed that significance says nothing about size. Lectures 10 to 12 added mixed models with `lmer()` and `glmer()`, tested with likelihood ratio tests.
+
+. . .
+
+Today: how p-values can mislead, and how to plan and report models more carefully.
+
+## Common misreadings
+
+A p-value of .03 does __not__ mean:
+
+- that there is a 3% chance that the null hypothesis is true
+- that there is a 97% chance that the effect is real
+- that the effect is large or important
+
+. . .
+
+It means: if the null hypothesis were true, data at least this extreme would turn up 3% of the time.
+
+## Absence of evidence
+
+p > .05 does __not__ mean that there is no effect.
+
+. . .
+
+The data are compatible with no effect, and they may be just as compatible with a large one, so look at the confidence interval. A small study can also miss a real effect; that is a question of [power]{.hl}, which comes next.
+
+## Significant vs not significant
+
+Two studies of the same effect (Gelman & Stern, 2006):
+
+| | Estimate | SE | p | |
+|:--|--:|--:|--:|:--|
+| Study A | 25 | 10 | .01 | [significant]{.hl} |
+| Study B | 10 | 10 | .32 | not significant |
+
+. . .
+
+Do the two studies disagree? Test the difference:
+
+```{r}
+diff    <- 25 - 10
+se_diff <- sqrt(10^2 + 10^2)
+2 * pnorm(-diff / se_diff)
+```
+
+. . .
+
+The difference between them is not significant either. Compare the effects directly, not their p-values.
+
+# Power and errors
+
+::: {.fact}
+`Did you know:` a threatened slow loris clasps its arms over its head. With its face markings, the pose looks like the hood of an angry [cobra]{.hl}.
+
+_Source: San Diego Zoo Wildlife Alliance_
+:::
+
+## Two ways to be wrong
+
+|                      | No effect in reality       | Effect in reality         |
+|----------------------|----------------------------|---------------------------|
+| __Significant__      | Type I error (false alarm) | correct                 |
+| __Not significant__  | correct                    | Type II error (miss)    |
+
+. . .
+
+We choose the Type I error rate, `α`, and usually set it to .05. [Power]{.hl} is the probability of finding an effect that is really there, 1 minus the Type II error rate. It grows with the effect size and the sample size, and shrinks as the noise grows.
+
+## Simulating a study {.smaller}
+
+A world we control: group b's vowels are 10 ms longer than group a's, SD = 40 ms.
+
+```{r}
+sim_study <- function(n, diff = 10, sd = 40) {
+  d <- tibble(group    = rep(c("a", "b"), each = n),
+              duration = rnorm(2 * n, mean = 200 + diff * (group == "b"), sd = sd))
+  fit <- summary(lm(duration ~ group, data = d))$coefficients
+  tibble(estimate = fit[2, 1], p = fit[2, 4])
+}
+
+set.seed(42)
+one <- sim_study(n = 20)
+one
+```
+
+. . .
+
+The true difference is +10 ms. This study, with 20 speakers per group, estimates `r round(one$estimate, 1)` ms (p = `r round(one$p, 2)`): one study can be far off.
+
+## Run it 1,000 times
+
+```{r}
+set.seed(42)
+sims20 <- map(1:1000, \(i) sim_study(n = 20)) |> list_rbind()
+mean(sims20$p < .05)
+```
+
+. . .
+
+The power is about `r round(100 * mean(sims20$p < .05))`%: the effect is real, yet almost 9 studies in 10 miss it. A formula gives the same answer:
+
+. . .
+
+```{r}
+power.t.test(n = 20, delta = 10, sd = 40)$power
+```
+
+## Power and sample size
+
+```{r, echo = FALSE, fig.height = 3.4}
+set.seed(42)
+pw <- tibble(n = c(20, 50, 100, 200, 300, 400)) |>
+  mutate(power = map_dbl(n, \(k) mean(map_dbl(1:500, \(i) sim_study(n = k)$p) < .05)))
+
+ggplot(pw, aes(n, power)) +
+  geom_hline(yintercept = 0.8, colour = moss, linetype = "dashed") +
+  geom_line(colour = hornbill, linewidth = 1.3) +
+  geom_point(colour = hornbill, size = 4) +
+  annotate("text", x = 20, y = 0.85, label = "80% power", colour = mist, hjust = 0, size = 5.5) +
+  scale_y_continuous(limits = c(0, 1), labels = scales::percent) +
+  labs(x = "Speakers per group", y = "Power")
+```
+
+For 80% power, this 10 ms effect needs about `r ceiling(power.t.test(power = 0.8, delta = 10, sd = 40)$n)` speakers per group. Plan the sample size before collecting data.
+
+## Type M and Type S errors
+
+Gelman & Carlin (2014): with low power, the significant results are the misleading ones.
+
+```{r, echo = FALSE, fig.height = 3.4}
+sims20 |>
+  mutate(result = if_else(p < .05, "significant", "not significant")) |>
+  ggplot(aes(estimate, fill = result)) +
+  geom_histogram(binwidth = 2.5, boundary = 0) +
+  geom_vline(xintercept = 10, colour = mist, linewidth = 1, linetype = "dashed") +
+  annotate("text", x = 11.5, y = 85, label = "truth: 10 ms", colour = mist, hjust = 0, size = 5.5) +
+  scale_fill_manual(values = c(`not significant` = vine, significant = hornbill)) +
+  labs(x = "Estimated difference (ms)", y = "Studies", fill = NULL)
+```
+
+Only the large estimates reach significance.
+
+## Type M and Type S errors
+
+```{r}
+sig <- filter(sims20, p < .05)
+mean(abs(sig$estimate))
+mean(sig$estimate < 0)
+```
+
+. . .
+
+The true difference is 10 ms. The significant estimates are on average `r round(mean(abs(sig$estimate)) / 10, 1)` times too large, a [Type M]{.hl} (magnitude) error, and `r round(100 * mean(sig$estimate < 0), 1)`% of them point the wrong way, a Type S (sign) error. So a significant result from a small study probably exaggerates the effect.
+
+## Power for mixed models
+
+For mixed models, there is no simple formula. Do what we just did:
+
+1. Simulate data with your design: participants, items, plausible effect sizes and random effects (lectures 10 to 12)
+2. Fit the model to each simulated data set
+3. Count how often the effect is significant
+
+. . .
+
+The `{simr}` package automates this for `lmer()` and `glmer()` models (Green & MacLeod, 2016).
+
+## A pilot study {.smaller}
+
+`naming_pilot` from {simling} is a pilot for this workflow: 15 younger and 15 older adults name the same 40 pictures. Is the frequency effect larger for older adults? Fit the model to the pilot, then let `{simr}` simulate larger studies from it:
+
+```{r, eval = FALSE}
+library(lme4)
+library(simr)
+pilot_data <- naming_pilot |> mutate(log_latency = log(latency))
+pilot <- lmer(log_latency ~ age_group * freq_c + (1 + freq_c | participant) + (1 | picture),
+              data = pilot_data)
+bigger <- extend(pilot, along = "participant", n = 60)
+powerSim(bigger, test = fixed("age_groupolder:freq_c", "lr"), nsim = 200)
+```
+
+. . .
+
+The effect sizes in a pilot are themselves uncertain estimates. Check how the power changes with smaller, still plausible effects before you decide on a sample size.
+
+# Multiple tests and stopping rules
+
+::: {.fact}
+`Did you know:` slow lorises also use their venom on each other: in one study, 57% of males and nearly a third of females showed signs of at least one [venomous bite]{.hl}.
+
+_Sources: Nekaris et al. (2020), Current Biology; Mongabay_
+:::
+
+## Multiple testing
+
+Each test on a null effect has a 5% chance of a false alarm. With `k` tests:
+
+```{r}
+tibble(k = c(1, 5, 10, 20)) |>
+  mutate(at_least_one_false_alarm = 1 - 0.95^k)
+```
+
+. . .
+
+If you test 20 effects that do not exist, you will probably find at least one "significant" result.
+
+## A simulation
+
+1,000 studies, each running 10 t-tests on pure noise:
+
+```{r}
+set.seed(3)
+any_sig <- map_lgl(1:1000, \(i) {
+  p <- map_dbl(1:10, \(j) t.test(rnorm(20), rnorm(20))$p.value)
+  any(p < .05)
+})
+mean(any_sig)
+```
+
+. . .
+
+About `r round(100 * mean(any_sig))`% of the studies find "something".
+
+## Correcting for multiple tests
+
+```{r}
+p <- c(0.003, 0.012, 0.031, 0.048, 0.21)
+p.adjust(p, method = "bonferroni")
+p.adjust(p, method = "holm")
+```
+
+Bonferroni multiplies each p-value by the number of tests; Holm does something similar, step by step, and loses less power.
+
+. . .
+
+Better still: test fewer things. Decide which comparisons answer your question before you look at the data.
+
+## Stopping rules
+
+A tempting plan: test after every 10 participants, and stop as soon as p < .05.
+
+```{r, echo = FALSE, fig.height = 3.2}
+set.seed(8)
+paths <- map(1:20, \(s) {
+  a <- rnorm(100); b <- rnorm(100)
+  tibble(study = s, n = seq(10, 100, by = 10),
+         p = map_dbl(n, \(k) t.test(a[1:k], b[1:k])$p.value))
+}) |> list_rbind() |>
+  mutate(ever = any(p < .05), .by = study)
+
+ggplot(paths, aes(n, p, group = study, colour = ever)) +
+  geom_hline(yintercept = 0.05, colour = mist, linetype = "dashed") +
+  geom_line(linewidth = 0.9, alpha = 0.9) +
+  scale_colour_manual(values = c(`FALSE` = vine, `TRUE` = hornbill),
+                      labels = c("never below .05", "below .05 at some point")) +
+  labs(x = "Participants per group so far", y = "p-value", colour = NULL)
+```
+
+20 studies of no effect: p-values wander, and some dip below .05 by chance.
+
+## Peeking inflates false alarms
+
+```{r}
+peek <- function(max_n = 100, step = 10) {
+  a <- rnorm(max_n); b <- rnorm(max_n)
+  p <- map_dbl(seq(step, max_n, by = step), \(k) t.test(a[1:k], b[1:k])$p.value)
+  any(p < .05)
+}
+set.seed(5)
+false_alarm <- mean(map_lgl(1:1000, \(i) peek()))
+false_alarm
+```
+
+Both groups come from the same distribution, and `peek()` returns `TRUE` if any of the 10 tests was below .05.
+
+. . .
+
+With 10 peeks, the false alarm rate is about `r round(100 * false_alarm)`%, not 5%. Fix the sample size in advance, and report how you chose it.
+
+## Discussion
+
+After 20 participants, your result is p = .07. Your supervisor suggests testing 10 more and checking again.
+
+- What is the problem with this plan?
+- What could you do instead, and how would you report what happened honestly?
+
+# Uncertainty in regression
+
+::: {.fact}
+`Did you know:` in cool months, pygmy slow lorises can go into [torpor]{.hl}, a short form of hibernation. One study recorded inactivity lasting up to 63 hours.
+
+_Source: San Diego Zoo Wildlife Alliance_
+:::
+
+## Confidence intervals for coefficients
+
+```{r}
+words <- megastudy |> slice_head(n = 400)
+m <- lm(rt ~ aoa, data = words)
+coef(summary(m))
+confint(m)
+```
+
+. . .
+
+The first 400 words of `megastudy` (lecture 6). Each year of age of acquisition goes with about `r round(coef(m)[2])` ms more, and the 95% CI runs from `r round(confint(m)[2, 1], 1)` to `r round(confint(m)[2, 2], 1)` ms: roughly the estimate ± 2 SE.
+
+## Predictors with several levels
+
+```{r}
+m_sp <- lm(duration ~ style, data = speech_styles)
+coef(summary(m_sp))
+```
+
+. . .
+
+Vowel duration in three speaking styles, from lecture 7: two coefficients, two treatment contrasts against casual speech. But is `style` as a whole a useful predictor?
+
+## Testing the whole predictor
+
+Compare models with and without it, as in lectures 11 and 12:
+
+```{r}
+m_0 <- lm(duration ~ 1, data = speech_styles)
+anova(m_0, m_sp)
+```
+
+. . .
+
+For `lm()`, the comparison is an [F-test]{.hl}; for `lmer()` and `glmer()`, a likelihood ratio test. Same idea: does the predictor improve the model?
+
+## Showing uncertainty: categories
+
+```{r}
+new_sp <- tibble(style = levels(speech_styles$style))
+preds  <- bind_cols(new_sp, predict(m_sp, newdata = new_sp, interval = "confidence"))
+preds
+```
+
+. . .
+
+`interval = "confidence"` adds the lower (`lwr`) and upper (`upr`) limits of the 95% CI.
+
+## Showing uncertainty: categories
+
+```{r, fig.height = 2.9}
+ggplot(preds, aes(style, fit)) +
+  geom_jitter(data = speech_styles, aes(y = duration), width = 0.15,
+              colour = kingfisher, alpha = 0.4) +
+  geom_errorbar(aes(ymin = lwr, ymax = upr), width = 0.15,
+                colour = hornbill, linewidth = 1.2) +
+  geom_point(colour = hornbill, size = 4) +
+  labs(x = NULL, y = "Vowel duration (ms)")
+```
+
+## Showing uncertainty: continuous
+
+Predict over a grid of ages of acquisition, within the range of the data:
+
+```{r}
+grid <- tibble(aoa = seq(min(words$aoa), max(words$aoa), length.out = 50))
+grid <- bind_cols(grid, predict(m, newdata = grid, interval = "confidence"))
+grid
+```
+
+## Showing uncertainty: continuous
+
+```{r, fig.height = 2.45}
+ggplot(grid, aes(aoa, fit)) +
+  geom_point(data = words, aes(y = rt), colour = kingfisher, alpha = 0.4) +
+  geom_ribbon(aes(ymin = lwr, ymax = upr), fill = hornbill, alpha = 0.35) +
+  geom_line(colour = hornbill, linewidth = 1.3) +
+  labs(x = "Age of acquisition (years)", y = "Reaction time (ms)")
+```
+
+The band shows the uncertainty in the line, which is wider at the edges. `geom_smooth(method = "lm")` draws the same.
+
+# Building models
+
+::: {.fact}
+`Did you know:` the illegal [pet trade]{.hl} is one of the worst threats to slow lorises. Traffickers pull out their teeth so that they cannot bite.
+
+_Sources: San Diego Zoo Wildlife Alliance; Mongabay_
+:::
+
+## What you have learned
+
+```{r, echo = FALSE}
+tibble(
+  Outcome = c("continuous", "continuous", "binary (0/1)", "binary (0/1)"),
+  `Repeated measures?` = c("no", "yes", "no", "yes"),
+  Model = c("lm()", "lmer()", "glm(family = binomial)", "glmer(family = binomial)")
+) |> knitr::kable()
+```
+
+. . .
+
+We fitted `glmer()` in lecture 12; `glm()` is the same model without random effects. One framework: an outcome, a [linear predictor]{.hl} (continuous and categorical predictors, interactions), a distribution, and random effects where the data are grouped. Counts would use Poisson regression (Winter, Ch 13).
+
+## The cookbook approach
+
+Many textbooks teach a cookbook: two groups → t-test; three groups → ANOVA; two numbers → correlation.
+
+. . .
+
+Each of these tests is a special case of the [linear model]{.hl}; lecture 9 showed this for the t-test. The cookbook hides the assumptions behind each recipe, and it has no recipe once the data have repeated measures or several predictors. Winter recommends thinking in terms of models instead.
+
+## Stepwise regression
+
+Put in every predictor, and let the computer drop the useless ones:
+
+```{r}
+one_step <- function() {
+  noise <- as_tibble(matrix(rnorm(50 * 21), ncol = 21,
+                            dimnames = list(NULL, c("y", paste0("x", 1:20)))))
+  best <- step(lm(y ~ ., data = noise), trace = 0)
+  p <- summary(best)$coefficients[-1, 4]
+  sum(p < .05)
+}
+```
+
+. . .
+
+The data have 50 rows: an outcome `y` and 20 predictors, all random noise. `y ~ .` uses every other column as a predictor, and `step()` drops predictors one at a time, as long as that improves the AIC.
+
+## Stepwise regression finds noise
+
+```{r}
+set.seed(11)
+n_sig <- map_dbl(1:300, \(i) one_step())
+mean(n_sig >= 1)
+```
+
+. . .
+
+In `r round(100 * mean(n_sig >= 1))`% of the data sets, the final model keeps at least one "significant" predictor, though nothing is real. Its p-values ignore all the tests that went into choosing it, a hidden case of [multiple testing]{.hl}. Choose predictors from your research question and theory instead.
+
+## Theory-driven modelling
+
+Winter (Ch 16): modelling is subjective, and that is fine, as long as it is principled and transparent.
+
+- Decide the model before seeing the data: outcome, predictors, interactions, random effects
+- Keep [confirmatory]{.hl} (planned) and [exploratory]{.hl} (after the fact) analyses apart, and label them
+- Consider [preregistering]{.hl} the analysis
+- Report the choices you made, and why
+
+## Reproducible research
+
+Someone else, or you in a year, should get the same results from your data.
+
+| Practice | Instead of |
+|:--|:--|
+| the whole analysis as code, e.g. in R Markdown | clicking and copying results by hand |
+| `set.seed()` before simulations or `sample()` | different random numbers on every run |
+| R projects and relative paths | `C:/Users/me/Desktop/...` |
+| `sessionInfo()` to record package versions | guessing which version gave the result |
+| data and code shared with the paper, e.g. on the OSF | "available on request" |
+
+# Your turn
+
+## Exercises
+
+1. Use `sim_study()` to estimate the power to detect a 20 ms difference (SD = 40) with 20 and with 50 speakers per group. Check your answers with `power.t.test()`
+2. A study reports these p-values for 6 tests: 0.001, 0.008, 0.02, 0.04, 0.045, 0.3. Which remain below .05 after a Holm correction?
+3. Fit `percent_v ~ language` on `rhythm_metrics`. Test `language` with a model comparison, and plot the predicted means with their 95% CIs
+
+## Solutions {.smaller}
+
+```{r}
+set.seed(1)
+mean(map_dbl(1:1000, \(i) sim_study(n = 20, diff = 20)$p) < .05)
+mean(map_dbl(1:1000, \(i) sim_study(n = 50, diff = 20)$p) < .05)
+power.t.test(n = c(20, 50), delta = 20, sd = 40)$power
+```
+
+. . .
+
+Doubling the effect makes a huge difference: with 50 speakers per group, power is about `r round(100 * power.t.test(n = 50, delta = 20, sd = 40)$power)`%.
+
+## Solutions {.smaller}
+
+```{r}
+p_ex <- c(0.001, 0.008, 0.02, 0.04, 0.045, 0.3)
+p.adjust(p_ex, method = "holm")
+```
+
+. . .
+
+Only the first two (`r paste(round(p.adjust(p_ex, method = "holm")[1:2], 3), collapse = " and ")`) stay below .05.
+
+## Solutions {.smaller}
+
+```{r, fig.height = 2.9}
+m_pv <- lm(percent_v ~ language, data = rhythm_metrics)
+anova(lm(percent_v ~ 1, data = rhythm_metrics), m_pv)$`Pr(>F)`[2]
+
+new_lang <- tibble(language = levels(rhythm_metrics$language))
+preds_pv <- bind_cols(new_lang, predict(m_pv, newdata = new_lang, interval = "confidence"))
+ggplot(preds_pv, aes(language, fit)) +
+  geom_errorbar(aes(ymin = lwr, ymax = upr), width = 0.15, colour = hornbill, linewidth = 1.2) +
+  geom_point(colour = hornbill, size = 4) + labs(x = NULL, y = "%V")
+```
+
+## Summary
+
+::: {.takeaway}
+- A p-value is not the probability that the null is true; p > .05 is not "no effect"; compare effects directly
+- Low [power]{.hl} misses real effects, and exaggerates the ones it finds (Type M and S errors)
+- Simulate to find out the power of a design, including mixed models
+- Many tests and peeking at the data inflate false alarms: plan in advance
+- Report [confidence intervals]{.hl}, and plot uncertainty
+- Build models from theory instead of stepwise selection; keep your analysis [reproducible]{.hl}
+:::
+
+## References {.smaller}
+
+- Gelman, A., & Carlin, J. (2014). Beyond power calculations: Assessing Type S (sign) and Type M (magnitude) errors. _Perspectives on Psychological Science_, 9(6), 641–651. https://doi.org/10.1177/1745691614551642
+- Gelman, A., & Stern, H. (2006). The difference between "significant" and "not significant" is not itself statistically significant. _The American Statistician_, 60, 328–331. https://doi.org/10.1198/000313006X152649
+- Green, P., & MacLeod, C. J. (2016). SIMR: An R package for power analysis of generalized linear mixed models by simulation. _Methods in Ecology and Evolution_. https://doi.org/10.1111/2041-210X.12504
+- Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge.
+
+## Slides and code
+
+<div class="qr-block">
+<img src="`r qr_uri`" alt="QR code linking to these slides">
+<div>
+<p>These slides</p>
+<p class="qr-link">mcanzi.de/statistics/<wbr>`r lecture_file`</p>
+<p>Code, data and all lectures</p>
+<p class="qr-link">github.com/mcanzi/statistics</p>
+</div>
+</div>

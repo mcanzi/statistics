@@ -1,0 +1,807 @@
+---
+title: "Data wrangling"
+subtitle: "Reading and wrangling data with the {tidyverse}"
+author: "Dr Massimiliano Canzi"
+knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
+output:
+  revealjs::revealjs_presentation:
+    theme: black
+    css: theme-dark.css
+    highlight: zenburn
+    incremental: true
+    transition: fade
+    background_transition: fade
+    self_contained: true
+    reveal_options:
+      width: 1050
+      height: 700
+      slideNumber: "c/t"
+      showSlideNumber: all
+      controls: true
+      touch: true
+      transitionSpeed: fast
+      navigationMode: linear
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = TRUE,
+                      comment = "")
+
+library(tidyverse)
+library(palmerpenguins)
+
+source("slides_setup.R", local = knitr::knit_global())
+
+options(width = 70, pillar.print_min = 3, pillar.print_max = 3,
+        readr.show_col_types = TRUE)
+
+set.seed(42)
+rt_data <- tibble(
+  participant = rep(sprintf("P%02d", 1:10), each = 20),
+  word        = rep(sprintf("w%02d", 1:20), times = 10),
+  frequency   = rep(rep(c("high", "low"), each = 10), times = 10),
+  rt          = round(rnorm(200, mean = 600, sd = 80) +
+                        rep(rep(c(0, 60), each = 10), times = 10)),
+  accuracy    = rbinom(200, size = 1, prob = 0.9)
+)
+```
+
+## Today
+
+<style>
+  :root {
+    --footer-text:  "Data wrangling";
+    --qr:           `r qr_css`;
+    --lecture:      `r lecture_label`;
+  }
+</style>
+
+By the end of this class you will be able to
+
+- explain what the `tidyverse` is and what tidy data looks like
+- read and write `.csv` files with `{readr}`
+- use the core `{dplyr}` verbs: `select()`, `filter()`, `arrange()`, `rename()`, `mutate()`
+- summarise data by group with `summarise()` and `count()`
+- chain everything together with the pipe `|>`
+
+# The tidyverse
+
+_"R is not a language driven by the purity of its philosophy; R is a language designed to get shit done."_
+
+Hadley Wickham (Chief Scientist at Posit, formerly RStudio)
+
+## Tidyverse {.smaller}
+
+A collection of R packages that share the same design, grammar and data structures.
+
+- A dialect of R: everything you know from base R still works
+- Functions are verbs named after what they do
+- The data always comes first, so functions can be chained
+- Output is (almost) always a [data frame]{.hl}, so the next step knows what to expect
+- Together with Quarto / R Markdown: reproducible analyses
+
+## Base R vs tidyverse {.smaller}
+
+Same question: _mean body mass of Gentoo penguins, in kg_
+
+:::: {.columns}
+
+::: {.column width="50%"}
+Base R
+
+```{r, eval=FALSE}
+gentoo <- penguins[penguins$species == "Gentoo", ]
+mean(gentoo$body_mass_g / 1000, na.rm = TRUE)
+```
+:::
+
+::: {.column width="50%"}
+`tidyverse`
+
+```{r, eval=FALSE}
+penguins |>
+  filter(species == "Gentoo") |>
+  summarise(mass_kg = mean(body_mass_g / 1000,
+                           na.rm = TRUE))
+```
+:::
+
+::::
+
+. . .
+
+Both give the same answer; the tidyverse version reads more like a sentence.
+
+## The core tidyverse {.smaller}
+
+`library(tidyverse)` loads nine packages:
+
+| Package | What it does |
+|---|---|
+| `readr` | read and write rectangular data (.csv, .tsv) |
+| `tibble` | a modern data frame |
+| `dplyr` | manipulate data: filter, select, mutate, summarise |
+| `tidyr` | reshape data (wide to long and back) |
+| `ggplot2` | plots |
+| `stringr` | work with text |
+| `forcats` | work with factors (categorical variables) |
+| `lubridate` | work with dates and times |
+| `purrr` | apply functions repeatedly (iteration) |
+
+## The typical workflow {.smaller}
+
+Almost every analysis goes through the same steps, and each has its own tools:
+
+| Import | Tidy | Transform | Visualise | Model | Communicate |
+|:--|:--|:--|:--|:--|:--|
+| `{readr}` | `{tidyr}` | `{dplyr}` | `{ggplot2}` | `lm()` and friends | Quarto, R Markdown |
+| today | today | [today]{.hl} | next class | lectures 4–13 | your assignment |
+
+. . .
+
+The steps are not a straight line: plotting often sends you back to transform, and a model often sends you back to plot.
+
+## Tidy data {.smaller}
+
+A data set is [tidy]{.hl} when
+
+1. each [variable]{.hl} is a column
+2. each [observation]{.hl} is a row
+3. each [value]{.hl} is a cell
+
+. . .
+
+`Frequency` is a variable. Where is it?
+
+:::: {.columns}
+
+::: {.column width="45%"}
+[Untidy]{.hl} (wide)
+
+| participant | rt_high | rt_low |
+|---|---|---|
+| P01 | 580 | 642 |
+| P02 | 611 | 690 |
+:::
+
+::: {.column width="55%"}
+[Tidy]{.hl} (long)
+
+| participant | frequency | rt |
+|---|---|---|
+| P01 | high | 580 |
+| P01 | low | 642 |
+| P02 | high | 611 |
+| P02 | low | 690 |
+:::
+
+::::
+
+## Discussion
+
+You record 20 speakers reading the same 30 words, and measure F1, F2 and the duration of each vowel.
+
+- What is one row in your tidy data set? Which columns do you need?
+- Where would information about the speakers, such as age or dialect, go?
+
+## From wide to long {.smaller}
+
+`pivot_longer()` from `{tidyr}` turns the wide table into a tidy one:
+
+```{r}
+wide <- tibble(participant = c("P01", "P02"), rt_high = c(580, 611), rt_low = c(642, 690))
+wide |>
+  pivot_longer(c(rt_high, rt_low), names_to = "frequency", values_to = "rt",
+               names_prefix = "rt_")
+```
+
+. . .
+
+`pivot_wider()` goes the other way, which is sometimes handy for tables in a paper.
+
+## Tibbles
+
+A `tibble` is a data frame with nicer defaults.
+
+```{r}
+penguins
+```
+
+- Prints only the first rows and the columns that fit
+- Shows the type of each column: `<fct>`, `<dbl>`, `<int>`, `<chr>`
+
+## `glimpse()`
+
+A transposed overview: one line per column.
+
+```{r}
+glimpse(penguins)
+```
+
+# Example data
+
+::: {.fact}
+`Did you know:` the 344 rows of the `penguins` data are real birds: adult Adélie, Chinstrap and Gentoo penguins nesting near [Palmer Station]{.hl}, Antarctica, measured by Dr Kristen Gorman and the Palmer Station LTER team from 2007 to 2009.
+
+_Sources: Gorman, Williams & Fraser (2014), PLoS ONE; palmerpenguins documentation_
+:::
+
+## The `penguins` data
+
+344 penguins, 3 species, 3 islands in the Palmer Archipelago (Antarctica).
+
+```{r, eval=FALSE}
+install.packages("palmerpenguins")
+library(palmerpenguins)
+```
+
+## `penguins` in base R {.smaller}
+
+`Heads up!` Since R 4.5.0, base R also ships a `penguins` data set, but with shorter column names:
+
+| `{palmerpenguins}` | base R ≥ 4.5.0 |
+|---|---|
+| `bill_length_mm` | `bill_len` |
+| `bill_depth_mm` | `bill_dep` |
+| `flipper_length_mm` | `flipper_len` |
+| `body_mass_g` | `body_mass` |
+
+. . .
+
+In this course we always load `{palmerpenguins}` first. If you get `object 'bill_length_mm' not found`, you forgot!
+
+# `{readr}`
+
+## Reading and writing files {.smaller}
+
+| Function | For files that look like |
+|:--|:--|
+| `read_csv()` | `word,rt` with commas between values |
+| `read_tsv()` | values separated by tabs |
+| `read_csv2()` | `word;rt` with semicolons and decimal commas, as in German Excel exports |
+| `read_delim()` | any other separator |
+| `write_csv()` | saves a data frame as a .csv file |
+
+. . .
+
+```{r, eval=FALSE}
+library(readr)
+data <- read_csv("data/my_file.csv")
+
+# ... do things with data ...
+
+write_csv(data, "data/my_file_clean.csv")
+```
+
+## What `read_csv()` tells you {.smaller}
+
+```{r, include=FALSE}
+example_file <- tempfile(fileext = ".csv")
+write_csv(head(rt_data, 6), example_file)
+```
+
+```{r}
+rt <- read_csv(example_file)
+```
+
+. . .
+
+- Rows and columns read
+- The type it guessed for each column
+- If a guess is wrong, set it yourself:
+
+. . .
+
+```{r, eval=FALSE}
+rt <- read_csv("data/rt.csv",
+               col_types = cols(participant = col_factor()))
+```
+
+## `read_csv()` vs `read.csv()`
+
+| | `read_csv()` | `read.csv()` |
+|---|---|---|
+| Package | `{readr}` | base R |
+| Returns | tibble | data.frame |
+| Speed | fast | slower on large files |
+| Reports column types | yes | no |
+
+. . .
+
+Use `read_csv()` (with an `_`) in this course.
+
+# `{dplyr}`
+
+::: {.fact}
+`Did you know:` Adélie penguins take their name from [Adélie Land]{.hl} in Antarctica, which the French explorer Jules Dumont d'Urville named after his wife, Adèle, in 1840.
+
+_Source: Australian Antarctic Division_
+:::
+
+## The grammar of `{dplyr}`
+
+Every `{dplyr}` verb works the same way:
+
+1. The first argument is a [data frame]{.hl}
+2. The other arguments say what to do, using column names without quotes
+3. The output is a new data frame
+
+## Six verbs
+
+| Verb | Works on | Does |
+|---|---|---|
+| `select()` | columns | keep or drop columns |
+| `rename()` | columns | change column names |
+| `mutate()` | columns | create or change columns |
+| `filter()` | rows | keep rows that match a condition |
+| `arrange()` | rows | sort rows |
+| `summarise()` | groups | collapse many rows into one |
+
+## The verb never changes your data {.smaller}
+
+```{r}
+filter(penguins, species == "Gentoo")
+nrow(penguins)
+```
+
+. . .
+
+Nothing happened to `penguins`! To keep the result, assign it:
+
+```{r}
+gentoo <- filter(penguins, species == "Gentoo")
+nrow(gentoo)
+```
+
+# Columns
+
+## `select()`
+
+Keep the columns you name:
+
+```{r}
+select(penguins, species, bill_length_mm)
+```
+
+. . .
+
+Drop a column with `-`
+
+```{r, eval=FALSE}
+select(penguins, -year)
+```
+
+## `select()` helpers {.smaller}
+
+Select by name pattern or type instead of typing every name:
+
+```{r, eval=FALSE}
+select(penguins, species:bill_depth_mm)   # a range of columns
+select(penguins, starts_with("bill"))     # names starting with "bill"
+select(penguins, ends_with("_mm"))        # names ending with "_mm"
+select(penguins, contains("length"))      # names containing "length"
+select(penguins, where(is.numeric))       # all numeric columns
+select(penguins, sex, everything())       # move sex to the front
+```
+
+. . .
+
+```{r}
+select(penguins, ends_with("_mm"))
+```
+
+## `select()` by position
+
+Also possible, but fragile:
+
+```{r, eval=FALSE}
+select(penguins, 1, 3, 5)
+select(penguins, 1:4)
+select(penguins, -(1:5))
+```
+
+. . .
+
+If the column order changes (new data export, a colleague's file), your code silently selects the wrong columns. Prefer names.
+
+## `rename()` {.smaller}
+
+`new_name = old_name`
+
+```{r}
+rename(penguins, Type = species)
+```
+
+. . .
+
+`select()` can rename too, but drops everything you do not name:
+
+```{r}
+select(penguins, Type = species, bill_length_mm)
+```
+
+## `mutate()` {.smaller}
+
+Create new columns, or overwrite existing ones:
+
+```{r}
+penguins_2 <- mutate(penguins,
+                     body_mass_kg = body_mass_g / 1000,
+                     bill_ratio   = bill_length_mm / bill_depth_mm)
+select(penguins_2, species, body_mass_kg, bill_ratio)
+```
+
+. . .
+
+New columns are added at the end. You can use a column you just created in the same `mutate()`.
+
+## `mutate()` with conditions {.smaller}
+
+`if_else()` for two outcomes
+
+```{r, eval=FALSE}
+mutate(penguins, size = if_else(body_mass_g > 4500, "large", "small"))
+```
+
+. . .
+
+`case_when()` for more than two
+
+```{r}
+penguins_2 <- mutate(penguins,
+  size = case_when(
+    body_mass_g < 3500 ~ "small",
+    body_mass_g < 4500 ~ "medium",
+    body_mass_g >= 4500 ~ "large"
+  )
+)
+count(penguins_2, size)
+```
+
+. . .
+
+Conditions are checked in order. Rows matching none of them get `NA`.
+
+## `mutate()` on many columns: `across()` {.smaller}
+
+`mutate_if()` and `mutate_all()` are [superseded]{.hl}: they still work, but are no longer developed. Use `across()`:
+
+. . .
+
+```{r, eval=FALSE}
+# old
+mutate_if(penguins, is.factor, as.character)
+
+# new
+mutate(penguins, across(where(is.factor), as.character))
+```
+
+. . .
+
+`across(columns, function)`: _apply this function to these columns_
+
+```{r, eval=FALSE}
+mutate(penguins, across(ends_with("_mm"), \(x) x / 10))  # mm to cm
+```
+
+`\(x) x / 10` is a short way to write a small function: _take x, divide it by 10_.
+
+# Rows
+
+## `filter()`
+
+Keep the rows where a condition is `TRUE`:
+
+```{r}
+filter(penguins, species == "Gentoo")
+```
+
+## Comparison operators {.smaller}
+
+| Operator | Meaning | Example |
+|---|---|---|
+| `==` | equal to | `species == "Gentoo"` |
+| `!=` | not equal to | `species != "Gentoo"` |
+| `>`, `>=` | greater than (or equal) | `body_mass_g > 4000` |
+| `<`, `<=` | less than (or equal) | `year <= 2008` |
+| `%in%` | one of | `island %in% c("Biscoe", "Dream")` |
+| `is.na()` | missing | `is.na(sex)` |
+
+. . .
+
+`=` assigns, `==` compares. `filter(penguins, species = "Gentoo")` gives an error.
+
+## Combining conditions {.smaller}
+
+`,` or `&`: both must be true (AND)
+
+```{r, eval=FALSE}
+filter(penguins, species == "Gentoo", body_mass_g > 5000)
+filter(penguins, species == "Gentoo" & body_mass_g > 5000)
+```
+
+. . .
+
+`|`: at least one must be true (OR)
+
+```{r, eval=FALSE}
+filter(penguins, species == "Gentoo" | species == "Chinstrap")
+```
+
+. . .
+
+`%in%` is shorter when matching several values of one column
+
+```{r}
+unique(filter(penguins, species %in% c("Gentoo", "Chinstrap"))$species)
+```
+
+## `filter()` and missing values {.smaller}
+
+`filter()` drops rows where the condition is `NA`.
+
+```{r}
+nrow(penguins)
+sum(is.na(penguins$sex))
+nrow(filter(penguins, sex == "female"))
+nrow(filter(penguins, sex != "female"))
+```
+
+. . .
+
+`165 + 168 = 333`, not 344! The 11 penguins with unknown `sex` are dropped by both.
+
+## Discussion
+
+In a listening experiment, some participants did not respond on a few trials, so those cells are `NA`.
+
+- Should these trials be removed, kept as `NA`, or counted as wrong answers?
+- Does your answer depend on why the response is missing?
+
+## `filter_out()` (new in `{dplyr}` 1.2.0) {.smaller}
+
+Say which rows to drop. Rows with `NA` are kept.
+
+```{r}
+nrow(filter_out(penguins, sex == "female"))
+```
+
+. . .
+
+Rule of thumb:
+
+- `filter()` when you know what to keep
+- `filter_out()` when you know what to drop
+
+. . .
+
+Requires `{dplyr}` ≥ 1.2.0. Check with `packageVersion("dplyr")`.
+
+## `arrange()`
+
+Sort rows, smallest first
+
+```{r}
+arrange(penguins, body_mass_g)
+```
+
+. . .
+
+Largest first with `desc()`; sort by several columns in turn
+
+```{r, eval=FALSE}
+arrange(penguins, desc(body_mass_g))
+arrange(penguins, species, desc(body_mass_g))
+```
+
+# Groups
+
+::: {.fact}
+`Did you know:` chinstrap penguins sleep in [microsleeps]{.hl}: more than 10,000 a day, about 4 seconds each, which add up to about 11 hours of sleep.
+
+_Source: Libourel et al. (2023), Science_
+:::
+
+## `summarise()` {.smaller}
+
+Collapse many rows into one
+
+```{r}
+summarise(penguins,
+          mean_mass = mean(body_mass_g, na.rm = TRUE),
+          sd_mass   = sd(body_mass_g, na.rm = TRUE),
+          n         = n())
+```
+
+. . .
+
+`na.rm = TRUE`: ignore missing values. Without it, one `NA` makes the whole result `NA`.
+
+## `group_by()` + `summarise()` {.smaller}
+
+One row per group
+
+```{r}
+penguins_grouped <- group_by(penguins, species)
+summarise(penguins_grouped,
+          mean_mass = mean(body_mass_g, na.rm = TRUE),
+          n         = n())
+```
+
+. . .
+
+`group_by()` changes nothing you can see. It tells the next verb to work group by group.
+
+## `.by`: grouping for one step {.smaller}
+
+Same result, without a separate `group_by()`:
+
+```{r}
+summarise(penguins,
+          mean_mass = mean(body_mass_g, na.rm = TRUE),
+          n         = n(),
+          .by       = c(species, sex))
+```
+
+. . .
+
+`.by` groups for this verb only, so you never forget to `ungroup()`. It works in `summarise()`, `mutate()`, `filter()` and `slice()`.
+
+## `count()`
+
+A shortcut for counting rows per group
+
+```{r}
+count(penguins, species, island)
+```
+
+. . .
+
+Same counts as `summarise(penguins, n = n(), .by = c(species, island))`, but `count()` also sorts the rows by group.
+
+# The pipe
+
+::: {.fact}
+`Did you know:` gentoo penguins are the [fastest swimming birds]{.hl}: they reach about 36 km/h in short bursts, close to Usain Bolt's average speed in his 100 m world record.
+
+_Source: Guinness World Records_
+:::
+
+## The problem {.smaller}
+
+Three steps, three intermediate objects:
+
+```{r, eval=FALSE}
+penguins_2 <- filter(penguins, species == "Gentoo" | species == "Chinstrap")
+penguins_3 <- mutate(penguins_2, bill_length_cm = bill_length_mm / 10)
+penguins_4 <- select(penguins_3, species, bill_length_cm)
+```
+
+. . .
+
+Or nested, read from the inside out:
+
+```{r, eval=FALSE}
+penguins_4 <- select(
+  mutate(
+    filter(penguins, species == "Gentoo" | species == "Chinstrap"),
+    bill_length_cm = bill_length_mm / 10),
+  species, bill_length_cm)
+```
+
+## The pipe `|>` {.smaller}
+
+::: {.fragment .fade-up}
+`x |> f(y)` is the same as `f(x, y)`
+:::
+
+- Takes the result on the left, passes it as the first argument of the function on the right
+- Read it aloud as [then]{.hl}. There is no need to repeat the object at every step
+
+. . .
+
+```{r}
+penguins_2 <- penguins |>
+  filter(species == "Gentoo" | species == "Chinstrap") |>
+  mutate(bill_length_cm = bill_length_mm / 10) |>
+  select(species, bill_length_cm)
+penguins_2
+```
+
+## Reading a pipe aloud
+
+| Code | Read it as |
+|:--|:--|
+| <code>penguins_2 &lt;- penguins &#124;&gt;</code> | Take `penguins`, then |
+| <code>filter(species == &quot;Gentoo&quot; &#124; species == &quot;Chinstrap&quot;) &#124;&gt;</code> | keep only Gentoo and Chinstrap penguins, then |
+| <code>mutate(bill_length_cm = bill_length_mm / 10) &#124;&gt;</code> | add bill length in cm, then |
+| `select(species, bill_length_cm)` | keep only these two columns. |
+
+. . .
+
+Store the result as `penguins_2`. If you cannot read a pipe aloud like this, it is probably doing too much at once.
+
+## `PRO TIP!` Save to the right
+
+```{r, eval=FALSE}
+penguins |>
+  filter(species == "Gentoo" | species == "Chinstrap") |>
+  mutate(bill_length_cm = bill_length_mm / 10) |>
+  select(species, bill_length_cm) -> penguins_2
+```
+
+Same output as the previous slide. The code now reads top to bottom in the order things happen.
+
+## `|>` vs `%>%` {.smaller}
+
+You will see two pipes in the wild:
+
+- `%>%` from `{magrittr}`, loaded with the tidyverse (since 2014)
+- `|>` built into R itself (since R 4.1.0)
+
+. . .
+
+For everything in this course they are interchangeable. We use `|>`: it works without loading any package.
+
+. . .
+
+Keyboard shortcut: `Ctrl/Cmd + Shift + M`
+
+To make it insert `|>`: _Tools > Global Options > Code > Use native pipe operator_
+
+## From wrangling to plotting
+
+The output of a pipe can go straight into `{ggplot2}`
+
+```{r penguin-plot, eval=FALSE}
+penguins |>
+  filter_out(is.na(sex)) |>
+  ggplot(aes(x = flipper_length_mm, y = body_mass_g, colour = species)) +
+  geom_point(size = 2, alpha = 0.8) +
+  labs(x = "Flipper length (mm)", y = "Body mass (g)", colour = NULL)
+```
+
+. . .
+
+Note: `{ggplot2}` layers are added with `+`, not `|>`. More next class.
+
+## From wrangling to plotting
+
+```{r, ref.label="penguin-plot", echo=FALSE, fig.width=10, fig.height=5.5, out.width="100%"}
+```
+
+# Common errors
+
+## Common errors {.smaller}
+
+| You wrote | Problem |
+|---|---|
+| `filter(df, species = "Gentoo")` | `=` instead of `==` |
+| `filter(df, species == Gentoo)` | text values need `"quotes"` |
+| `select(df, Species)` | names are [case sensitive]{.hl} |
+| `filter(df, ...)` and nothing changes | result not assigned with `<-` |
+| `mean(body_mass_g)` gives `NA` | missing values: add `na.rm = TRUE` |
+| `object 'bill_length_mm' not found` | forgot `library(palmerpenguins)` |
+| `could not find function "filter_out"` | `{dplyr}` older than 1.2.0 |
+
+## Summary
+
+::: {.takeaway}
+- `{readr}`: `read_csv()`, `write_csv()`
+- Columns: `select()`, `rename()`, `mutate()`, `across()`
+- Rows: `filter()`, `filter_out()`, `arrange()`
+- Groups: `summarise()`, `count()`, `group_by()` or `.by`
+- Chain with `|>`, read as [then]{.hl}
+- Always assign the result if you want to keep it
+:::
+
+## Slides and code
+
+<div class="qr-block">
+<img src="`r qr_uri`" alt="QR code linking to these slides">
+<div>
+<p>These slides</p>
+<p class="qr-link">mcanzi.de/statistics/<wbr>`r lecture_file`</p>
+<p>Code, data and all lectures</p>
+<p class="qr-link">github.com/mcanzi/statistics</p>
+</div>
+</div>
