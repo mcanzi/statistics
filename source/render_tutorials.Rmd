@@ -10,6 +10,8 @@ Knit this file, or run its chunks, to make both versions of every tutorial in `t
 
 In a tutorial, everything inside a `::: solution` block counts as solution, text included. Everything else appears in both versions, including hints and code that students get, such as `set.seed()` or a helper function. A second `::: solution` block in the same exercise starts a new solution slide, and task text after a solution starts a new task slide. A solution slide gets smaller text with `::: {.solution .smaller}`. When code and plot do not fit on one slide, show the code with `eval = FALSE` in one block and the plot in the next with `ref.label` and `echo = FALSE` (tutorial 3, exercise 1.3). The weekly assignment sits in a box, `::: {.assignment .alert .alert-info}`: the `alert` classes draw it on the exercise sheet (darkly theme), `assignment` on the slides.
 
+A guided tutorial, which I go through with the class, has `guided: true` in its YAML header (tutorial 1). Its .Rmd for students keeps all the code, solutions included, and only loses the `::: solution` lines. The slides get "guided tutorial" as subtitle.
+
 Everything after the assignment box (or after a heading with "Weekly assignment" in it) is the weekly assignment, and a tutorial never contains its solutions, so the slides can be published at any time. If a `::: solution` block comes after that point, rendering stops with an error that names the tutorial.
 
 On the slides, `## 1. Distributions` becomes a section slide and `### 1.1 A normal distribution` a slide; a `##` part without exercises (`## Setup`) is an ordinary slide. Horizontal rules (`---`) only appear on the exercise sheet.
@@ -74,10 +76,16 @@ squeeze <- function(x) {
 
 ## The exercise sheet
 
-Each solution block becomes one empty chunk if it contains code, and disappears if it is only text. Classes on headings, such as `{.smaller}`, are only for the slides and are left out.
+Each solution block becomes one empty chunk if it contains code, and disappears if it is only text. In a guided tutorial the solution blocks stay, without their `:::` lines. Classes on headings, such as `{.smaller}`, are only for the slides and are left out.
 
 ```{r sheet}
-student_lines <- function(d) {
+student_lines <- function(d, guided = FALSE) {
+  if (guided) {
+    keep <- d[!d$fence, ]
+    heading <- !keep$chunk & grepl("^#+ ", keep$line)
+    keep$line[heading] <- sub(" *\\{[^}]*\\} *$", "", keep$line[heading])
+    return(squeeze(keep$line))
+  }
   out <- character(0)
   i <- 1
   while (i <= nrow(d)) {
@@ -101,10 +109,10 @@ student_lines <- function(d) {
 The slides get the YAML header and setup of the lectures. `lecture_file`, `lecture_label` and the QR code are set again after `slides_setup.R`, so that they point to the tutorial.
 
 ```{r slides}
-slide_header <- function(topic, number, html) {
+slide_header <- function(topic, number, html, guided = FALSE) {
   c("---",
     sprintf('title: "%s"', topic),
-    sprintf('subtitle: "Tutorial %s: exercises and solutions"', number),
+    sprintf('subtitle: "Tutorial %s: %s"', number, if (guided) "guided tutorial" else "exercises and solutions"),
     'author: "Dr Massimiliano Canzi"',
     "output:",
     "  revealjs::revealjs_presentation:",
@@ -152,16 +160,16 @@ slide_style <- function(footer) {
     "")
 }
 
-slide_end <- function(rmd) {
+slide_end <- function(rmd, guided = FALSE) {
   c("",
-    "## Slides and exercises",
+    if (guided) "## Slides and code" else "## Slides and exercises",
     "",
     '<div class="qr-block">',
     '<img src="`r qr_uri`" alt="QR code linking to these slides">',
     "<div>",
     "<p>These slides</p>",
     '<p class="qr-link">mcanzi.de/statistics/<wbr>`r lecture_file`</p>',
-    "<p>Exercise sheet (R Markdown)</p>",
+    if (guided) "<p>All the code (R Markdown)</p>" else "<p>Exercise sheet (R Markdown)</p>",
     sprintf('<p class="qr-link">mcanzi.de/statistics/<wbr>tutorials/%s</p>', rmd),
     "</div>",
     "</div>")
@@ -248,11 +256,12 @@ make_tutorial <- function(path, out_dir) {
   html <- sub("\\.Rmd$", ".html", rmd)
   number <- sub("^Tutorial +", "", yaml_field(tutor$yaml, "subtitle"))
   topic <- yaml_field(tutor$yaml, "title")
-  writeLines(c(tutor$yaml, student_lines(d)), file.path(out_dir, rmd), useBytes = TRUE)
+  guided <- identical(yaml_field(tutor$yaml, "guided"), "true")
+  writeLines(c(tutor$yaml, student_lines(d, guided)), file.path(out_dir, rmd), useBytes = TRUE)
   tmp <- paste0("tutorial_", sub("\\.Rmd$", "_slides.Rmd", rmd))
   on.exit(unlink(tmp), add = TRUE)
   footer <- sprintf("Tutorial %s: %s", number, topic)
-  writeLines(c(slide_header(topic, number, html), slide_lines(d, footer), slide_end(rmd)), tmp, useBytes = TRUE)
+  writeLines(c(slide_header(topic, number, html, guided), slide_lines(d, footer), slide_end(rmd, guided)), tmp, useBytes = TRUE)
   xfun::Rscript_call(rmarkdown::render, list(input = tmp, output_file = html, output_dir = out_dir, quiet = TRUE))
 }
 ```

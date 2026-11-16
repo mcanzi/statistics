@@ -1,0 +1,377 @@
+---
+title: "Getting started"
+subtitle: "Tutorial 1"
+author: "Dr Massimiliano Canzi"
+guided: true
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Today
+
+We go through this tutorial together. Open RStudio and type along.
+
+1. Install `{konstats}`, the package of this course
+2. Look at `{simling}`, where the data sets of the course come from
+3. Practise the R basics from lecture 1, on linguistic data
+
+## 1. konstats
+
+### 1.1 What konstats is
+
+`{konstats}` is the companion package of this course. It gives you:
+
+- every package the course uses, installed with one command
+- the list of lectures, with a link to each set of slides
+- the exercise sheets of the tutorials
+- a template for the weekly assignments
+
+### 1.2 A folder for the course
+
+Keep everything for the course in one folder, as an RStudio [project]{.hl}:
+
+_File > New Project > New Directory > New Project_
+
+. . .
+
+Call it `statistics`, for example. When you open the project, R works inside that folder, so your files are always where R looks for them.
+
+### 1.3 Installing konstats
+
+`{konstats}` is on GitHub, not on CRAN. Type this in the `Console`, once:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/konstats")
+```
+
+. . .
+
+This also installs the packages from lecture 1 (`tidyverse`, `palmerpenguins`, `swirl`) and the rest of the course, `{simling}` included. It takes a few minutes the first time.
+
+. . .
+
+If R asks whether to update other packages, choose `1: All`. If it asks about installing from source, answer `no`.
+
+### 1.4 Is your computer ready? {.smaller}
+
+Load the package, and check your setup:
+
+```{r, message = TRUE}
+library(konstats)
+check_setup("statistics")
+```
+
+. . .
+
+If a package is missing, the message tells you which, and what to run. Run `check_setup()` again whenever code from the course fails on your computer.
+
+### 1.5 Lectures and slides {.smaller}
+
+`lectures()` lists the lectures, with their chapters of Winter (2019) and data sets:
+
+```{r}
+lectures("statistics")[, c("number", "topic", "winter", "datasets")]
+```
+
+. . .
+
+`slides()` opens the slides of a lecture in your browser, by number or by topic:
+
+```{r, eval = FALSE}
+slides(2)
+slides("mixed models 1")
+```
+
+### 1.6 Exercise sheets
+
+From next week, each tutorial has an exercise sheet: an R Markdown file with the exercises and an empty code chunk for each answer.
+
+```{r, eval = FALSE}
+tutorials("statistics")    # which sheets there are
+get_tutorial(2, ".")       # copy sheet 2 into your project folder
+```
+
+. . .
+
+You write your answers in your copy. If the sheet is already in the folder, `get_tutorial()` stops with an error, so your answers are never overwritten.
+
+### 1.7 Handing in homework
+
+Tutorials 2, 4, 8, 10 and 12 end with a weekly assignment, which you hand in on Ilias.
+
+. . .
+
+To start the file you hand in:
+
+_File > New File > R Markdown > From Template > Weekly assignment (konstats)_
+
+It has a section for each exercise.
+
+## 2. simling
+
+### 2.1 What simling is
+
+`{simling}` has 56 simulated data sets, from 20 branches of linguistics. From lecture 5 on, most examples in the slides use them.
+
+. . .
+
+The data are simulated, so we know the [true values]{.hl} behind them. You can check whether your analysis finds them.
+
+. . .
+
+`{konstats}` installed it already. Load it like any other package:
+
+```{r}
+library(simling)
+```
+
+### 2.2 Finding a data set {.smaller}
+
+`simling_datasets()` lists all of them, with their branch, language, size, response and topic:
+
+```{r}
+simling_datasets()
+```
+
+### 2.3 A first data set {.smaller}
+
+`vowel_voicing` comes from a production study: vowels before voiceless consonants (_beat_) and before voiced ones (_bead_).
+
+```{r}
+head(vowel_voicing)
+```
+
+. . .
+
+Every data set has a help page, with what each column means and the true model behind the data:
+
+```{r, eval = FALSE}
+?vowel_voicing
+```
+
+### 2.4 A first plot {.smaller}
+
+A preview of lectures 2 and 3: you do not need to understand this code yet.
+
+```{r, fig.height = 2.9}
+library(tidyverse)
+ggplot(vowel_voicing, aes(x = voicing, y = duration)) +
+  geom_boxplot(fill = NA, colour = "steelblue") +
+  labs(x = "Following consonant", y = "Duration (ms)")
+```
+
+### 2.5 The true values
+
+The help page says that the true means are 120 ms before voiceless and 160 ms before voiced consonants. The means in the data:
+
+```{r}
+tapply(vowel_voicing$duration, vowel_voicing$voicing, mean)
+```
+
+. . .
+
+They are close to the true values, but not the same: the data are one random sample of 60 vowels per group. We come back to this in lecture 9.
+
+## 3. R basics
+
+### 3.1 R as a calculator {.smaller}
+
+Open a new script (_File > New File > R Script_), and run each line with `Ctrl + Enter` (`Cmd + Enter` on a Mac):
+
+```{r}
+2 + 2
+(3 + 2) * 4
+160 - 120    # how much longer, in ms?
+```
+
+. . .
+
+Everything after `#` is a comment. Save the script in your project folder.
+
+### 3.2 Objects
+
+`<-` stores a value in an object:
+
+```{r}
+voiceless <- 120
+voiced <- 160
+voiced - voiceless
+```
+
+. . .
+
+Both objects now appear in the `Environment`. Names are case sensitive: `Voiced` is a different name, and no object has it.
+
+### 3.3 Vectors
+
+`c()` combines values into a vector. Here are five vowel durations, in ms:
+
+```{r}
+durations <- c(166, 96, 106, 112, 101)
+durations / 1000    # in seconds
+mean(durations)
+```
+
+. . .
+
+What is the shortest and the longest duration? Try `min()` and `max()`.
+
+::: solution
+
+```{r}
+min(durations)
+max(durations)
+```
+
+:::
+
+### 3.4 Indexing
+
+Square brackets pick elements by position:
+
+```{r}
+durations[1]
+durations[2:4]
+durations[-1]
+```
+
+. . .
+
+How do you get the last duration, and the first and the last together?
+
+::: solution
+
+```{r}
+durations[5]
+durations[c(1, 5)]
+```
+
+:::
+
+### 3.5 Logical vectors
+
+A comparison gives `TRUE` or `FALSE` for every element:
+
+```{r}
+durations > 110
+durations[durations > 110]
+```
+
+. . .
+
+How many of the five vowels are longer than 110 ms? And what proportion?
+
+::: solution
+
+`TRUE` counts as 1 and `FALSE` as 0:
+
+```{r}
+sum(durations > 110)
+mean(durations > 110)
+```
+
+:::
+
+### 3.6 Data frames {.smaller}
+
+`vowel_voicing` is a data frame (a tibble): a table whose columns are vectors of the same length.
+
+```{r}
+nrow(vowel_voicing)
+vowel_voicing[1:3, ]
+```
+
+. . .
+
+`$` takes out one column, as a vector:
+
+```{r}
+mean(vowel_voicing$duration)
+```
+
+### 3.7 Your turn: one column {.smaller}
+
+Using `vowel_voicing$duration`:
+
+1. How long is the longest vowel in the data?
+2. How many vowels are longer than 150 ms?
+3. What proportion of vowels is longer than 150 ms?
+
+::: solution
+
+```{r}
+max(vowel_voicing$duration)
+sum(vowel_voicing$duration > 150)
+mean(vowel_voicing$duration > 150)
+```
+
+:::
+
+### 3.8 Factors {.smaller}
+
+`voicing` is a factor: a column of categories, with a fixed set of levels.
+
+```{r}
+levels(vowel_voicing$voicing)
+table(vowel_voicing$voicing)
+```
+
+. . .
+
+The first level, `voiceless`, is the [reference level]{.hl}. It matters from lecture 7, when categories go into a model. In `{simling}`, the first level is always the baseline condition.
+
+### 3.9 Functions and missing values
+
+Functions take arguments inside their brackets:
+
+```{r}
+round(mean(vowel_voicing$duration), digits = 1)
+```
+
+. . .
+
+`NA` is a missing value, for example a vowel whose recording failed:
+
+```{r}
+with_gap <- c(166, NA, 106)
+mean(with_gap)
+mean(with_gap, na.rm = TRUE)
+```
+
+### 3.10 Getting help
+
+- `?mean` opens the help page of `mean()`. The examples at the bottom can be run as they are.
+- `?vowel_voicing` works for data sets too.
+- An error message pasted into a search engine usually finds someone who had the same problem.
+
+. . .
+
+Cite the software you use:
+
+```{r, eval = FALSE}
+citation()             # R
+citation("simling")    # a package
+```
+
+## Before next week
+
+Start `swirl`, the interactive lessons from lecture 1, and choose the course _R Programming_:
+
+```{r, eval = FALSE}
+library(swirl)
+swirl()
+```
+
+. . .
+
+Next week: data wrangling with the tidyverse. Copy the exercise sheet into your project before the tutorial:
+
+```{r, eval = FALSE}
+get_tutorial(2, ".")
+```
