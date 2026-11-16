@@ -19,16 +19,9 @@ library(lme4)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data
 
-In `n400`, 30 participants read German sentences that end in an expected or an unexpected word (*Er trinkt seinen Kaffee / Schrank*) while their EEG is recorded. `amplitude` is the mean EEG signal in microvolts (µV), 300 to 500 ms after the last word. Unexpected words make it more negative: this is the **N400**. Each participant reads 80 items, 40 in each condition. Today we use only the electrode Cz, at the top of the head:
+In `n400`, 30 participants read German sentences that end in an expected or an unexpected word (*Er trinkt seinen Kaffee / Schrank*) while their EEG is recorded. `amplitude` is the mean EEG signal in microvolts (µV), 300 to 500 ms after the last word. Unexpected words make it more negative: this is the [N400]{.hl}. Each participant reads 80 items, 40 in each condition. Today we use only the electrode Cz, at the top of the head:
 
 ```{r}
 cz <- n400 |>

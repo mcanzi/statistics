@@ -13,13 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ## Setup
 
-Today we need two packages. If you have never used them, install them once, in the Console:
-
-```{r, eval = FALSE}
-install.packages(c("tidyverse", "janitor"))
-```
-
-Then load them at the start of every session:
+Today we need two packages, which came with `{konstats}` in tutorial 1. Load them at the start of every session:
 
 ```{r}
 library(tidyverse)
@@ -64,7 +58,7 @@ Check the result: `setosa` should be gone, and 100 rows should be left.
 
 ### 1.3 The pipe
 
-The **pipe**, `|>`, reads as "and then". Write the same step with the pipe: take `iris`, and then keep every flower that is not `setosa`. Save the result as `data_no_setosa_pipe`.
+The [pipe]{.hl}, `|>`, reads as "and then". Write the same step with the pipe: take `iris`, and then keep every flower that is not `setosa`. Save the result as `data_no_setosa_pipe`.
 
 ```{r}
 

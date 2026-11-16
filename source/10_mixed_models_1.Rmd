@@ -71,7 +71,7 @@ Lectures 4 to 9: `lm()`, with one or several predictors, and how to test them.
 
 . . .
 
-Every one of those models assumed that the data points are __independent__: each one brings new information.
+Every one of those models assumed that the data points are [independent]{.hl}, so that each one brings new information.
 
 . . .
 
@@ -97,7 +97,7 @@ lexdec <- lexical_decision
 
 `freq_c` is log10 frequency, centred. Frequent words are faster. In the simulation behind these data, participants differ in speed and in the size of their frequency effect, and words differ in difficulty: `?lexical_decision` gives the true values.
 
-## 800 rows, but not 800 independent observations
+## 800 rows, but not 800 independent observations {.smaller}
 
 ```{r}
 lexdec
@@ -162,7 +162,7 @@ augment(lm(rt ~ freq_c, data = lexdec)) |>
   theme(axis.text.x = element_text(size = 10, angle = 90, vjust = 0.5))
 ```
 
-The residuals of one participant are mostly positive or mostly negative. Knowing who produced a data point tells us something about its residual: they are [not independent]{.hl}.
+The residuals of one participant are mostly positive or mostly negative. Knowing who produced a data point tells us something about its residual, so the residuals are not independent.
 
 ## Two sources of non-independence
 
@@ -170,7 +170,7 @@ Participants differ: some are faster than others, and some show bigger effects. 
 
 . . .
 
-Clark (1973) called ignoring item variation the __language-as-fixed-effect fallacy__: if our conclusions should hold for words in general, not just the 40 we tested, the words are a sample too.
+Clark (1973) called ignoring item variation the [language-as-fixed-effect fallacy]{.hl}: if our conclusions should hold for words in general, not just the 40 we tested, the words are a sample too.
 
 ## Discussion
 
@@ -182,14 +182,14 @@ Think of a study you would like to run, or one you have read.
 # Design and averaging
 
 ::: {.fact}
-`Did you know:` naked mole-rats can live for more than 30 years. In records of over 3,000 animals, their risk of dying [did not rise with age]{.hl}, unlike in any other mammal studied.
+`Did you know:` naked mole-rats can live for more than 30 years. In records of over 3,000 animals, their [risk of dying]{.hl} did not rise with age, unlike in any other mammal studied.
 
 _Source: Ruby, Smith & Buffenstein (2018), eLife_
 :::
 
 ## The traditional fix: averaging
 
-Collapse the data so that each unit contributes one number. A __by-participant__ (F1) analysis: one frequency slope per participant, then test the 20 slopes.
+Collapse the data so that each unit contributes one number. A [by-participant analysis]{.hl} (F1) fits one frequency slope per participant, then tests the 20 slopes.
 
 ```{r}
 by_participant <- lexdec |>
@@ -200,7 +200,7 @@ t.test(by_participant$slope)$conf.int
 
 ## By-item analysis
 
-A __by-item__ (F2) analysis: average over participants, one RT per word.
+A [by-item analysis]{.hl} (F2) averages over participants, giving one RT per word.
 
 ```{r}
 by_word <- lexdec |> summarise(rt = mean(rt), freq_c = first(freq_c), .by = word)
@@ -264,7 +264,7 @@ ggplot(lines, aes(x = freq_c, y = fit, group = participant)) +
   labs(x = "log frequency (centred)", y = "Predicted RT (ms)")
 ```
 
-Complete pooling ignores participants and is overconfident. No pooling treats each participant as unrelated to the others, which makes every line noisy. [Partial pooling]{.hl} treats participants as different but similar, drawn from one population.
+[Complete pooling]{.hl} ignores participants and is overconfident. With [no pooling]{.hl}, each participant is treated as unrelated to the others, which makes every line noisy. [Partial pooling]{.hl} treats participants as different but similar, drawn from one population.
 
 ## Varying intercepts
 
@@ -320,7 +320,7 @@ The participants' individual adjustments are then predicted from these, and from
 
 ## Partial pooling = shrinkage
 
-```{r, echo = FALSE, fig.height = 3.9}
+```{r, echo = FALSE, fig.height = 3.5}
 shrink <- by_participant |>
   rename(no_pooling = slope) |>
   left_join(coef(m_partial)$participant |>
@@ -344,7 +344,7 @@ Pink: each participant's own slope (no pooling). Blue: the mixed model's estimat
 # Interpreting random effects
 
 ::: {.fact}
-`Did you know:` naked mole-rat queens show no menopause. They stay [fertile past the age of 30]{.hl}.
+`Did you know:` naked mole-rat queens show no [menopause]{.hl}. They stay fertile past the age of 30.
 
 _Source: Ruby, Smith & Buffenstein (2018), eLife_
 :::
@@ -393,7 +393,7 @@ The model estimates a correlation of about `r round(attr(VarCorr(m_full)$partici
 # The lme4 syntax
 
 ::: {.fact}
-`Did you know:` naked mole-rats can survive at least [18 minutes]{.hl} without any oxygen, by running their brain and heart on fructose instead of glucose.
+`Did you know:` naked mole-rats can survive at least 18 minutes without any oxygen, by running their brain and heart on [fructose]{.hl} instead of glucose.
 
 _Sources: Park et al. (2017), Science; Max Delbrück Center_
 :::
@@ -473,7 +473,7 @@ But participants differ in their slopes. To generalise to new participants, the 
 
 . . .
 
-Barr et al. (2013) showed that random-intercept-only models can have Type I error rates well above 5%, and recommend the __maximal random effects structure justified by the design__ for confirmatory tests.
+Barr et al. (2013) showed that random-intercept-only models can have Type I error rates well above 5%, and recommend the [maximal random effects structure justified by the design]{.hl} for confirmatory tests.
 
 ## Compare with averaging
 
@@ -515,7 +515,7 @@ The definitions often disagree. Is "word" random because the words are a sample 
 
 - Gelman recommends avoiding "fixed" and "random" altogether: effects are [constant]{.hl} or [varying]{.hl} across groups
 - In Bayesian work, [population-level]{.hl} and [group-level]{.hl} effects are increasingly common terms
-- In practice: a grouping factor gets random effects when its levels are a sample from a larger population (participants, words, speakers), and you want to generalise beyond them
+- In practice, a grouping factor gets random effects when its levels are a sample from a larger population (participants, words, speakers) and you want to generalise beyond them
 
 . . .
 

@@ -1083,9 +1083,6 @@ document.addEventListener('DOMContentLoaded', function(e) {
 </style>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span></code></pre></div>
-<p>If <code>palmerpenguins</code> is not installed yet, run
-<code>install.packages(&quot;palmerpenguins&quot;)</code> once, in the
-Console.</p>
 </section>
 <section id="the-data" class="slide level2 smaller">
 <h2 class="smaller">The data</h2>
@@ -1226,8 +1223,8 @@ smaller than the mean?</p>
 </section>
 <section id="the-mode" class="slide level2">
 <h2>2.3 The mode</h2>
-<p>The <strong>mode</strong> is the most frequent value, and we use it
-with categorical data. Here is the function from the lecture:</p>
+<p>The <span class="hl">mode</span> is the most frequent value, and we
+use it with categorical data. Here is the function from the lecture:</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>find_mode <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  u <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">tabulate</span>(<span class="fu">match</span>(x, u))</span>
@@ -1296,8 +1293,7 @@ median absolute deviation and the range.</p>
 </section>
 <section id="quantiles" class="slide level2">
 <h2>3.2 Quantiles</h2>
-<p>By default, <code>quantile()</code> gives the
-<strong>quartiles</strong>: the minimum, the 25%, 50% and 75% points,
+<p>By default, <code>quantile()</code> gives the <span class="hl">quartiles</span>: the minimum, the 25%, 50% and 75% points,
 and the maximum. Compute them for <code>body_mass_g</code>. Which of
 these numbers is the median?</p>
 </section>
@@ -1327,7 +1323,7 @@ again. Which measures change a lot, and which barely move?</p>
 <pre class="r-output"><code>    mean   median       sd      mad 
 825.9091 615.0000 723.0407  59.3040 </code></pre>
 <p>One slow trial pulls the mean and the SD up a lot, while the median
-and the MAD barely change: they are <strong>robust</strong>.</p>
+and the MAD barely change: they are <span class="hl">robust</span>.</p>
 </section></section>
 <section>
 <section id="group_by-and-summarise" class="title-slide slide level1">

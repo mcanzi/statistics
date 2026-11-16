@@ -19,13 +19,6 @@ library(broom)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data {.smaller}
 
 `turn_taking` comes from a simulated study of conversation in 10 languages. For 3000 yes/no questions, `offset` is the gap in ms between the end of the question and the start of the answer; negative values mean the answer started before the question ended. `response` says whether the answer confirms or disconfirms the question, and `gaze` whether the person asking was looking at the person answering.
@@ -55,7 +48,7 @@ turn_taking |>
 
 ::: solution
 
-```{r}
+```{r, fig.height = 2.7}
 turn_taking |>
   ggplot(aes(x = response, y = offset)) +
   geom_boxplot(fill = "plum2") +
@@ -77,7 +70,7 @@ m <- lm(offset ~ response, data = turn_taking)
 coef(m)
 ```
 
-The intercept, `r round(coef(m)[1])` ms, is the mean offset of confirmations, the reference level. The slope, `r round(coef(m)[2])` ms, is how much later disconfirmations come: their mean is `r round(coef(m)[1])` + `r round(coef(m)[2])` = `r round(sum(coef(m)))` ms.
+The intercept, `r round(coef(m)[1])` ms, is the mean offset of confirmations, the [reference level]{.hl}. The slope, `r round(coef(m)[2])` ms, is how much later disconfirmations come: their mean is `r round(coef(m)[1])` + `r round(coef(m)[2])` = `r round(sum(coef(m)))` ms.
 
 :::
 
@@ -190,7 +183,7 @@ Disconfirmations come `r round(coef(m2)[2])` ms later than confirmations, when g
 
 Add `language` to the model from 3.1. How many coefficients does the model have, and why? Has the slope of `response` changed much?
 
-::: solution
+::: {.solution .smaller}
 
 ```{r}
 m3 <- lm(offset ~ response + gaze + language, data = turn_taking)

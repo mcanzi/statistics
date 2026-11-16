@@ -18,8 +18,6 @@ library(tidyverse)
 library(palmerpenguins)
 ```
 
-If `palmerpenguins` is not installed yet, run `install.packages("palmerpenguins")` once, in the Console.
-
 ## The data {.smaller}
 
 We use the `penguins` data set from the lecture: 344 penguins, 3 species, 3 islands.
@@ -165,7 +163,7 @@ The median (`r median(penguins$flipper_length_mm, na.rm = TRUE)` mm) is smaller 
 
 ### 2.3 The mode
 
-The **mode** is the most frequent value, and we use it with categorical data. Here is the function from the lecture:
+The [mode]{.hl} is the most frequent value, and we use it with categorical data. Here is the function from the lecture:
 
 ```{r}
 find_mode <- function(x) {
@@ -227,7 +225,7 @@ diff(range(penguins$body_mass_g, na.rm = TRUE))
 
 ### 3.2 Quantiles
 
-By default, `quantile()` gives the **quartiles**: the minimum, the 25%, 50% and 75% points, and the maximum. Compute them for `body_mass_g`. Which of these numbers is the median?
+By default, `quantile()` gives the [quartiles]{.hl}: the minimum, the 25%, 50% and 75% points, and the maximum. Compute them for `body_mass_g`. Which of these numbers is the median?
 
 ::: solution
 
@@ -258,7 +256,7 @@ rts_slow <- c(rts, 3000)
 c(mean = mean(rts_slow), median = median(rts_slow), sd = sd(rts_slow), mad = mad(rts_slow))
 ```
 
-One slow trial pulls the mean and the SD up a lot, while the median and the MAD barely change: they are **robust**.
+One slow trial pulls the mean and the SD up a lot, while the median and the MAD barely change: they are [robust]{.hl}.
 
 :::
 

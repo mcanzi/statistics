@@ -19,13 +19,6 @@ library(broom)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data
 
 `vocabulary_growth` comes from a simulated study of 80 toddlers. Every two months, from 16 to 30 months, their parents ticked the words their child could say on a checklist of 680 words. Before the study, a day-long recording measured how much speech each child hears at home: `input` is the number of adult words per hour. Today we use only the session at 24 months:
@@ -124,7 +117,7 @@ Use `cor()` to compute the correlation between `vocabulary` and `input`, and bet
 
 ### 3.2 Standardise both variables
 
-Add two columns with z-scores: `vocabulary_z`, the standardised vocabulary, and `log_input_z`, the standardised `log2(input)`. Wrap `scale()` in `as.numeric()`, because `scale()` returns a matrix. Fit a model of `vocabulary_z` as a function of `log_input_z`. Which number from 3.1 is the slope?
+Add two columns with [z-scores]{.hl}: `vocabulary_z`, the standardised vocabulary, and `log_input_z`, the standardised `log2(input)`. Wrap `scale()` in `as.numeric()`, because `scale()` returns a matrix. Fit a model of `vocabulary_z` as a function of `log_input_z`. Which number from 3.1 is the slope?
 
 ```{r}
 

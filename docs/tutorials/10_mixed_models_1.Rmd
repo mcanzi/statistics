@@ -20,13 +20,6 @@ library(lme4)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data
 
 `rt_frequency` comes from a small simulated lexical decision task: 10 participants decide for each of the same 20 words whether it is a word of their language. Half of the words are frequent and half are rare (`frequency`), and `rt` is the reaction time in ms.
@@ -44,6 +37,10 @@ Today's question: are rare words recognised more slowly?
 ### 1.1 Who saw what?
 
 Use `count()` to find out how many responses there are from each participant and for each word. Why are the 200 reaction times not 200 independent observations?
+
+```{r}
+
+```
 
 ```{r}
 

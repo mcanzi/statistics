@@ -19,13 +19,6 @@ library(broom)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data
 
 `turn_taking` comes from a simulated study of conversation in 10 languages. For 3000 yes/no questions, `offset` is the gap in ms between the end of the question and the start of the answer; negative values mean the answer started before the question ended. `response` says whether the answer confirms or disconfirms the question, and `gaze` whether the person asking was looking at the person answering.

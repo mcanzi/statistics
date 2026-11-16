@@ -1,6 +1,6 @@
 ---
 title: "Transformations"
-subtitle: "Centering, standardising, correlation and logarithms"
+subtitle: "Centring, standardising, correlation and logarithms"
 author: "Dr Massimiliano Canzi"
 knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
 output:
@@ -63,17 +63,16 @@ _Sources: Encyclopaedia Britannica; WWF_
 ## Today
 
 - Why we transform variables
-- Linear transformations: units, centering, standardising
+- Linear transformations: units, centring, standardising
 - Correlation: Pearson's r, and what it hides
 - Logarithms: for predictors and for outcomes
 - A note on the word "normalising"
 
 ## Data from {simling}
 
-From today, most examples use data sets from the {simling} package: simulated linguistic data, so we know the true effects.
+From today, most examples use data sets from `{simling}`, which you met in tutorial 1. The data are simulated, so we know the true effects.
 
 ```{r, eval = FALSE}
-remotes::install_github("mcanzi/simling")
 library(simling)
 ?megastudy
 ```
@@ -100,7 +99,7 @@ The model is fine, but its intercept describes a word learned at birth, far outs
 
 | Goal | Example | Transformation |
 |:--|:--|:--|
-| Coefficients that are easier to read | slope per month, intercept for a word of average age of acquisition | units, centering |
+| Coefficients that are easier to read | slope per month, intercept for a word of average age of acquisition | units, centring |
 | Predictors on a common scale | age of acquisition (years) against word length (letters) | standardising |
 | A shape the linear model can handle | skewed reaction times, word frequencies | logarithm |
 
@@ -135,7 +134,7 @@ Reaction times from `zipf_rt` on four scales. The three linear ones are the same
 # Linear transformations
 
 ::: {.fact}
-`Did you know:` a nursing blue whale calf gains up to [90 kg]{.hl} a day: that is 3.75 kg an hour, or 0.09 tonnes a day. Same calf, different units.
+`Did you know:` a nursing blue whale calf gains up to 90 kg a day: that is 3.75 kg an hour, or 0.09 tonnes a day. The three numbers describe the same growth in different [units]{.hl}.
 
 _Source: Encyclopaedia Britannica_
 :::
@@ -173,9 +172,9 @@ ggplot(words, aes(x = aoa, y = rt)) +
 
 The intercept is where the line crosses `x = 0`: far outside the data.
 
-## Centering {.smaller}
+## Centring {.smaller}
 
-Subtract the mean, so that 0 means "a word of average age of acquisition":
+[Centring]{.hl} subtracts the mean, so that 0 means "a word of average age of acquisition":
 
 ```{r}
 words <- words |>
@@ -189,7 +188,7 @@ mean(words$rt)
 
 The slope does not change. The intercept is now the mean reaction time: the predicted value for a word of average age of acquisition.
 
-## Centering
+## Centring
 
 ```{r, echo = FALSE, fig.height = 4.2}
 ggplot(words, aes(x = aoa_c, y = rt)) +
@@ -227,7 +226,7 @@ In linguistic data:
 
 ## Standardising
 
-A __z-score__: subtract the mean, then divide by the standard deviation.
+[Standardising]{.hl} turns values into [z-scores]{.hl}: subtract the mean, then divide by the standard deviation.
 
 <div class="formula">z = (x − mean) / SD</div>
 
@@ -281,7 +280,7 @@ In raw units, length looked slightly stronger. Per standard deviation, age of ac
 
 ## Speaker normalisation {.smaller}
 
-A classic linguistic use of z-scores: vowel formants.
+Vowel formants are a classic linguistic use of z-scores, in [speaker normalisation]{.hl}.
 
 . . .
 
@@ -364,14 +363,14 @@ Linear transformations change what the numbers mean, while the fit stays the sam
 # Correlation
 
 ::: {.fact}
-`Did you know:` the heart of a blue whale that washed ashore in Newfoundland, Canada, in 2014 weighed about [180 kg]{.hl}. It is now on display at the Royal Ontario Museum in Toronto.
+`Did you know:` the [heart]{.hl} of a blue whale that washed ashore in Newfoundland, Canada, in 2014 weighed about 180 kg. It is now on display at the Royal Ontario Museum in Toronto.
 
 _Source: Royal Ontario Museum_
 :::
 
 ## Pearson's r {.smaller}
 
-The __correlation coefficient__ r measures how closely two variables follow a straight line.
+The [correlation coefficient]{.hl} r measures how closely two variables follow a straight line.
 
 ```{r, echo = FALSE, fig.height = 3.6}
 set.seed(2)
@@ -457,7 +456,7 @@ ggplot(quartet, aes(x, y)) +
   labs(x = NULL, y = NULL)
 ```
 
-Four data sets with the same means, the same regression line and the same correlation, __r = 0.82__. Only one of them looks like a straight-line relationship. Always plot first.
+Four data sets with the same means, the same regression line and the same correlation, r = 0.82. Only one of them looks like a straight-line relationship, which is why you should plot the data before you trust r.
 
 ## Correlation by group {.smaller}
 
@@ -478,7 +477,7 @@ In children, shoe size and vocabulary size are correlated: children with bigger 
 
 . . .
 
-Bigger feet do not teach words. Both grow with a third variable: age.
+Foot size has no effect on vocabulary. Both grow with a [third variable]{.hl}, age.
 
 . . .
 
@@ -494,7 +493,7 @@ Suppose children who are read to at home every day know more words than children
 # Logarithms
 
 ::: {.fact}
-`Did you know:` blue whale calls can reach [188 decibels]{.hl}. Decibels are a logarithmic scale: every 10 dB more means ten times the sound intensity.
+`Did you know:` blue whale calls can reach 188 decibels. Decibels are a [logarithmic scale]{.hl}: every 10 dB more means ten times the sound intensity.
 
 _Source: WWF_
 :::
@@ -514,7 +513,7 @@ range(zipf_rt$freq)
 
 ## What is a logarithm? {.smaller}
 
-A logarithm answers one question: how many times do I multiply the base by itself to get this number? `log10(1000)` is 3, because 10 × 10 × 10 = 1000.
+A [logarithm]{.hl} answers one question: how many times do I multiply the base by itself to get this number? `log10(1000)` is 3, because 10 × 10 × 10 = 1000.
 
 . . .
 
@@ -642,7 +641,7 @@ exp(predict(m_log, newdata = tibble(freq = c(1, 10, 100, 1000))))
 
 . . .
 
-The log is not a cure-all. Report which variables you transformed and why, and interpret the coefficients on the transformed scale.
+A log transformation does not fix every problem. Report which variables you transformed and why, and interpret the coefficients on the transformed scale.
 
 # The word "normalising"
 
@@ -652,7 +651,7 @@ The log is not a cure-all. Report which variables you transformed and why, and i
 
 | What people mean | What it does |
 |:--|:--|
-| [z-scoring]{.hl} | subtracts the mean and divides by the SD |
+| z-scoring | subtracts the mean and divides by the SD |
 | min-max scaling | squeezes values into the range 0 to 1 |
 | a normalising transformation | makes a distribution look more normal, e.g. a log |
 | speaker normalisation | removes vocal tract differences in phonetics, e.g. Lobanov |
@@ -671,11 +670,11 @@ In your write-up, avoid the word on its own. Say exactly what you did: "F1 and F
 ## Summary
 
 ::: {.takeaway}
-- __Units__ and __centering__ change what the intercept and slope mean; the fit stays the same
-- __Standardising__ puts variables on a common scale: slopes per SD
-- __Correlation__ is the slope between two z-scored variables: unitless, from −1 to 1
-- The same r can come from very different data, so always plot
-- __Logarithms__ turn multiplicative effects into additive ones, and tame skew
+- Changing units and [centring]{.hl} change what the intercept and slope mean, and the fit stays the same
+- [Standardising]{.hl} puts variables on a common scale, with slopes per SD
+- [Correlation]{.hl} is the slope between two z-scored variables: unitless, from −1 to 1
+- The same r can come from very different data, so plot the data too
+- [Logarithms]{.hl} turn multiplicative effects into additive ones, and reduce skew
 - Name your transformation precisely, instead of just writing "normalised"
 :::
 

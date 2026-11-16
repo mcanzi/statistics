@@ -19,16 +19,9 @@ library(broom)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data
 
-In `agreement_attraction`, 40 participants read sentences like *The key to the cabinet(s) was/were rusty* while an eye tracker records their eye movements. The verb is either grammatical (*was*) or ungrammatical (*were*), and the noun before it, the **attractor**, is singular (*cabinet*) or plural (*cabinets*). `gaze_duration` is the time in ms that readers look at the verb the first time they reach it. It is `NA` when they skipped the verb.
+In `agreement_attraction`, 40 participants read sentences like *The key to the cabinet(s) was/were rusty* while an eye tracker records their eye movements. The verb is either grammatical (*was*) or ungrammatical (*were*), and the noun before it, the [attractor]{.hl}, is singular (*cabinet*) or plural (*cabinets*). `gaze_duration` is the time in ms that readers look at the verb the first time they reach it. It is `NA` when they skipped the verb.
 
 ```{r}
 glimpse(agreement_attraction)
@@ -122,7 +115,7 @@ Fit the same model with `log_freq` instead of `freq_c`. Which coefficient change
 Exercises 3.1 to 3.3 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
 :::
 
-In `acceptability`, 48 participants rate sentences on a scale from 1 (very bad) to 7 (very good). The sentences contain a long or a short dependency (`length`) between a *wh*-word and its gap, and the gap is inside an **island** or not (`structure`). Islands are structures out of which a dependency is hard to form, such as *whether* clauses.
+In `acceptability`, 48 participants rate sentences on a scale from 1 (very bad) to 7 (very good). The sentences contain a long or a short dependency (`length`) between a *wh*-word and its gap, and the gap is inside an [island]{.hl} or not (`structure`). Islands are structures out of which a dependency is hard to form, such as *whether* clauses.
 
 ### 3.1 Cell means and plot
 
@@ -142,7 +135,7 @@ Fit a linear model of `rating` with `length`, `structure` and their interaction.
 
 ### 3.3 The island effect
 
-An **island effect** means that long dependencies out of islands are worse than the two effects on their own predict. Compute, from the cell means, how much ratings drop from short to long dependencies in non-islands, and how much in islands. Which coefficient of your model is the difference between the two drops? Is there an island effect?
+An [island effect]{.hl} means that long dependencies out of islands are worse than the two effects on their own predict. Compute, from the cell means, how much ratings drop from short to long dependencies in non-islands, and how much in islands. Which coefficient of your model is the difference between the two drops? Is there an island effect?
 
 ```{r}
 

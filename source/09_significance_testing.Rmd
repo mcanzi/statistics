@@ -71,7 +71,7 @@ Lectures 3 to 8 described the data we have: means, SDs, slopes, differences betw
 
 . . .
 
-But we never care about these 120 vowels. We care about vowels before voiced consonants in general.
+Our questions are about vowels before voiced consonants in general, beyond the 120 vowels in the data.
 
 . . .
 
@@ -132,7 +132,7 @@ ggplot(means, aes(x = mean, fill = n)) +
 # Effect size
 
 ::: {.fact}
-`Did you know:` a platypus's bill has about [40,000]{.hl} electroreceptors. Underwater, it closes its eyes, ears and nose, and finds prey by the weak electric signals of their muscles.
+`Did you know:` a platypus's bill has about 40,000 [electroreceptors]{.hl}. Underwater, it closes its eyes, ears and nose, and finds prey by the weak electric signals of their muscles.
 
 _Source: American Museum of Natural History_
 :::
@@ -153,15 +153,15 @@ A difference of about `r round(diff(tapply(vowels$duration, vowels$voicing, mean
 
 That depends on how much durations vary anyway. The same difference is huge if tokens vary by 5 ms, and tiny if they vary by 200 ms.
 
-## Cohen's d
+## Cohen's d {.smaller}
 
-The difference between two means, in units of their standard deviation:
+[Cohen's d]{.hl} is the difference between two means, in units of their standard deviation:
 
 <div class="formula">d = (mean₂ − mean₁) / pooled SD</div>
 
 . . .
 
-The __pooled SD__ combines the two groups' SDs, weighted by their sample sizes:
+The [pooled SD]{.hl} combines the two groups' SDs, weighted by their sample sizes:
 
 ```{r}
 s <- vowels |> summarise(m = mean(duration), sd = sd(duration), n = n(), .by = voicing)
@@ -177,7 +177,7 @@ The voiced mean is almost 2 SDs above the voiceless mean.
 
 ## Cohen's d in R
 
-With the `{effsize}` package (install once with `install.packages("effsize")`):
+With the `{effsize}` package, which came with `{konstats}`:
 
 ```{r}
 library(effsize)
@@ -215,7 +215,7 @@ _Source: Australian Museum_
 
 ## The standard error {.smaller}
 
-How much would a sample mean vary from sample to sample? The __standard error__:
+The [standard error]{.hl} (SE) says how much a sample mean would vary from sample to sample:
 
 <div class="formula">SE = SD / √n</div>
 
@@ -235,7 +235,7 @@ c(simulated_n10 = sd(means$mean[means$n == "n = 10"]), formula_n10 = 25 / sqrt(1
 
 . . .
 
-The SD describes the [data]{.hl}, and the SE describes the [estimate]{.hl}.
+The SD describes the data, and the SE describes the estimate.
 
 ## The SE shrinks with n
 
@@ -251,7 +251,7 @@ To halve the SE, you need four times as many observations.
 
 ## Confidence intervals
 
-A __95% confidence interval__: the estimate, plus and minus about two standard errors.
+A [95% confidence interval]{.hl} (CI) is the estimate, plus and minus about two standard errors.
 
 ```{r}
 set.seed(3)
@@ -303,7 +303,7 @@ _Source: Australian Museum_
 ## Null and alternative hypotheses
 
 - The [null hypothesis]{.hl} H₀ says there is no difference: μ_voiced = μ_voiceless
-- The alternative hypothesis H₁ says there is one: μ_voiced ≠ μ_voiceless
+- The [alternative hypothesis]{.hl} H₁ says there is one: μ_voiced ≠ μ_voiceless
 
 . . .
 
@@ -390,7 +390,7 @@ _Source: Anich et al. (2020), Mammalia_
 
 ## The t-distribution {.smaller}
 
-If H₀ is true, t follows a known shape: the __t-distribution__, which depends on the [degrees of freedom]{.hl} (roughly, the sample size).
+If H₀ is true, t follows a known shape, the [t-distribution]{.hl}, which depends on the [degrees of freedom]{.hl} (roughly, the sample size).
 
 ```{r, echo = FALSE, fig.height = 3.6}
 t_obs <- t.test(duration ~ style, data = small)
@@ -430,7 +430,7 @@ t.test(duration ~ style, data = small)
 
 ## Two tails
 
-- Two-tailed test: H₁ is "a difference in either direction"; both tails count
+- In a [two-tailed test]{.hl}, H₁ is "a difference in either direction", so both tails count
 - One-tailed tests only count one direction. Use them only if the direction was fixed before seeing the data
 
 . . .
@@ -455,7 +455,7 @@ Chapter 10 of Winter is about these misinterpretations: we come back to it in le
 
 ## Significance
 
-By convention, if `p < α`, with α usually 0.05, the result is called __statistically significant__ and H₀ is rejected.
+By convention, if `p < α`, with α usually 0.05, the result is called [statistically significant]{.hl} and H₀ is rejected.
 
 . . .
 
@@ -472,7 +472,7 @@ t.test(duration ~ voicing, data = vowels)
 
 With 60 tokens per group, t is about `r round(abs(t.test(duration ~ voicing, data = vowels)$statistic), 1)`: a difference this large would be extremely unlikely if voicing had no effect.
 
-## Significance is not size {.smaller}
+## Significance and effect size {.smaller}
 
 ```{r}
 set.seed(4)
@@ -565,7 +565,7 @@ t.test(h1h2 ~ l1, data = speakers)[c("statistic", "p.value", "conf.int")]
 
 . . .
 
-Speech rate differs clearly; H1-H2 does not reach significance. But a non-significant result is not evidence of no difference: the CI for H1-H2 runs from `r round(t.test(h1h2 ~ l1, data = speakers)$conf.int[1], 1)` to `r round(t.test(h1h2 ~ l1, data = speakers)$conf.int[2], 1)` dB. The data are compatible with no difference, but just as compatible with differences of that size.
+Speech rate differs clearly, while H1-H2 does not reach significance. A non-significant result is not evidence of no difference: the CI for H1-H2 runs from `r round(t.test(h1h2 ~ l1, data = speakers)$conf.int[1], 1)` to `r round(t.test(h1h2 ~ l1, data = speakers)$conf.int[2], 1)` dB. The data are compatible with no difference, but just as compatible with differences of that size.
 
 ## Summary
 
@@ -574,7 +574,7 @@ Speech rate differs clearly; H1-H2 does not reach significance. But a non-signif
 - [Cohen's d]{.hl} expresses a difference in SD units
 - The SE (`SD / √n`) says how much an estimate varies across samples, and a [95% CI]{.hl} gives the values compatible with the data
 - `t` = difference / SE; `p` = how surprising t would be if H₀ were true
-- Significant ≠ large ≠ important: report [effect sizes]{.hl} and [CIs]{.hl}
+- A significant effect need not be large or important, so report [effect sizes]{.hl} and [CIs]{.hl}
 :::
 
 ## Slides and code

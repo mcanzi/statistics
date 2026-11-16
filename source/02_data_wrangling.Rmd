@@ -57,10 +57,9 @@ rt_data <- tibble(
 
 By the end of this class you will be able to
 
-- explain what the `tidyverse` is and what tidy data looks like
+- recognise tidy data, and turn wide data into long data
 - read and write `.csv` files with `{readr}`
-- use the core `{dplyr}` verbs: `select()`, `filter()`, `arrange()`, `rename()`, `mutate()`
-- summarise data by group with `summarise()` and `count()`
+- use the core `{dplyr}` verbs `select()`, `filter()`, `arrange()`, `rename()` and `mutate()`, and summarise data by group with `summarise()` and `count()`
 - chain everything together with the pipe `|>`
 
 # The tidyverse
@@ -71,13 +70,12 @@ Hadley Wickham (Chief Scientist at Posit, formerly RStudio)
 
 ## Tidyverse {.smaller}
 
-A collection of R packages that share the same design, grammar and data structures.
+In lecture 1 we called the tidyverse a dialect of R. Its packages share the same design, grammar and data structures, and everything you know from base R still works.
 
-- A dialect of R: everything you know from base R still works
-- Functions are verbs named after what they do
+- Functions are verbs, named after what they do
 - The data always comes first, so functions can be chained
-- Output is (almost) always a [data frame]{.hl}, so the next step knows what to expect
-- Together with Quarto / R Markdown: reproducible analyses
+- Output is (almost) always a data frame, which tells the next step what to expect
+- With Quarto or R Markdown, the whole analysis becomes reproducible
 
 ## Base R vs tidyverse {.smaller}
 
@@ -134,7 +132,7 @@ Almost every analysis goes through the same steps, and each has its own tools:
 | Import | Tidy | Transform | Visualise | Model | Communicate |
 |:--|:--|:--|:--|:--|:--|
 | `{readr}` | `{tidyr}` | `{dplyr}` | `{ggplot2}` | `lm()` and friends | Quarto, R Markdown |
-| today | today | [today]{.hl} | next class | lectures 4–13 | your assignment |
+| today | today | today | next class | lectures 4–13 | your assignment |
 
 . . .
 
@@ -200,14 +198,13 @@ wide |>
 
 ## Tibbles
 
-A `tibble` is a data frame with nicer defaults.
+A [tibble]{.hl} is a data frame with nicer defaults.
 
 ```{r}
 penguins
 ```
 
-- Prints only the first rows and the columns that fit
-- Shows the type of each column: `<fct>`, `<dbl>`, `<int>`, `<chr>`
+It prints only the first rows and the columns that fit, and shows the type of each column: `<fct>`, `<dbl>`, `<int>`, `<chr>`.
 
 ## `glimpse()`
 
@@ -227,10 +224,9 @@ _Sources: Gorman, Williams & Fraser (2014), PLoS ONE; palmerpenguins documentati
 
 ## The `penguins` data
 
-344 penguins, 3 species, 3 islands in the Palmer Archipelago (Antarctica).
+344 penguins of 3 species, from 3 islands in the Palmer Archipelago (Antarctica). The data come with `{konstats}`, in the package `{palmerpenguins}`:
 
 ```{r, eval=FALSE}
-install.packages("palmerpenguins")
 library(palmerpenguins)
 ```
 
@@ -285,9 +281,8 @@ rt <- read_csv(example_file)
 
 . . .
 
-- Rows and columns read
-- The type it guessed for each column
-- If a guess is wrong, set it yourself:
+- How many rows and columns it read, and the type it guessed for each column
+- If a guess is wrong, you can set the type yourself:
 
 . . .
 
@@ -345,7 +340,7 @@ nrow(penguins)
 
 . . .
 
-Nothing happened to `penguins`! To keep the result, assign it:
+`penguins` still has all its rows. To keep the result, assign it:
 
 ```{r}
 gentoo <- filter(penguins, species == "Gentoo")
@@ -401,7 +396,7 @@ select(penguins, -(1:5))
 
 . . .
 
-If the column order changes (new data export, a colleague's file), your code silently selects the wrong columns. Prefer names.
+If the column order changes, for example in a new data export or a colleague's file, your code silently selects the wrong columns. Selecting by name avoids this.
 
 ## `rename()` {.smaller}
 
@@ -444,7 +439,7 @@ mutate(penguins, size = if_else(body_mass_g > 4500, "large", "small"))
 
 . . .
 
-`case_when()` for more than two
+`case_when()` for more than two. Conditions are checked in order, and rows matching none of them get `NA`:
 
 ```{r}
 penguins_2 <- mutate(penguins,
@@ -456,10 +451,6 @@ penguins_2 <- mutate(penguins,
 )
 count(penguins_2, size)
 ```
-
-. . .
-
-Conditions are checked in order. Rows matching none of them get `NA`.
 
 ## `mutate()` on many columns: `across()` {.smaller}
 
@@ -548,7 +539,7 @@ nrow(filter(penguins, sex != "female"))
 
 . . .
 
-`165 + 168 = 333`, not 344! The 11 penguins with unknown `sex` are dropped by both.
+`165 + 168` is 333, and `penguins` has 344 rows. Both filters drop the 11 penguins whose `sex` is unknown.
 
 ## Discussion
 
@@ -614,7 +605,7 @@ summarise(penguins,
 
 . . .
 
-`na.rm = TRUE`: ignore missing values. Without it, one `NA` makes the whole result `NA`.
+`na.rm = TRUE` ignores missing values. Without it, one `NA` makes the whole result `NA`.
 
 ## `group_by()` + `summarise()` {.smaller}
 
@@ -694,8 +685,8 @@ penguins_4 <- select(
 `x |> f(y)` is the same as `f(x, y)`
 :::
 
-- Takes the result on the left, passes it as the first argument of the function on the right
-- Read it aloud as [then]{.hl}. There is no need to repeat the object at every step
+- The [pipe]{.hl} takes the result on the left and passes it as the first argument of the function on the right
+- Read it aloud as "then", so you do not repeat the object at every step
 
 . . .
 
@@ -718,7 +709,7 @@ penguins_2
 
 . . .
 
-Store the result as `penguins_2`. If you cannot read a pipe aloud like this, it is probably doing too much at once.
+Store the result as `penguins_2`. A pipe that you cannot read aloud like this is probably doing too much at once.
 
 ## `PRO TIP!` Save to the right
 
@@ -735,8 +726,8 @@ Same output as the previous slide. The code now reads top to bottom in the order
 
 You will see two pipes in the wild:
 
-- `%>%` from `{magrittr}`, loaded with the tidyverse (since 2014)
-- `|>` built into R itself (since R 4.1.0)
+- `%>%` comes from `{magrittr}` and is loaded with the tidyverse (since 2014)
+- `|>` is built into R itself, since R 4.1.0
 
 . . .
 
@@ -790,7 +781,7 @@ Note: `{ggplot2}` layers are added with `+`, not `|>`. More next class.
 - Columns: `select()`, `rename()`, `mutate()`, `across()`
 - Rows: `filter()`, `filter_out()`, `arrange()`
 - Groups: `summarise()`, `count()`, `group_by()` or `.by`
-- Chain with `|>`, read as [then]{.hl}
+- Chain with `|>`, read as "then"
 - Always assign the result if you want to keep it
 :::
 

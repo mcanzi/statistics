@@ -19,16 +19,9 @@ library(lme4)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data
 
-In `vot_identification`, 12 English and 12 Spanish listeners hear syllables like *ba* and *pa* made by a speech synthesiser. The **voice onset time** (`vot`) of the first consonant goes from −20 to 60 ms in steps of 5 ms. Listeners hear each step 10 times (`trials`) and say each time whether they heard a voiced (*b*) or a voiceless (*p*) consonant; `voiceless` is how often they said *p*. Today we use only the labial consonants, *b* and *p*:
+In `vot_identification`, 12 English and 12 Spanish listeners hear syllables like *ba* and *pa* made by a speech synthesiser. The [voice onset time]{.hl} (`vot`) of the first consonant goes from −20 to 60 ms in steps of 5 ms. Listeners hear each step 10 times (`trials`) and say each time whether they heard a voiced (*b*) or a voiceless (*p*) consonant; `voiceless` is how often they said *p*. Today we use only the labial consonants, *b* and *p*:
 
 ```{r}
 labials <- vot_identification |>

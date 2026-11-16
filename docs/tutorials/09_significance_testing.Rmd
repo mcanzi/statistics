@@ -20,13 +20,6 @@ library(effsize)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data
 
 In `perception_training`, 18 learners of a foreign language try to tell apart two consonants of that language that their own language does not distinguish. They hear 40 words and say which consonant they heard, once before and once after a week of training. `pre` and `post` are the number of correct answers out of 40.

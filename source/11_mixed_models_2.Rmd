@@ -76,15 +76,15 @@ Today: doing it properly, from simulated data to write-up.
 
 # Simulated vowel durations
 
-## Why simulated data?
+## Simulated data
 
-With real data, we never know the true effects. With simulated data, we do, so we can check whether the model recovers them.
+As with every `{simling}` data set (lecture 5), we know the true effects, so we can check whether the model recovers them.
 
 . . .
 
 `vowel_duration` from {simling} follows the simulation in Winter (2019, section 15.2):
 
-- 16 speakers each read the same 24 words. Half the words end in a [voiced]{.hl} consonant, half in a [voiceless]{.hl} one
+- 16 speakers each read the same 24 words. Half the words end in a voiced consonant, half in a voiceless one
 - True voicing effect: vowels 20 ms longer before voiced consonants
 
 ## The true model {.smaller}
@@ -166,7 +166,7 @@ The voicing effect is estimated at `r round(fixef(m)["voicingvoiced"], 1)` ms (t
 
 . . .
 
-For a t-test, we need the [degrees of freedom]{.hl}. In a mixed model, it is not clear what they are: 384 observations? 16 speakers? 24 words? Something in between?
+For a t-test, we need the degrees of freedom (lecture 9). In a mixed model, it is not clear what they are: 384 observations? 16 speakers? 24 words? Something in between?
 
 . . .
 
@@ -175,7 +175,7 @@ Several solutions exist. We will look at two: [likelihood ratio tests]{.hl}, and
 # Extracting information
 
 ::: {.fact}
-`Did you know:` about [two-thirds]{.hl} of an octopus's neurons are in its arms, not its head, so each arm can act semi-independently.
+`Did you know:` about two-thirds of an octopus's [neurons]{.hl} are in its arms, not its head, so each arm can act semi-independently.
 
 _Source: Smithsonian Magazine_
 :::
@@ -200,7 +200,7 @@ sigma(m)              # the residual SD
 
 ## Each speaker's estimates {.smaller}
 
-`ranef()`: each speaker's adjustment to the fixed effects. `coef()`: fixed effects plus adjustments, that is each speaker's own estimates.
+`ranef()` gives each speaker's adjustment to the fixed effects. `coef()` adds the adjustments to the fixed effects, which gives each speaker's own estimates.
 
 ```{r}
 head(ranef(m)$speaker, 3)
@@ -227,7 +227,7 @@ confint(m, parm = "beta_", method = "Wald")
 
 ## Predictions {.smaller}
 
-`re.form = NA`: the [population-level]{.hl} prediction, for an average speaker and an average word:
+With `re.form = NA`, `predict()` gives the [population-level]{.hl} prediction, for an average speaker and an average word:
 
 ```{r}
 new <- tibble(voicing = factor(c("voiceless", "voiced"), levels = levels(vowels$voicing)))
@@ -287,10 +287,10 @@ The full model fits much better: χ²(`r anova(m_null, m_full)$Df[2]`) = `r roun
 
 Here the models differ by one parameter, the voicing effect, so the test has 1 df.
 
-## REML or ML?
+## REML or ML? {.smaller}
 
-- `lmer()` uses __REML__ (restricted maximum likelihood) by default: better estimates of the variances
-- To compare models that differ in their fixed effects, the likelihoods must come from __ML__: `REML = FALSE`
+- By default, `lmer()` uses [REML]{.hl} (restricted maximum likelihood), which gives better estimates of the variances
+- To compare models that differ in their fixed effects, the likelihoods must come from [ML]{.hl} (maximum likelihood), with `REML = FALSE`
 
 . . .
 
@@ -380,7 +380,7 @@ _Source: RNZ_
 
 There is no single R². Nakagawa and Schielzeth (2013) distinguish:
 
-[Marginal R²]{.hl} is the variance explained by the fixed effects alone. Conditional R² also counts what the random effects explain.
+[Marginal R²]{.hl} is the variance explained by the fixed effects alone. [Conditional R²]{.hl} also counts what the random effects explain.
 
 . . .
 
@@ -421,7 +421,7 @@ This is a warning rather than an error, so R still returns a model, but check it
 
 1. Check the data and the design: is every random slope possible? (see above)
 2. Centre or scale continuous predictors (lecture 5)
-3. Try a different [optimiser]{.hl}: `lmer(..., control = lmerControl(optimizer = "bobyqa"))`
+3. Try a different optimiser: `lmer(..., control = lmerControl(optimizer = "bobyqa"))`
 4. Compare all optimisers with `allFit(model)`: if they agree, the warning is usually harmless
 5. Simplify the random effects: first remove the correlations with `||`, then slopes with the least variance. `||` only works for `numeric` predictors: code a factor like voicing as 0/1 first
 
@@ -437,7 +437,7 @@ boundary (singular) fit: see help('isSingular')
 
 . . .
 
-The model estimated a random-effect variance of zero, or a correlation of exactly ±1: the data cannot support that part of the random effects structure.
+The model estimated a random-effect variance of zero, or a correlation of exactly ±1: the data cannot support that part of the random effects structure. You met one in tutorial 10.
 
 ```{r}
 isSingular(m)
@@ -468,7 +468,7 @@ ggplot(shr, aes(y = speaker)) +
   theme(axis.text.y = element_text(size = 9))
 ```
 
-Pink: each speaker's raw voicing effect. Blue: the model's estimate, [shrunk]{.hl} towards the average. When interpreting individual speakers, remember that their estimates borrow strength from everyone else.
+Pink: each speaker's raw voicing effect. Blue: the model's estimate, shrunk towards the average. When interpreting individual speakers, remember that their estimates borrow strength from everyone else.
 
 # Your turn
 
@@ -531,11 +531,11 @@ With random intercepts only, the same test gives p = `r format(signif(p_ri, 2), 
 ## Summary
 
 ::: {.takeaway}
-- Check your model on simulated data first: only there do you know the truth
+- On simulated data the true values are known, so you can check whether a model recovers them
 - `summary()`, `fixef()`, `ranef()`, `coef()`, `VarCorr()`, `confint()`, `predict(re.form = NA)`
 - `lme4` gives no p-values: use [likelihood ratio tests]{.hl} (with ML), or `{lmerTest}`
 - Random slopes only where the predictor varies within the group
-- Convergence warnings and singular fits: check, change optimiser, then simplify
+- After a convergence warning or a singular fit, check the model, change the optimiser, then simplify
 - Marginal vs conditional `R²`
 :::
 

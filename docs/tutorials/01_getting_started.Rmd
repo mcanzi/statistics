@@ -52,7 +52,7 @@ remotes::install_github("mcanzi/konstats")
 
 . . .
 
-This also installs the packages from lecture 1 (`tidyverse`, `palmerpenguins`, `swirl`) and the rest of the course, `{simling}` included. It takes a few minutes the first time.
+This also installs every package the course uses, from the `tidyverse` and `swirl` of lecture 1 to `{simling}`. It takes a few minutes the first time.
 
 . . .
 
@@ -330,8 +330,7 @@ mean(with_gap, na.rm = TRUE)
 
 ### 3.10 Getting help
 
-- `?mean` opens the help page of `mean()`. The examples at the bottom can be run as they are.
-- `?vowel_voicing` works for data sets too.
+- `?mean` opens the help page of `mean()`, and `?vowel_voicing` works for data sets too. The examples at the bottom of a help page can be run as they are.
 - An error message pasted into a search engine usually finds someone who had the same problem.
 
 . . .

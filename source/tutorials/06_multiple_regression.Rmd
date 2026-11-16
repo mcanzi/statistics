@@ -19,16 +19,9 @@ library(broom)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data {.smaller}
 
-In `dgs_iconicity`, 30 deaf signers of German Sign Language (DGS) and 30 hearing people who do not sign rate 300 DGS signs for **iconicity**: how much a sign looks like what it means, from 1 (not at all) to 7 (very much). Deaf signers also rated each sign's age of acquisition (`aoa`, in years). The code below makes one row per sign, with the mean rating of each group:
+In `dgs_iconicity`, 30 deaf signers of German Sign Language (DGS) and 30 hearing people who do not sign rate 300 DGS signs for [iconicity]{.hl}: how much a sign looks like what it means, from 1 (not at all) to 7 (very much). Deaf signers also rated each sign's age of acquisition (`aoa`, in years). The code below makes one row per sign, with the mean rating of each group:
 
 ```{r}
 signs <- dgs_iconicity |>
@@ -59,9 +52,9 @@ signs |>
 
 :::
 
-::: solution
+::: {.solution .smaller}
 
-```{r}
+```{r, fig.height = 3}
 signs |>
   ggplot(aes(x = non_signers, y = aoa)) +
   geom_point(colour = "plum2", alpha = 0.6) +
@@ -164,6 +157,10 @@ glance(m_n)[, 1:2]
 glance(m)[, 1:2]
 ```
 
+:::
+
+::: solution
+
 `m` explains `r round(100 * glance(m)$adj.r.squared)`% of the variance in `aoa` (adjusted), only a little more than `m_n` with `r round(100 * glance(m_n)$adj.r.squared)`%. Once we know the non-signers' rating, the signers' rating adds little.
 
 :::
@@ -172,20 +169,20 @@ glance(m)[, 1:2]
 
 Use `tidy()` on `m_s` and on `m`. How does the standard error of the `signers` slope change? Why?
 
-::: solution
+::: {.solution .smaller}
 
 ```{r}
 tidy(m_s)
 tidy(m)
 ```
 
-The standard error grows from `r round(tidy(m_s)$std.error[2], 3)` to `r round(tidy(m)$std.error[2], 3)`. The two predictors are strongly correlated, so the data contain little information about what each one does on its own. This is **collinearity**.
+The standard error grows from `r round(tidy(m_s)$std.error[2], 3)` to `r round(tidy(m)$std.error[2], 3)`. The two predictors are strongly correlated, so the data contain little information about what each one does on its own. This is [collinearity]{.hl}.
 
 :::
 
 ### 3.3 Bonus: VIF by hand
 
-The variance inflation factor (VIF) of a predictor is 1 / (1 − R²), where R² comes from a model that predicts it from the other predictors. Compute the VIF of `signers` in `m`.
+The [variance inflation factor]{.hl} (VIF) of a predictor is 1 / (1 − R²), where R² comes from a model that predicts it from the other predictors. Compute the VIF of `signers` in `m`.
 
 ::: solution
 

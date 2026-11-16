@@ -123,7 +123,7 @@ You hand in one file that contains the text of your paper alongside the code of 
 
 . . .
 
-As The Smiths warn in _Cemetry Gates_ (1986): plagiarism tends to get noticed.
+Plagiarism tends to get noticed, as The Smiths remind us in _Cemetry Gates_ (1986).
 
 ## Dissertations
 
@@ -214,22 +214,9 @@ RStudio needs R to work, so install R first.
 <div style="background: var(--understory); border-left: 3px solid var(--orchid); border-radius: 6px; padding: 0.6em 0.8em;"><strong>Files, Plots, Packages, Help</strong><br>Your folders, your plots, installed packages and the documentation.</div>
 </div>
 
-## Install the packages (once)
+## Packages
 
-Type this in the RStudio `Console`:
-
-```{r, eval=FALSE}
-install.packages(c("tidyverse", "palmerpenguins", "swirl"))
-```
-
-. . .
-
-Check that everything worked:
-
-```{r, eval=FALSE}
-R.version.string          # your version of R
-packageVersion("dplyr")   # should be 1.2.0 or newer
-```
+[Packages]{.hl} add functions and data sets to R. Every package this course uses comes with `{konstats}`, the course package, which we install together in tutorial 1.
 
 . . .
 
@@ -291,12 +278,11 @@ x + 1
 . . .
 
 - The object now appears in your `Environment`
-- Names are [case sensitive]{.hl}: `x` and `X` are two different objects
-- Names cannot start with a number or contain spaces: `word_freq` works, word freq does not
+- Names are [case sensitive]{.hl}, so `x` and `X` are two different objects. They cannot start with a number or contain spaces: `word_freq` works, word freq does not
 
 ## Vectors {.smaller}
 
-`c()` combines values into a `vector`. Arithmetic works on every element at once:
+`c()` combines values into a [vector]{.hl}. Arithmetic works on every element at once:
 
 ```{r}
 ages <- c(23, 31, 19, 45)
@@ -334,7 +320,7 @@ x[x > 15]
 
 ## Logical vectors {.smaller}
 
-A comparison returns `TRUE` or `FALSE` for each element:
+A comparison returns a [logical vector]{.hl}, with `TRUE` or `FALSE` for each element:
 
 ```{r}
 x > 15
@@ -355,7 +341,7 @@ Comparisons: `==` equal, `!=` not equal, `>`, `<`, `>=`, `<=`
 
 ## Text and categories
 
-Text goes in `"quotes"`: a `character` vector.
+Text goes in `"quotes"`, and makes a [character vector]{.hl}.
 
 ```{r}
 words <- c("cat", "dog", "cat", "bird", "cat")
@@ -364,7 +350,7 @@ table(words)
 
 . . .
 
-A `factor` stores categories, with a fixed set of `levels`:
+A [factor]{.hl} stores categories, with a fixed set of [levels]{.hl}:
 
 ```{r}
 animal <- factor(words)
@@ -373,7 +359,7 @@ levels(animal)
 
 . . .
 
-Levels are sorted alphabetically by default: this matters later.
+Levels are sorted alphabetically by default, which matters later.
 
 ## Data frames {.smaller}
 
@@ -392,7 +378,7 @@ d$freq          # one column
 d[2, ]          # second row, all columns
 ```
 
-## Functions and arguments
+## Functions and arguments {.smaller}
 
 A function takes [arguments]{.hl} inside its brackets. Name them to make code readable:
 
@@ -402,7 +388,7 @@ round(3.14159, digits = 2)
 
 . . .
 
-`NA` marks a missing value. Most summaries return `NA` if one is present, unless you say otherwise:
+`NA` marks a [missing value]{.hl}. Most summaries return `NA` if one is present, unless you say otherwise:
 
 ```{r}
 mean(c(4, NA, 8))
@@ -429,7 +415,7 @@ citation("tidyverse")      # how to cite a package
 
 . . .
 
-You installed it already. To start a lesson:
+It comes with `{konstats}`. To start a lesson:
 
 ```{r, eval=FALSE}
 library(swirl)
@@ -448,7 +434,7 @@ The `tidyverse` is a collection of R packages, created by [Hadley Wickham](https
 
 . . .
 
-It replaces many base R functions with alternatives that are easier to read and write. Think of it as a dialect of R, with base R as the standard variety.
+Many base R functions have tidyverse alternatives that are easier to read and write. Think of it as a dialect of R, with base R as the standard variety.
 
 . . .
 
@@ -480,15 +466,14 @@ Coretta et al. (2023) gave one speech production data set and one research quest
 
 . . .
 
-Every analysis involves choices like these. Statistics makes them explicit, so others can check them.
+Every analysis involves choices like these, and statistics makes them explicit so that others can check them.
 
 ## What you will learn
 
 By the end of the course you will be able to:
 
-- describe and plot linguistic data in R
+- describe and plot linguistic data in R, and report an analysis so that others can follow and reproduce it
 - build, interpret and check regression models, from simple linear models to mixed effects and logistic regression
-- report an analysis so that others can follow it and reproduce it
 
 ## Your turn
 
@@ -496,7 +481,7 @@ Open `RStudio`, start a new script, and run the code from today's slides line by
 
 . . .
 
-Then change things: other numbers, other words, a missing value. Seeing what breaks is the quickest way to learn what each piece does.
+Then change things, such as the numbers, the words or a missing value, and look at what breaks. That shows you what each piece of code does.
 
 ## Slides and code
 

@@ -19,16 +19,9 @@ library(broom)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data
 
-In `dgs_iconicity`, 30 deaf signers of German Sign Language (DGS) and 30 hearing people who do not sign rate 300 DGS signs for **iconicity**: how much a sign looks like what it means, from 1 (not at all) to 7 (very much). Deaf signers also rated each sign's age of acquisition (`aoa`, in years). The code below makes one row per sign, with the mean rating of each group:
+In `dgs_iconicity`, 30 deaf signers of German Sign Language (DGS) and 30 hearing people who do not sign rate 300 DGS signs for [iconicity]{.hl}: how much a sign looks like what it means, from 1 (not at all) to 7 (very much). Deaf signers also rated each sign's age of acquisition (`aoa`, in years). The code below makes one row per sign, with the mean rating of each group:
 
 ```{r}
 signs <- dgs_iconicity |>
@@ -118,7 +111,7 @@ Use `tidy()` on `m_s` and on `m`. How does the standard error of the `signers` s
 
 ### 3.3 Bonus: VIF by hand
 
-The variance inflation factor (VIF) of a predictor is 1 / (1 − R²), where R² comes from a model that predicts it from the other predictors. Compute the VIF of `signers` in `m`.
+The [variance inflation factor]{.hl} (VIF) of a predictor is 1 / (1 − R²), where R² comes from a model that predicts it from the other predictors. Compute the VIF of `signers` in `m`.
 
 ```{r}
 

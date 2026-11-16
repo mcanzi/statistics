@@ -124,7 +124,7 @@ A straight line predicts probabilities above 1 and below 0 (the pink zones). Its
 
 ## Discussion
 
-Many outcomes in linguistics are binary: correct or incorrect, one variant or another, a word recognised or not.
+Binary outcomes are common in linguistics.
 
 - Which binary outcomes come up in your field?
 - Have you seen them analysed as percentages averaged per participant? What could go wrong with that?
@@ -159,11 +159,11 @@ A logistic regression models how `p` changes with the predictors.
 
 ## Three ingredients
 
-A __generalised linear model__ (GLM) has:
+A [generalised linear model]{.hl} (GLM) has:
 
 1. A [distribution]{.hl} for the outcome: here, the binomial (Bernoulli) distribution
 2. A [linear predictor]{.hl}: b₀ + b₁ · x, exactly as before
-3. A [link function]{.hl}, which connects the two: here, the __logit__
+3. A [link function]{.hl}, which connects the two: here, the [logit]{.hl}
 
 . . .
 
@@ -180,7 +180,7 @@ tibble(p = c(0.1, 0.25, 0.5, 0.75, 0.9)) |>
 
 . . .
 
-The [odds]{.hl} say how much more likely something is to happen than not: p = 0.75 gives odds of 3, or 3 to 1. Their log, the log odds or logit, runs from −∞ to +∞ and is 0 when p = 0.5.
+The [odds]{.hl} say how much more likely something is to happen than not: p = 0.75 gives odds of 3, or 3 to 1. Their log, the [log odds]{.hl} or logit, runs from −∞ to +∞ and is 0 when p = 0.5.
 
 ## The logistic function
 
@@ -196,7 +196,7 @@ tibble(logit = seq(-6, 6, by = 0.05), p = plogis(logit)) |>
   labs(x = "Log odds", y = "Probability")
 ```
 
-The model is linear on the [log odds]{.hl} scale. On the probability scale, it becomes an S-shaped curve that never goes below 0 or above 1.
+The model is linear on the log odds scale. On the probability scale, it becomes an S-shaped curve that never goes below 0 or above 1.
 
 ## In R
 
@@ -246,7 +246,7 @@ print(summary(m), correlation = FALSE, signif.stars = FALSE)
 | Part of the output | What it tells you |
 |:--|:--|
 | `Laplace Approximation` | how the model was fitted: maximum likelihood, there is no REML |
-| `Random effects` | SDs on the [log odds]{.hl} scale, and no residual variance: for 0/1 data the distribution fixes it |
+| `Random effects` | SDs on the log odds scale, and no residual variance: for 0/1 data the distribution fixes it |
 | `Fixed effects` | estimates on the log odds scale, with z values and p-values |
 
 . . .
@@ -281,13 +281,13 @@ On the probability scale: about `r round(100 * plogis(fixef(m)[1]))`% correct.
 
 ## The slope: log odds
 
-The slope, `r round(fixef(m)[2], 2)`: each extra unit of log frequency adds `r round(fixef(m)[2], 2)` to the [log odds]{.hl} of a correct response (truth: 0.8).
+The slope, `r round(fixef(m)[2], 2)`: each extra unit of log frequency adds `r round(fixef(m)[2], 2)` to the log odds of a correct response (truth: 0.8).
 
 . . .
 
 Log odds are hard to think in. Two ways out:
 
-1. Exponentiate, to get an __odds ratio__
+1. Exponentiate, to get an [odds ratio]{.hl}
 2. Compute [predicted probabilities]{.hl}
 
 ## Odds ratios
@@ -306,7 +306,7 @@ Each extra unit of log frequency multiplies the odds of a correct response by ab
 - Odds ratio `< 1`: less likely
 - Odds ratio `= 1`, that is a log odds slope of 0: no effect
 
-## Predicted probabilities
+## Predicted probabilities {.smaller}
 
 ```{r}
 new <- tibble(freq_c = c(-2, -1, 0, 1, 2))
@@ -320,11 +320,11 @@ pp <- round(100 * predict(m, newdata = new, re.form = NA, type = "response"))
 
 . . .
 
-`type = "response"`: probabilities, not log odds. `re.form = NA`: an average participant and word.
+`type = "response"` returns probabilities instead of log odds, and `re.form = NA` predicts for an average participant and word.
 
 . . .
 
-The same slope, different changes in probability: +`r pp[2] - pp[1]` points from −2 to −1, only +`r pp[5] - pp[4]` from 1 to 2.
+The slope is the same everywhere, but the change in probability is not: +`r pp[2] - pp[1]` points from −2 to −1, and only +`r pp[5] - pp[4]` from 1 to 2.
 
 ## The divide-by-4 rule
 
@@ -391,7 +391,7 @@ Mixed logistic models are harder to fit than `lmer()` models, and convergence wa
 
 Binary data carry less information per observation than continuous data: complex random effects need a lot of data.
 
-## Reporting
+## Reporting {.smaller}
 
 ```{r, echo = FALSE}
 lrt <- anova(m_null, m)
@@ -469,7 +469,7 @@ Readers skip predictable words more often than unpredictable ones: about `r roun
 
 ::: {.takeaway}
 - Binary outcomes need `glmer(..., family = binomial)` instead of `lmer()`
-- A GLM: a [distribution]{.hl}, a [linear predictor]{.hl}, a [link function]{.hl}
+- A GLM combines a [distribution]{.hl}, a [linear predictor]{.hl} and a [link function]{.hl}
 - Coefficients are on the [log odds]{.hl} scale: `exp()` gives odds ratios, `plogis()` probabilities
 - The same slope means different changes in probability along the S-curve; divide by 4 for the maximum
 - Test with [likelihood ratio tests]{.hl}; expect more convergence issues

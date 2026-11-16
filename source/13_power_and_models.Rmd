@@ -77,7 +77,7 @@ Today: how p-values can mislead, and how to plan and report models more carefull
 
 ## Common misreadings
 
-A p-value of .03 does __not__ mean:
+Lecture 9 listed what a p-value is not. For a p-value of .03, it does not mean:
 
 - that there is a 3% chance that the null hypothesis is true
 - that there is a 97% chance that the effect is real
@@ -89,19 +89,19 @@ It means: if the null hypothesis were true, data at least this extreme would tur
 
 ## Absence of evidence
 
-p > .05 does __not__ mean that there is no effect.
+p > .05 does not mean that there is no effect.
 
 . . .
 
-The data are compatible with no effect, and they may be just as compatible with a large one, so look at the confidence interval. A small study can also miss a real effect; that is a question of [power]{.hl}, which comes next.
+The data are compatible with no effect, and they may be just as compatible with a large one, so look at the confidence interval. A small study can also miss a real effect, which is a question of power, coming next.
 
-## Significant vs not significant
+## Significant vs not significant {.smaller}
 
 Two studies of the same effect (Gelman & Stern, 2006):
 
 | | Estimate | SE | p | |
 |:--|--:|--:|--:|:--|
-| Study A | 25 | 10 | .01 | [significant]{.hl} |
+| Study A | 25 | 10 | .01 | significant |
 | Study B | 10 | 10 | .32 | not significant |
 
 . . .
@@ -116,7 +116,7 @@ se_diff <- sqrt(10^2 + 10^2)
 
 . . .
 
-The difference between them is not significant either. Compare the effects directly, not their p-values.
+The difference between them is not significant either. To compare two studies, compare their effects directly.
 
 # Power and errors
 
@@ -196,7 +196,7 @@ For 80% power, this 10 ms effect needs about `r ceiling(power.t.test(power = 0.8
 
 ## Type M and Type S errors
 
-Gelman & Carlin (2014): with low power, the significant results are the misleading ones.
+Gelman & Carlin (2014) showed that with low power, significant results tend to be misleading.
 
 ```{r, echo = FALSE, fig.height = 3.4}
 sims20 |>
@@ -221,7 +221,7 @@ mean(sig$estimate < 0)
 
 . . .
 
-The true difference is 10 ms. The significant estimates are on average `r round(mean(abs(sig$estimate)) / 10, 1)` times too large, a [Type M]{.hl} (magnitude) error, and `r round(100 * mean(sig$estimate < 0), 1)`% of them point the wrong way, a Type S (sign) error. So a significant result from a small study probably exaggerates the effect.
+The true difference is 10 ms. The significant estimates are on average `r round(mean(abs(sig$estimate)) / 10, 1)` times too large, a [Type M]{.hl} (magnitude) error, and `r round(100 * mean(sig$estimate < 0), 1)`% of them point the wrong way, a [Type S]{.hl} (sign) error. So a significant result from a small study probably exaggerates the effect.
 
 ## Power for mixed models
 
@@ -303,7 +303,7 @@ Bonferroni multiplies each p-value by the number of tests; Holm does something s
 
 . . .
 
-Better still: test fewer things. Decide which comparisons answer your question before you look at the data.
+Testing fewer things is even better. Decide which comparisons answer your question before you look at the data.
 
 ## Stopping rules
 
@@ -386,7 +386,7 @@ coef(summary(m_sp))
 
 Vowel duration in three speaking styles, from lecture 7: two coefficients, two treatment contrasts against casual speech. But is `style` as a whole a useful predictor?
 
-## Testing the whole predictor
+## Testing the whole predictor {.smaller}
 
 Compare models with and without it, as in lectures 11 and 12:
 
@@ -435,7 +435,7 @@ grid
 
 ## Showing uncertainty: continuous
 
-```{r, fig.height = 2.45}
+```{r, fig.height = 2.2}
 ggplot(grid, aes(aoa, fit)) +
   geom_point(data = words, aes(y = rt), colour = kingfisher, alpha = 0.4) +
   geom_ribbon(aes(ymin = lwr, ymax = upr), fill = hornbill, alpha = 0.35) +
@@ -465,7 +465,7 @@ tibble(
 
 . . .
 
-We fitted `glmer()` in lecture 12; `glm()` is the same model without random effects. One framework: an outcome, a [linear predictor]{.hl} (continuous and categorical predictors, interactions), a distribution, and random effects where the data are grouped. Counts would use Poisson regression (Winter, Ch 13).
+We fitted `glmer()` in lecture 12, and `glm()` in tutorial 12 is the same model without random effects. All of them share one framework: an outcome, a linear predictor (continuous and categorical predictors, interactions), a distribution, and random effects where the data are grouped. Counts would use Poisson regression (Winter, Ch 13).
 
 ## The cookbook approach
 
@@ -475,7 +475,7 @@ Many textbooks teach a cookbook: two groups → t-test; three groups → ANOVA; 
 
 Each of these tests is a special case of the [linear model]{.hl}; lecture 9 showed this for the t-test. The cookbook hides the assumptions behind each recipe, and it has no recipe once the data have repeated measures or several predictors. Winter recommends thinking in terms of models instead.
 
-## Stepwise regression
+## Stepwise regression {.smaller}
 
 Put in every predictor, and let the computer drop the useless ones:
 
@@ -574,7 +574,7 @@ ggplot(preds_pv, aes(language, fit)) +
 ## Summary
 
 ::: {.takeaway}
-- A p-value is not the probability that the null is true; p > .05 is not "no effect"; compare effects directly
+- A p-value is not the probability that the null is true, and p > .05 does not show that there is no effect. Compare effects directly
 - Low [power]{.hl} misses real effects, and exaggerates the ones it finds (Type M and S errors)
 - Simulate to find out the power of a design, including mixed models
 - Many tests and peeking at the data inflate false alarms: plan in advance

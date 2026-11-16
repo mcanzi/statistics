@@ -175,7 +175,7 @@ ggplot(lines) +
   labs(x = "x", y = "y")
 ```
 
-The intercept moves the line up or down. The slope tilts it: positive slopes rise, negative slopes fall.
+The intercept moves the line up or down, and the slope tilts it. A positive slope rises from left to right, while a negative one falls.
 
 ## Which line?
 
@@ -284,7 +284,7 @@ coefficients(m)
 . . .
 
 - Each extra kilogram of body mass goes with flippers `r round(b1 * 1000, 1)` mm longer (`r round(b1, 4)` mm per gram)
-- A penguin weighing 0 g would have flippers `r round(b0, 1)` mm long. No penguin weighs 0 g, so next week [centering]{.hl} will give the intercept a meaning
+- A penguin weighing 0 g would have flippers `r round(b0, 1)` mm long. No penguin weighs 0 g, so next week [centring]{.hl} will give the intercept a meaning
 
 ## Residuals average zero
 

@@ -60,7 +60,7 @@ _Sources: Spottiswoode et al. (2016), Science; National Geographic_
 - Categorical × continuous interactions
 - Categorical × categorical interactions
 - Continuous × continuous interactions and curved regression planes
-- Why centering and sum coding matter so much here
+- Why centring and sum coding matter so much here
 - A word on higher-order interactions
 
 ## So far
@@ -85,7 +85,7 @@ tibble(x = rep(0:10, 2), group = rep(c("A", "B"), each = 11)) |>
 
 . . .
 
-An __interaction__: the effect of one predictor depends on the value of another. The lines are no longer parallel.
+In an [interaction]{.hl}, the effect of one predictor depends on the value of another, and the lines are no longer parallel.
 
 ## Interactions in R
 
@@ -98,7 +98,7 @@ lm(y ~ x + group + x:group)
 
 . . .
 
-`x` and `group` are often called the main effects, although with an interaction they are really [simple effects]{.hl} (more below). `x:group` is the interaction term: how much the effect of `x` changes from one group to the other.
+`x` and `group` are often called the main effects, although with an interaction they are really simple effects (more below). `x:group` is the interaction term: how much the effect of `x` changes from one group to the other.
 
 ## Discussion
 
@@ -146,7 +146,7 @@ m_add <- lm(rt ~ log_freq + group, data = lex)
 coef(m_add)
 ```
 
-```{r, echo = FALSE, fig.height = 3.2}
+```{r, echo = FALSE, fig.height = 2.8}
 augment(m_add) |>
   ggplot(aes(x = log_freq, colour = group)) +
   geom_point(aes(y = rt), alpha = 0.3, size = 1.5) +
@@ -186,9 +186,9 @@ Only at `log_freq = 0`, a frequency that does not exist in our data (1 to 6).
 
 . . .
 
-With an interaction, each lower-order coefficient is a __simple effect__: the effect of one predictor when the other is 0 (or at its reference level).
+With an interaction, each lower-order coefficient is a [simple effect]{.hl}: the effect of one predictor when the other is 0 (or at its reference level).
 
-## Centering rescues the coefficients
+## Centring rescues the coefficients
 
 From lecture 5: centre the continuous predictor, so that 0 means "average frequency".
 
@@ -210,7 +210,7 @@ c(additive    = glance(m_add)$adj.r.squared,
 
 . . .
 
-Adjusted R² goes up: separate slopes describe these data better. Whether the interaction is reliable beyond this sample is a question for inference, later in the course.
+Adjusted R² goes up: separate slopes describe these data better. Whether the interaction is reliable beyond this sample is a question for inference, in lecture 9.
 
 # Categorical × categorical
 
@@ -290,9 +290,9 @@ coef(lm(duration ~ voicing * style, data = vs_sum))
 
 . . .
 
-- Intercept: the [grand mean]{.hl} of the four cells
-- `voicing1`, `style1`: effects averaged over the other predictor, the classic main effects
-- The fit and the predictions are unchanged; only the coefficients mean something different
+- The intercept is the grand mean of the four cells
+- `voicing1` and `style1` are effects averaged over the other predictor, the classic main effects
+- The fit and the predictions are unchanged, and only the meaning of the coefficients is different
 
 ## Which coding?
 
@@ -379,7 +379,7 @@ Without an interaction, the contour lines were straight and parallel (lecture 6)
 # Higher-order interactions
 
 ::: {.fact}
-`Did you know:` in Niassa National Reserve, Mozambique, [75%]{.hl} of the bees' nests that Yao honey hunters found were found with the help of a honeyguide.
+`Did you know:` in [Niassa National Reserve]{.hl}, Mozambique, 75% of the bees' nests that Yao honey hunters found were found with the help of a honeyguide.
 
 _Source: Spottiswoode, Begg & Begg (2016), Science_
 :::
@@ -446,17 +446,17 @@ coef(lm(vot ~ stop * generation, data = stops_sum))
 
 . . .
 
-Treatment: the intercept is the mean VOT of lenis stops from older speakers. Sum: the [grand mean]{.hl} of the six stop × generation cells.
+With treatment coding, the intercept is the mean VOT of lenis stops from older speakers. With sum coding, it is the grand mean of the six stop × generation cells.
 
 ## Summary
 
 ::: {.takeaway}
-- An interaction: the effect of one predictor [depends on]{.hl} another; lines stop being parallel
+- In an [interaction]{.hl}, the effect of one predictor depends on another, and the lines stop being parallel
 - `y ~ x * z` = `x + z + x:z`
 - The interaction term is a [change in an effect]{.hl}
 - Lower-order terms become [simple effects]{.hl}: centre continuous predictors, choose your coding
 - Continuous × continuous interactions twist the regression plane
-- Higher-order interactions: only when the research question needs them
+- Use higher-order interactions only when the research question needs them
 :::
 
 ## Slides and code

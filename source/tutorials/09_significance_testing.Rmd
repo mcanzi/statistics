@@ -20,13 +20,6 @@ library(effsize)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data {.smaller}
 
 In `perception_training`, 18 learners of a foreign language try to tell apart two consonants of that language that their own language does not distinguish. They hear 40 words and say which consonant they heard, once before and once after a week of training. `pre` and `post` are the number of correct answers out of 40.
@@ -64,7 +57,7 @@ Make a histogram of `gain` with `binwidth = 1` and add a vertical line at 0 with
 
 ::: solution
 
-```{r}
+```{r, fig.height = 2.6}
 training |>
   ggplot(aes(x = gain)) +
   geom_histogram(binwidth = 1, fill = "plum2") +
@@ -118,7 +111,7 @@ Get the 95% confidence interval of the mean gain from `t.test(training$gain)$con
 t.test(training$gain)$conf.int
 ```
 
-`t.test()` uses the t distribution, which needs a little more than two standard errors with only 18 learners. The interval runs from `r round(t.test(training$gain)$conf.int[1], 1)` to `r round(t.test(training$gain)$conf.int[2], 1)` words and does not include 0.
+`t.test()` uses the t-distribution, which needs a little more than two standard errors with only 18 learners. The interval runs from `r round(t.test(training$gain)$conf.int[1], 1)` to `r round(t.test(training$gain)$conf.int[2], 1)` words and does not include 0.
 
 :::
 
@@ -132,11 +125,15 @@ What is the null hypothesis here, in words? Test it with `t.test(training$gain)`
 
 ::: solution
 
-The null hypothesis: on average, training does not change how many words learners get right, so the mean gain in the population is 0.
+The [null hypothesis]{.hl} is that, on average, training does not change how many words learners get right, so the mean gain in the population is 0.
 
 ```{r}
 t.test(training$gain)
 ```
+
+:::
+
+::: solution
 
 The mean gain is `r round(t.test(training$gain)$statistic, 1)` standard errors away from 0. If training had no effect, a mean gain this far from 0 would be very unlikely: p = `r signif(t.test(training$gain)$p.value, 2)`.
 

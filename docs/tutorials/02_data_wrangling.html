@@ -1081,12 +1081,10 @@ document.addEventListener('DOMContentLoaded', function(e) {
 --lecture: "tutorial 02";
 }
 </style>
-<p>Today we need two packages. If you have never used them, install them
-once, in the Console:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;janitor&quot;</span>))</span></code></pre></div>
-<p>Then load them at the start of every session:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span></code></pre></div>
+<p>Today we need two packages, which came with <code>{konstats}</code>
+in tutorial 1. Load them at the start of every session:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(janitor)</span></code></pre></div>
 <p><code>{janitor}</code> is not part of the tidyverse. We only need one
 of its functions, <code>clean_names()</code>.</p>
 </section>
@@ -1094,7 +1092,7 @@ of its functions, <code>clean_names()</code>.</p>
 <h2>The data</h2>
 <p><code>iris</code> comes with R: 150 flowers from three species
 (<code>Species</code>), with four measurements each, in cm.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(iris)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(iris)</span></code></pre></div>
 <pre class="r-output"><code>Rows: 150
 Columns: 5
 $ Sepal.Length &lt;dbl&gt; 5.1, 4.9, 4.7, 4.6, 5.0, 5.4, 4.6, 5.0, 4.4, 4.~
@@ -1115,7 +1113,7 @@ $ Species      &lt;fct&gt; setosa, setosa, setosa, setosa, setosa, setosa,~</cod
 </section>
 <section id="solution" class="slide level2">
 <h2>1.1 Solution</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> iris</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> iris</span></code></pre></div>
 </section>
 <section id="filter-keep-rows" class="slide level2">
 <h2>1.2 <code>filter()</code>: keep rows</h2>
@@ -1125,7 +1123,7 @@ $ Species      &lt;fct&gt; setosa, setosa, setosa, setosa, setosa, setosa,~</cod
 </section>
 <section id="solution-1" class="slide level2">
 <h2>1.2 Solution</h2>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>data_no_setosa <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, Species <span class="sc">!=</span> <span class="st">&quot;setosa&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>data_no_setosa <span class="ot">&lt;-</span> <span class="fu">filter</span>(data, Species <span class="sc">!=</span> <span class="st">&quot;setosa&quot;</span>)</span></code></pre></div>
 </section>
 <section id="filter-keep-rows-1" class="slide level2">
 <h2>1.2 <code>filter()</code>: keep rows</h2>
@@ -1134,23 +1132,23 @@ should be left.</p>
 </section>
 <section id="solution-2" class="slide level2">
 <h2>1.2 Solution</h2>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(data_no_setosa<span class="sc">$</span>Species)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(data_no_setosa<span class="sc">$</span>Species)</span></code></pre></div>
 <pre class="r-output"><code>[1] versicolor virginica 
 Levels: setosa versicolor virginica</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(data_no_setosa)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(data_no_setosa)</span></code></pre></div>
 <pre class="r-output"><code>[1] 100</code></pre>
 </section>
 <section id="the-pipe" class="slide level2">
 <h2>1.3 The pipe</h2>
-<p>The <strong>pipe</strong>, <code>|&gt;</code>, reads as “and then”.
-Write the same step with the pipe: take <code>iris</code>, and then keep
-every flower that is not <code>setosa</code>. Save the result as
-<code>data_no_setosa_pipe</code>.</p>
+<p>The <span class="hl">pipe</span>, <code>|&gt;</code>, reads as “and
+then”. Write the same step with the pipe: take <code>iris</code>, and
+then keep every flower that is not <code>setosa</code>. Save the result
+as <code>data_no_setosa_pipe</code>.</p>
 </section>
 <section id="solution-3" class="slide level2">
 <h2>1.3 Solution</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data_no_setosa_pipe <span class="ot">&lt;-</span> iris <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Species <span class="sc">!=</span> <span class="st">&quot;setosa&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>data_no_setosa_pipe <span class="ot">&lt;-</span> iris <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Species <span class="sc">!=</span> <span class="st">&quot;setosa&quot;</span>)</span></code></pre></div>
 </section>
 <section id="the-pipe-1" class="slide level2">
 <h2>1.3 The pipe</h2>
@@ -1158,11 +1156,11 @@ every flower that is not <code>setosa</code>. Save the result as
 also cleans the column names with <code>clean_names()</code>, which
 comes back in 2.2. After cleaning, <code>Species</code> is called
 <code>species</code>:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_no_setosa_clean <span class="ot">&lt;-</span> iris <span class="sc">|&gt;</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">!=</span> <span class="st">&quot;setosa&quot;</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_no_setosa_clean)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data_no_setosa_clean <span class="ot">&lt;-</span> iris <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">!=</span> <span class="st">&quot;setosa&quot;</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_no_setosa_clean)</span></code></pre></div>
 <pre class="r-output"><code>[1] &quot;sepal_length&quot; &quot;sepal_width&quot;  &quot;petal_length&quot; &quot;petal_width&quot; 
 [5] &quot;species&quot;     </code></pre>
 <p>The result goes into a new object, so <code>data_no_setosa</code>
@@ -1183,15 +1181,15 @@ result as <code>data_no_sepal</code>.</p>
 <h2 class="smaller">2.1 Solution</h2>
 <p>You can do this in three ways. By position, keeping columns 3 to
 5:</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal <span class="ot">&lt;-</span> <span class="fu">select</span>(data_no_setosa, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal <span class="ot">&lt;-</span> <span class="fu">select</span>(data_no_setosa, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>)</span></code></pre></div>
 <p>By position, dropping columns 1 and 2:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal <span class="ot">&lt;-</span> <span class="fu">select</span>(data_no_setosa, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal <span class="ot">&lt;-</span> <span class="fu">select</span>(data_no_setosa, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>))</span></code></pre></div>
 <p>By name, dropping the two sepal columns:</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal <span class="ot">&lt;-</span> <span class="fu">select</span>(data_no_setosa, <span class="sc">-</span>Sepal.Width, <span class="sc">-</span>Sepal.Length)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal <span class="ot">&lt;-</span> <span class="fu">select</span>(data_no_setosa, <span class="sc">-</span>Sepal.Width, <span class="sc">-</span>Sepal.Length)</span></code></pre></div>
 </section>
 <section id="solution-5" class="slide level2">
 <h2>2.1 Solution</h2>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_no_sepal)</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_no_sepal)</span></code></pre></div>
 <pre class="r-output"><code>[1] &quot;Petal.Length&quot; &quot;Petal.Width&quot;  &quot;Species&quot;     </code></pre>
 <p>All three give the same columns here. Selecting by name is safer: if
 the order of the columns ever changes, selecting by position silently
@@ -1207,17 +1205,17 @@ the result as <code>data_no_sepal_lc</code>.</p>
 <h2>2.2 Solution</h2>
 <p>With <code>rename()</code>, one column at a time, written as
 <code>new_name = old_name</code>:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal_lc <span class="ot">&lt;-</span> <span class="fu">rename</span>(data_no_sepal,</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">petal_length =</span> Petal.Length,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">petal_width =</span> Petal.Width,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">species =</span> Species)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal_lc <span class="ot">&lt;-</span> <span class="fu">rename</span>(data_no_sepal,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">petal_length =</span> Petal.Length,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                           <span class="at">petal_width =</span> Petal.Width,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">species =</span> Species)</span></code></pre></div>
 </section>
 <section id="solution-7" class="slide level2">
 <h2>2.2 Solution</h2>
 <p>With <code>clean_names()</code> from <code>{janitor}</code>, all at
 once:</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal_lc <span class="ot">&lt;-</span> <span class="fu">clean_names</span>(data_no_sepal)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_no_sepal_lc)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>data_no_sepal_lc <span class="ot">&lt;-</span> <span class="fu">clean_names</span>(data_no_sepal)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_no_sepal_lc)</span></code></pre></div>
 <pre class="r-output"><code>[1] &quot;petal_length&quot; &quot;petal_width&quot;  &quot;species&quot;     </code></pre>
 </section></section>
 <section>

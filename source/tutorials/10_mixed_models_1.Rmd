@@ -20,13 +20,6 @@ library(lme4)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data {.smaller}
 
 `rt_frequency` comes from a small simulated lexical decision task: 10 participants decide for each of the same 20 words whether it is a word of their language. Half of the words are frequent and half are rare (`frequency`), and `rt` is the reaction time in ms.
@@ -49,6 +42,13 @@ Use `count()` to find out how many responses there are from each participant and
 
 ```{r}
 rt_frequency |> count(participant)
+```
+
+:::
+
+::: {.solution .smaller}
+
+```{r}
 rt_frequency |> count(word)
 ```
 
@@ -139,9 +139,7 @@ Look at the standard deviations of the random effects with `VarCorr(m)`. Say in 
 VarCorr(m)
 ```
 
-- `word`: words differ in how fast they are recognised, with an SD of about `r round(attr(VarCorr(m)$word, "stddev"))` ms around the mean of their frequency group.
-- `participant`: participants differ in their overall speed, with an SD of about `r round(attr(VarCorr(m)$participant, "stddev"))` ms.
-- `Residual`: what is left over from one trial to the next, an SD of about `r round(sigma(m))` ms.
+Words differ in how fast they are recognised, with an SD of about `r round(attr(VarCorr(m)$word, "stddev"))` ms around the mean of their frequency group (`word`). Participants differ in their overall speed, with an SD of about `r round(attr(VarCorr(m)$participant, "stddev"))` ms (`participant`). What is left over from one trial to the next, the `Residual`, has an SD of about `r round(sigma(m))` ms.
 
 :::
 
@@ -157,7 +155,7 @@ VarCorr(m_slopes)
 isSingular(m_slopes)
 ```
 
-The correlation between the intercepts and the slopes is exactly 1, and the fit is **singular**: `lmer()` reports "boundary (singular) fit". With only 10 participants, the model cannot tell how much their frequency effects really differ. In the simulation they do not differ at all (`?rt_frequency`), so `(1 | participant)` is enough here.
+The correlation between the intercepts and the slopes is exactly 1, and the fit is [singular]{.hl}: `lmer()` reports "boundary (singular) fit". With only 10 participants, the model cannot tell how much their frequency effects really differ. In the simulation they do not differ at all (`?rt_frequency`), so `(1 | participant)` is enough here.
 
 Each word is either frequent or rare, so there is no frequency effect within a word that could vary between words.
 

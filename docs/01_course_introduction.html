@@ -1243,8 +1243,8 @@ own</li>
 tutorials, code you adapt), and if in doubt, ask before you submit</li>
 </ul>
 <div class="fragment">
-<p>As The Smiths warn in <em>Cemetry Gates</em> (1986): plagiarism tends
-to get noticed.</p>
+<p>Plagiarism tends to get noticed, as The Smiths remind us in
+<em>Cemetry Gates</em> (1986).</p>
 </div>
 </section>
 <section id="dissertations" class="slide level2">
@@ -1425,15 +1425,11 @@ plots, installed packages and the documentation.
 </div>
 </div>
 </section>
-<section id="install-the-packages-once" class="slide level2">
-<h2>Install the packages (once)</h2>
-<p>Type this in the RStudio <code>Console</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">&quot;tidyverse&quot;</span>, <span class="st">&quot;palmerpenguins&quot;</span>, <span class="st">&quot;swirl&quot;</span>))</span></code></pre></div>
-<div class="fragment">
-<p>Check that everything worked:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>R.version.string          <span class="co"># your version of R</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">packageVersion</span>(<span class="st">&quot;dplyr&quot;</span>)   <span class="co"># should be 1.2.0 or newer</span></span></code></pre></div>
-</div>
+<section id="packages" class="slide level2">
+<h2>Packages</h2>
+<p><span class="hl">Packages</span> add functions and data sets to R.
+Every package this course uses comes with <code>{konstats}</code>, the
+course package, which we install together in tutorial 1.</p>
 <div class="fragment">
 <p>You <span class="hl">install</span> a package once. You <span class="hl">load</span> it with <code>library()</code> in every
 session.</p>
@@ -1451,15 +1447,15 @@ it can swivel in almost any direction while it probes for larvae.</p>
 </section>
 <section id="hello-world" class="slide level2 smaller">
 <h2 class="smaller">Hello, world</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;Hello, world!&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;Hello, world!&quot;</span>)</span></code></pre></div>
 <pre class="r-output"><code>[1] &quot;Hello, world!&quot;</code></pre>
 <div class="fragment">
 <p>R is also a calculator:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span></span></code></pre></div>
 <pre class="r-output"><code>[1] 4</code></pre>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">/</span> <span class="dv">4</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">/</span> <span class="dv">4</span></span></code></pre></div>
 <pre class="r-output"><code>[1] 2.5</code></pre>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">3</span> <span class="sc">+</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="dv">4</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">3</span> <span class="sc">+</span> <span class="dv">2</span>) <span class="sc">*</span> <span class="dv">4</span></span></code></pre></div>
 <pre class="r-output"><code>[1] 20</code></pre>
 </div>
 <div class="fragment">
@@ -1473,8 +1469,8 @@ it can swivel in almost any direction while it probes for larvae.</p>
 RStudio. Write it in a <span class="hl">script</span> instead: <em>File
 &gt; New File &gt; R Script</em>.</p>
 <div class="fragment">
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># everything after a hash is a comment: R ignores it</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span>   <span class="co"># comments can also follow code</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># everything after a hash is a comment: R ignores it</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">+</span> <span class="dv">2</span>   <span class="co"># comments can also follow code</span></span></code></pre></div>
 <pre class="r-output"><code>[1] 4</code></pre>
 </div>
 <div class="fragment">
@@ -1486,67 +1482,66 @@ the whole analysis tomorrow.</p>
 <section id="storing-values" class="slide level2">
 <h2>Storing values</h2>
 <p><code>&lt;-</code> stores a value in an <span class="hl">object</span> (read it as “gets”):</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="dv">3</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">2</span> <span class="sc">*</span> <span class="dv">3</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
 <pre class="r-output"><code>[1] 6</code></pre>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> <span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> <span class="dv">1</span></span></code></pre></div>
 <pre class="r-output"><code>[1] 7</code></pre>
 <div class="fragment">
 <ul>
 <li class="fragment">The object now appears in your
 <code>Environment</code></li>
-<li class="fragment">Names are <span class="hl">case sensitive</span>:
-<code>x</code> and <code>X</code> are two different objects</li>
-<li class="fragment">Names cannot start with a number or contain spaces:
-<code>word_freq</code> works, word freq does not</li>
+<li class="fragment">Names are <span class="hl">case sensitive</span>,
+so <code>x</code> and <code>X</code> are two different objects. They
+cannot start with a number or contain spaces: <code>word_freq</code>
+works, word freq does not</li>
 </ul>
 </div>
 </section>
 <section id="vectors" class="slide level2 smaller">
 <h2 class="smaller">Vectors</h2>
-<p><code>c()</code> combines values into a <code>vector</code>.
-Arithmetic works on every element at once:</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">23</span>, <span class="dv">31</span>, <span class="dv">19</span>, <span class="dv">45</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>ages <span class="sc">*</span> <span class="dv">12</span></span></code></pre></div>
+<p><code>c()</code> combines values into a <span class="hl">vector</span>. Arithmetic works on every element at once:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">23</span>, <span class="dv">31</span>, <span class="dv">19</span>, <span class="dv">45</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>ages <span class="sc">*</span> <span class="dv">12</span></span></code></pre></div>
 <pre class="r-output"><code>[1] 276 372 228 540</code></pre>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ages)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ages)</span></code></pre></div>
 <pre class="r-output"><code>[1] 29.5</code></pre>
 <div class="fragment">
 <p>Sequences of numbers:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span></code></pre></div>
 <pre class="r-output"><code> [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="at">by =</span> <span class="dv">25</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="at">by =</span> <span class="dv">25</span>)</span></code></pre></div>
 <pre class="r-output"><code>[1]   0  25  50  75 100</code></pre>
 </div>
 </section>
 <section id="indexing" class="slide level2 smaller">
 <h2 class="smaller">Indexing</h2>
 <p>Square brackets pick out elements by position:</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span>]</span></code></pre></div>
 <pre class="r-output"><code>[1] 4</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>]</span></code></pre></div>
 <pre class="r-output"><code>[1]  8 15 16</code></pre>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>x[<span class="sc">-</span><span class="dv">1</span>]          <span class="co"># everything except the first</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>x[<span class="sc">-</span><span class="dv">1</span>]          <span class="co"># everything except the first</span></span></code></pre></div>
 <pre class="r-output"><code>[1]  8 15 16 23 42</code></pre>
 <div class="fragment">
 <p>Or by a condition:</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>x[x <span class="sc">&gt;</span> <span class="dv">15</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>x[x <span class="sc">&gt;</span> <span class="dv">15</span>]</span></code></pre></div>
 <pre class="r-output"><code>[1] 16 23 42</code></pre>
 </div>
 </section>
 <section id="logical-vectors" class="slide level2 smaller">
 <h2 class="smaller">Logical vectors</h2>
-<p>A comparison returns <code>TRUE</code> or <code>FALSE</code> for each
-element:</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">&gt;</span> <span class="dv">15</span></span></code></pre></div>
+<p>A comparison returns a <span class="hl">logical vector</span>, with
+<code>TRUE</code> or <code>FALSE</code> for each element:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">&gt;</span> <span class="dv">15</span></span></code></pre></div>
 <pre class="r-output"><code>[1] FALSE FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
 <div class="fragment">
 <p><code>TRUE</code> counts as 1 and <code>FALSE</code> as 0, so you can
 count and take proportions:</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x <span class="sc">&gt;</span> <span class="dv">15</span>)    <span class="co"># how many?</span></span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x <span class="sc">&gt;</span> <span class="dv">15</span>)    <span class="co"># how many?</span></span></code></pre></div>
 <pre class="r-output"><code>[1] 3</code></pre>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x <span class="sc">&gt;</span> <span class="dv">15</span>)   <span class="co"># what proportion?</span></span></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x <span class="sc">&gt;</span> <span class="dv">15</span>)   <span class="co"># what proportion?</span></span></code></pre></div>
 <pre class="r-output"><code>[1] 0.5</code></pre>
 </div>
 <div class="fragment">
@@ -1557,55 +1552,55 @@ count and take proportions:</p>
 </section>
 <section id="text-and-categories" class="slide level2">
 <h2>Text and categories</h2>
-<p>Text goes in <code>&quot;quotes&quot;</code>: a <code>character</code>
-vector.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>words <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;cat&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;cat&quot;</span>, <span class="st">&quot;bird&quot;</span>, <span class="st">&quot;cat&quot;</span>)</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(words)</span></code></pre></div>
+<p>Text goes in <code>&quot;quotes&quot;</code>, and makes a <span class="hl">character vector</span>.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>words <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;cat&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;cat&quot;</span>, <span class="st">&quot;bird&quot;</span>, <span class="st">&quot;cat&quot;</span>)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(words)</span></code></pre></div>
 <pre class="r-output"><code>words
 bird  cat  dog 
    1    3    1 </code></pre>
 <div class="fragment">
-<p>A <code>factor</code> stores categories, with a fixed set of
-<code>levels</code>:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>animal <span class="ot">&lt;-</span> <span class="fu">factor</span>(words)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(animal)</span></code></pre></div>
+<p>A <span class="hl">factor</span> stores categories, with a fixed set
+of <span class="hl">levels</span>:</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>animal <span class="ot">&lt;-</span> <span class="fu">factor</span>(words)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(animal)</span></code></pre></div>
 <pre class="r-output"><code>[1] &quot;bird&quot; &quot;cat&quot;  &quot;dog&quot; </code></pre>
 </div>
 <div class="fragment">
-<p>Levels are sorted alphabetically by default: this matters later.</p>
+<p>Levels are sorted alphabetically by default, which matters later.</p>
 </div>
 </section>
 <section id="data-frames" class="slide level2 smaller">
 <h2 class="smaller">Data frames</h2>
 <p>A <span class="hl">data frame</span> is a table whose columns are
 vectors of equal length:</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">word =</span> <span class="fu">c</span>(<span class="st">&quot;cat&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;bird&quot;</span>),</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">freq =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="dv">95</span>, <span class="dv">30</span>))</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>d</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">word =</span> <span class="fu">c</span>(<span class="st">&quot;cat&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;bird&quot;</span>),</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">freq =</span> <span class="fu">c</span>(<span class="dv">120</span>, <span class="dv">95</span>, <span class="dv">30</span>))</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>d</span></code></pre></div>
 <pre class="r-output"><code>  word freq
 1  cat  120
 2  dog   95
 3 bird   30</code></pre>
 <div class="fragment">
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>freq          <span class="co"># one column</span></span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>freq          <span class="co"># one column</span></span></code></pre></div>
 <pre class="r-output"><code>[1] 120  95  30</code></pre>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>d[<span class="dv">2</span>, ]          <span class="co"># second row, all columns</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>d[<span class="dv">2</span>, ]          <span class="co"># second row, all columns</span></span></code></pre></div>
 <pre class="r-output"><code>  word freq
 2  dog   95</code></pre>
 </div>
 </section>
-<section id="functions-and-arguments" class="slide level2">
-<h2>Functions and arguments</h2>
+<section id="functions-and-arguments" class="slide level2 smaller">
+<h2 class="smaller">Functions and arguments</h2>
 <p>A function takes <span class="hl">arguments</span> inside its
 brackets. Name them to make code readable:</p>
-<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">3.14159</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fl">3.14159</span>, <span class="at">digits =</span> <span class="dv">2</span>)</span></code></pre></div>
 <pre class="r-output"><code>[1] 3.14</code></pre>
 <div class="fragment">
-<p><code>NA</code> marks a missing value. Most summaries return
-<code>NA</code> if one is present, unless you say otherwise:</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="cn">NA</span>, <span class="dv">8</span>))</span></code></pre></div>
+<p><code>NA</code> marks a <span class="hl">missing value</span>. Most
+summaries return <code>NA</code> if one is present, unless you say
+otherwise:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="cn">NA</span>, <span class="dv">8</span>))</span></code></pre></div>
 <pre class="r-output"><code>[1] NA</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="cn">NA</span>, <span class="dv">8</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">c</span>(<span class="dv">4</span>, <span class="cn">NA</span>, <span class="dv">8</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre class="r-output"><code>[1] 6</code></pre>
 </div>
 </section>
@@ -1622,8 +1617,8 @@ office hours</li>
 <div class="fragment">
 <p>R and its packages are written by researchers. Cite them in your
 work:</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>()                 <span class="co"># how to cite R</span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;tidyverse&quot;</span>)      <span class="co"># how to cite a package</span></span></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>()                 <span class="co"># how to cite R</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;tidyverse&quot;</span>)      <span class="co"># how to cite a package</span></span></code></pre></div>
 </div>
 </section>
 <section id="swirl" class="slide level2">
@@ -1632,9 +1627,9 @@ work:</p>
 range from the basics to modelling, and some of your homework will use
 them (<a href="https://swirlstats.com/students.html">swirlstats.com</a>).</p>
 <div class="fragment">
-<p>You installed it already. To start a lesson:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swirl)</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">swirl</span>()</span></code></pre></div>
+<p>It comes with <code>{konstats}</code>. To start a lesson:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swirl)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">swirl</span>()</span></code></pre></div>
 <p>The first time, <code>swirl</code> asks you to choose and install a
 course.</p>
 </div>
@@ -1650,8 +1645,8 @@ the menu.</p>
 <a href="https://hadley.nz/">Hadley Wickham</a> and colleagues, for
 importing, reshaping and plotting data.</p>
 <div class="fragment">
-<p>It replaces many base R functions with alternatives that are easier
-to read and write. Think of it as a dialect of R, with base R as the
+<p>Many base R functions have tidyverse alternatives that are easier to
+read and write. Think of it as a dialect of R, with base R as the
 standard variety.</p>
 </div>
 <div class="fragment">
@@ -1693,19 +1688,18 @@ differences</li>
 </ul>
 </div>
 <div class="fragment">
-<p>Every analysis involves choices like these. Statistics makes them
-explicit, so others can check them.</p>
+<p>Every analysis involves choices like these, and statistics makes them
+explicit so that others can check them.</p>
 </div>
 </section>
 <section id="what-you-will-learn" class="slide level2">
 <h2>What you will learn</h2>
 <p>By the end of the course you will be able to:</p>
 <ul>
-<li class="fragment">describe and plot linguistic data in R</li>
+<li class="fragment">describe and plot linguistic data in R, and report
+an analysis so that others can follow and reproduce it</li>
 <li class="fragment">build, interpret and check regression models, from
 simple linear models to mixed effects and logistic regression</li>
-<li class="fragment">report an analysis so that others can follow it and
-reproduce it</li>
 </ul>
 </section>
 <section id="your-turn" class="slide level2">
@@ -1713,8 +1707,8 @@ reproduce it</li>
 <p>Open <code>RStudio</code>, start a new script, and run the code from
 today’s slides line by line.</p>
 <div class="fragment">
-<p>Then change things: other numbers, other words, a missing value.
-Seeing what breaks is the quickest way to learn what each piece
+<p>Then change things, such as the numbers, the words or a missing
+value, and look at what breaks. That shows you what each piece of code
 does.</p>
 </div>
 </section>

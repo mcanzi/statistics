@@ -54,7 +54,7 @@ bill_mad  <- mad(bill, na.rm = TRUE)
 </style>
 
 ::: {.fact}
-`Did you know:` tardigrades are animals about [0.5 mm]{.hl} long, with eight stubby legs. The German pastor J.A.E. Goeze first described them in 1773 and called them _kleiner Wasserbär_: "little water bear".
+`Did you know:` [tardigrades]{.hl} are animals about 0.5 mm long, with eight stubby legs. The German pastor J.A.E. Goeze first described them in 1773 and called them _kleiner Wasserbär_: "little water bear".
 
 _Source: National Geographic_
 :::
@@ -79,8 +79,8 @@ Like a map, a summary leaves most of the detail out. Today is about choosing a g
 
 A [distribution]{.hl} shows how often each value, or range of values, occurs.
 
-- An empirical distribution describes the values we actually observed
-- A theoretical distribution is a mathematical shape, fully described by a few numbers called [parameters]{.hl}
+- An [empirical distribution]{.hl} describes the values we actually observed
+- A [theoretical distribution]{.hl} is a mathematical shape, fully described by a few numbers called [parameters]{.hl}
 
 . . .
 
@@ -153,7 +153,7 @@ tibble(value = normal) |>
   labs(x = "Value", y = "Density")
 ```
 
-Bars: our 500 random values. Line: the [theoretical]{.hl} normal curve.
+The bars show our 500 random values, and the line is the theoretical normal curve.
 
 ## The 68–95–99.7 rule
 
@@ -206,7 +206,7 @@ Accuracy out of a fixed number of trials is [binomial]{.hl} (lecture 12). Counts
 # Central tendency
 
 ::: {.fact}
-`Did you know:` a protein found only in tardigrades, Dsup, protects DNA from radiation. Human cells given the gene for it showed about [40% less DNA damage]{.hl} after X-rays.
+`Did you know:` a protein found only in tardigrades, [Dsup]{.hl}, protects DNA from radiation. Human cells given the gene for it showed about 40% less DNA damage after X-rays.
 
 _Source: Hashimoto et al. (2016), Nature Communications_
 :::
@@ -234,11 +234,11 @@ mean(penguins$bill_length_mm, na.rm = TRUE)
 
 . . .
 
-`NA` means "unknown". The mean of numbers that include an unknown is unknown, unless you tell R to drop them.
+`NA` means "unknown" (lecture 1), so a mean that includes one is unknown too, unless R drops it.
 
 . . .
 
-Three ways to drop missing values, three different data sets:
+Three ways to drop missing values give three different data sets:
 
 ```{r}
 nrow(penguins)                               # all rows
@@ -387,7 +387,7 @@ Here we know that the participant fell asleep. In real data, a 5,000 ms response
 
 ## Mode {.smaller}
 
-The mode is the most frequent value. It is used in __categorical__ distributions.
+The [mode]{.hl} is the most frequent value. It is used for categorical distributions.
 
 . . .
 
@@ -559,7 +559,7 @@ IQR(penguins$bill_length_mm, na.rm = TRUE)     # 75% minus 25%
 
 . . .
 
-The [median]{.hl} is the 50% quantile. The [IQR]{.hl} holds the middle half of the data.
+The median is the 50% quantile. The [IQR]{.hl} (interquartile range) holds the middle half of the data.
 
 ## `summary()`
 
@@ -632,7 +632,7 @@ penguins |>
 
 . . .
 
-One row per species, one column per summary, no copies of the data.
+The result has one row per species and one column per summary, and the data are never copied.
 
 ## Grouping by two variables {.smaller}
 
@@ -718,7 +718,7 @@ If the data change, the text updates itself, so you never copy numbers by hand.
 - A summary is a simplified map of a distribution
 - Centre: `mean()` (sensitive), `median()` (robust), mode with `count()`
 - Spread: `sd()` (sensitive), `mad()` and `IQR()` (robust), `range()`, `quantile()`
-- Always plot the data: skew, outliers and several peaks hide behind one number
+- Plot the data as well, because one number can hide skew, outliers or several peaks
 - Per group: `summarise()` with `.by` or `group_by()`; many columns with `across()`
 :::
 

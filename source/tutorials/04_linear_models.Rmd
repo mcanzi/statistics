@@ -19,16 +19,9 @@ library(broom)
 library(simling)
 ```
 
-`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
-
-```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/simling")
-```
-
 ## The data {.smaller}
 
-`rhythm_metrics` comes from a simulated study of speech rhythm. Eight speakers of each of six languages read sentences, told a story and spoke freely, and each of the 1200 speech samples has two measures we use today: the speech rate (`rate`, in syllables per second) and ΔC (`delta_c`, in ms). ΔC is the standard deviation of the durations of the consonant intervals in a sample, one of the **rhythm metrics** that phoneticians use to compare languages.
+`rhythm_metrics` comes from a simulated study of speech rhythm. Eight speakers of each of six languages read sentences, told a story and spoke freely, and each of the 1200 speech samples has two measures we use today: the speech rate (`rate`, in syllables per second) and ΔC (`delta_c`, in ms). ΔC is the standard deviation of the durations of the consonant intervals in a sample, one of the [rhythm metrics]{.hl} that phoneticians use to compare languages.
 
 ```{r}
 glimpse(rhythm_metrics)
@@ -66,7 +59,7 @@ The faster the sample, the smaller ΔC tends to be. The points form a roughly st
 
 ### 1.2 Add the line
 
-Add the **regression line** with `geom_smooth(method = "lm")`.
+Add the [regression line]{.hl} with `geom_smooth(method = "lm")`.
 
 ::: solution
 
@@ -106,7 +99,7 @@ coef(m)
 
 ### 2.2 Read the coefficients
 
-Complete the sentence: "With every extra syllable per second, ΔC changes by ___ ms." Then say what the **intercept** means here. Is it a useful number?
+Complete the sentence: "With every extra syllable per second, ΔC changes by ___ ms." Then say what the [intercept]{.hl} means here. Is it a useful number?
 
 ::: solution
 
@@ -150,7 +143,7 @@ Two syllables per second more means a ΔC about `r round(2 * abs(coef(m)["rate"]
 
 ### 3.2 Residuals
 
-Use `augment()` to add the **fitted values** and the **residuals** to the data. Plot the residuals (`.resid`) against the fitted values (`.fitted`) and add a horizontal line at 0 with `geom_hline()`. Are the residuals spread evenly around 0?
+Use `augment()` to add the [fitted values]{.hl} and the [residuals]{.hl} to the data. Plot the residuals (`.resid`) against the fitted values (`.fitted`) and add a horizontal line at 0 with `geom_hline()`. Are the residuals spread evenly around 0?
 
 ::: solution
 
@@ -197,13 +190,13 @@ rhythm_metrics |>
   summarise(slope = coef(lm(delta_c ~ rate))[2], .by = material)
 ```
 
-All the lines within a material are shallower than the line of `m`, with its slope of `r round(coef(m)["rate"], 1)` ms per syllable per second. Sentences built from simple syllables are read fastest and have few consonant clusters, so they have a small ΔC; spontaneous speech is slowest and has a large ΔC. Across materials, these differences add to the effect of rate. In the simulation, ΔC falls by 6 ms per syllable per second (`?rhythm_metrics`). Lecture 6 shows how to put both predictors in one model.
+All the lines within a material are shallower than the line of `m`, with its slope of `r round(coef(m)["rate"], 1)` ms per syllable per second. Sentences built from simple syllables are read fastest and have few consonant clusters, so they have a small ΔC; spontaneous speech is slowest and has a large ΔC. Across materials, these differences add to the effect of rate. In the simulation, ΔC falls by 6 ms per syllable per second (`?rhythm_metrics`). Lectures 6 and 7 show how to put both predictors in one model.
 
 :::
 
 ### 3.4 Bonus: R² by hand
 
-`R²` compares the residuals of `m` with those of an **intercept-only model**, `delta_c ~ 1`, which predicts the mean ΔC for every sample. Fit it and compute `R²` by hand as 1 minus the sum of the squared residuals of `m`, divided by the sum of the squared residuals of the intercept-only model. Do you get the same number as `glance()`?
+`R²` compares the residuals of `m` with those of an [intercept-only model]{.hl}, `delta_c ~ 1`, which predicts the mean ΔC for every sample. Fit it and compute `R²` by hand as 1 minus the sum of the squared residuals of `m`, divided by the sum of the squared residuals of the intercept-only model. Do you get the same number as `glance()`?
 
 ::: solution
 
@@ -225,7 +218,7 @@ The two numbers are the same.
 Exercises 4.1 to 4.3 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
 :::
 
-`freq_length` from `simling` has 400 words from a simulated lexical decision task. For each word, it gives its log10 frequency (`log_freq`) and the mean reaction time to it (`rt`, in ms).
+`freq_length` from `{simling}` has 400 words from a simulated lexical decision task. For each word, it gives its log10 frequency (`log_freq`) and the mean reaction time to it (`rt`, in ms).
 
 ### 4.1 Frequency and reaction time
 

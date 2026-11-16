@@ -49,7 +49,7 @@ options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
 </style>
 
 ::: {.fact}
-`Did you know:` mantis shrimp have [12]{.hl} types of photoreceptor for colour in their eyes. Humans have three.
+`Did you know:` mantis shrimp have 12 types of [photoreceptor]{.hl} for colour in their eyes. Humans have three.
 
 _Source: Thoen et al. (2014), Science_
 :::
@@ -121,12 +121,12 @@ vowels |> summarise(mean = mean(duration), .by = voicing)
 
 . . .
 
-- The __intercept__ is the mean of `voiceless`
-- The __slope__ `voicingvoiced` is the difference: voiced minus voiceless
+- The intercept is the mean of `voiceless`
+- The slope `voicingvoiced` is the difference between the two, voiced minus voiceless
 
 ## The reference level {.smaller}
 
-Why is `voiceless` the intercept? R stores categories as a `factor`, a variable with a fixed set of levels in a fixed order:
+Why is `voiceless` the intercept? As in lecture 1, R stores categories as a factor, a variable with a fixed set of levels in a fixed order:
 
 ```{r}
 levels(vowels$voicing)
@@ -134,11 +134,11 @@ levels(vowels$voicing)
 
 . . .
 
-The first level becomes the __reference level__. Every other level is compared against it. R names the coefficient `voicingvoiced`: the predictor, then the level being compared with the reference.
+The first level becomes the [reference level]{.hl}, and every other level is compared against it. R names the coefficient `voicingvoiced`: the predictor, then the level being compared with the reference.
 
 . . .
 
-When R turns text into a factor itself, it puts the levels in alphabetical order, and `voiced` would come first:
+When R turns text into a factor itself, it puts the levels in alphabetical order (lecture 1), and `voiced` would come first:
 
 ```{r}
 levels(factor(as.character(vowels$voicing)))
@@ -166,7 +166,7 @@ vowels |>
   theme(legend.position = "none")
 ```
 
-Code the reference level as 0 and the other as 1: the regression line goes through the two means. A one-unit change in x is the change from one category to the other.
+In [treatment coding]{.hl}, the reference level is 0 and the other level is 1, so the regression line goes through the two means. A one-unit change in x is the change from one category to the other.
 
 ## Dummy coding by hand
 
@@ -181,7 +181,7 @@ coef(lm(duration ~ voiced01, data = vowels))
 
 . . .
 
-Same numbers as before. A variable coded 0 and 1 like this is called a __dummy variable__.
+The numbers are the same as before. A variable coded 0 and 1 like this is called a [dummy variable]{.hl}.
 
 ## Changing the reference level {.smaller}
 
@@ -201,7 +201,7 @@ The intercept is now the `voiced` mean, and the slope is `r round(-diff(tapply(v
 
 ## Choosing the reference level
 
-- Choose the level that makes the coefficients easiest to read, often a natural baseline: a control condition, the standard variety, the most frequent category
+- Choose the level that makes the coefficients easiest to read. This is often a natural baseline, such as a control condition or the standard variety, or else the most frequent category
 - Set it explicitly, rather than relying on the alphabet
 
 . . .
@@ -218,14 +218,14 @@ Your study compares L1 English speakers with three groups of L2 speakers of Engl
 # Sum coding
 
 ::: {.fact}
-`Did you know:` the peacock mantis shrimp strikes snail shells at up to [23 m/s]{.hl} (about 83 km/h), with accelerations of up to 8,000 times gravity. The strike also makes bubbles that collapse with destructive force.
+`Did you know:` the [peacock mantis shrimp]{.hl} strikes snail shells at up to 23 m/s (about 83 km/h), with accelerations of up to 8,000 times gravity. The strike also makes bubbles that collapse with destructive force.
 
 _Sources: Patek, Korff & Caldwell (2004), Nature; UC Berkeley News_
 :::
 
 ## Sum coding
 
-Instead of 0 and 1, code the two levels as +1 and −1:
+[Sum coding]{.hl} codes the two levels as +1 and −1, instead of 0 and 1:
 
 ```{r}
 contrasts(vowels$voicing) <- contr.sum(2)
@@ -250,8 +250,8 @@ diff(means$mean) / 2
 
 The mean of the two group means, and half their difference.
 
-- The __intercept__ is the [grand mean]{.hl}: the average of the group means
-- The __coefficient__ is how far each group lies from that grand mean: `+` for the first level, `−` for the second
+- The intercept is the [grand mean]{.hl}, the average of the group means
+- The coefficient is how far each group lies from that grand mean, with `+` for the first level and `−` for the second
 
 ## Sum coding, visually
 
@@ -276,7 +276,7 @@ Arrows: the sum-coded coefficient, `±` `r round(abs(diff(means$mean)) / 2, 1)` 
 
 | | Treatment (0 / 1) | Sum (+1 / −1) |
 |---|---|---|
-| Intercept | mean of the reference level | [grand mean]{.hl} |
+| Intercept | mean of the reference level | grand mean |
 | Coefficient | difference from the reference | deviation from the grand mean |
 | Default in R | yes | no: `contr.sum()` |
 
@@ -287,7 +287,7 @@ The fit is identical. The choice changes what the intercept means, which matters
 # More than two levels
 
 ::: {.fact}
-`Did you know:` despite their 12 receptors, mantis shrimp were [worse]{.hl} than humans, bees and butterflies at telling similar colours apart. They seem to encode colour unlike any other animal studied: perhaps by recognising colours rather than comparing them.
+`Did you know:` despite their 12 receptors, mantis shrimp were worse than humans, bees and butterflies at [telling similar colours apart]{.hl}. They seem to encode colour unlike any other animal studied: perhaps by recognising colours rather than comparing them.
 
 _Sources: Thoen et al. (2014), Science; Sci.News_
 :::
@@ -389,7 +389,7 @@ coef(lm(duration ~ style, data = styles))
 
 . . .
 
-The intercept is now the [grand mean]{.hl} of the three styles. `style1` is casual's deviation from it and `style2` is clear's. Loud's deviation is not shown, because it is minus the sum of the other two.
+The intercept is now the grand mean of the three styles. `style1` is casual's deviation from it and `style2` is clear's. Loud's deviation is not shown, because it is minus the sum of the other two.
 
 ## Model fit and assumptions {.smaller}
 
@@ -397,7 +397,7 @@ The intercept is now the [grand mean]{.hl} of the three styles. `style1` is casu
 glance(m_style)[, 1:2]
 ```
 
-```{r, echo = FALSE, fig.height = 3.2}
+```{r, echo = FALSE, fig.height = 2.8}
 augment(m_style) |>
   ggplot(aes(x = style, y = .resid, colour = style)) +
   geom_hline(yintercept = 0, colour = mist, linetype = "dashed") +
@@ -447,7 +447,7 @@ ggplot(formants_fit, aes(x = f2, colour = vowel)) +
   labs(x = "F2 (Hz)", y = "F1 (Hz)", colour = "Vowel")
 ```
 
-One slope for F2, and a different intercept for each vowel (/i/ is the reference). The lines are parallel: no interaction.
+The model has one slope for F2 and a different intercept for each vowel, with /i/ as the reference. The lines are parallel, because there is no interaction.
 
 ## Reading the mixed model
 
@@ -516,7 +516,7 @@ Each extra syllable per second goes with a `delta_c` `r round(-coef(m_rhythm)["r
 
 ::: {.takeaway}
 - R stores categories as [factors]{.hl}; the first level is the reference
-- [Treatment coding]{.hl} compares each level with the reference; sum coding compares each with the grand mean
+- [Treatment coding]{.hl} compares each level with the reference, and [sum coding]{.hl} compares each with the grand mean
 - `k` levels → `k − 1` coefficients; change the reference to see other comparisons
 - Categorical and continuous predictors can be combined: one slope, several intercepts
 :::
