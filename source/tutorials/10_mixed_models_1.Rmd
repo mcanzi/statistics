@@ -1,0 +1,198 @@
+---
+title: "Mixed models 1"
+subtitle: "Tutorial 10"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(broom)
+library(lme4)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data {.smaller}
+
+`rt_frequency` comes from a small simulated lexical decision task: 10 participants decide for each of the same 20 words whether it is a word of their language. Half of the words are frequent and half are rare (`frequency`), and `rt` is the reaction time in ms.
+
+```{r}
+glimpse(rt_frequency)
+```
+
+Today's question: are rare words recognised more slowly?
+
+---
+
+## 1. Repeated measures
+
+### 1.1 Who saw what?
+
+Use `count()` to find out how many responses there are from each participant and for each word. Why are the 200 reaction times not 200 independent observations?
+
+::: solution
+
+```{r}
+rt_frequency |> count(participant)
+rt_frequency |> count(word)
+```
+
+Each participant gave 20 responses, and each word was seen 10 times. Responses from the same participant are alike, because some people are faster than others, and responses to the same word are alike, because some words are easier than others.
+
+:::
+
+### 1.2 One panel per participant
+
+Plot `rt` by `frequency` with `geom_boxplot()`, with one panel per participant (`facet_wrap(~ participant)`). Do all participants show the same pattern? Do they differ in other ways?
+
+::: solution
+
+```{r participants, eval = FALSE}
+rt_frequency |>
+  ggplot(aes(x = frequency, y = rt)) +
+  geom_boxplot(fill = "plum2") +
+  facet_wrap(~ participant, nrow = 2) +
+  xlab("Word frequency") + ylab("Reaction time (ms)")
+```
+
+:::
+
+::: solution
+
+```{r, ref.label = "participants", echo = FALSE, fig.height = 5}
+```
+
+Most participants are slower with rare words. They also differ in their overall speed: some panels sit much higher than others.
+
+:::
+
+### 1.3 A model that ignores the participants
+
+Fit a linear model of `rt` as a function of `frequency` and look at it with `tidy()`. Note the estimate and the standard error of `frequencylow`.
+
+::: solution
+
+```{r}
+m_lm <- lm(rt ~ frequency, data = rt_frequency)
+tidy(m_lm)
+```
+
+Rare words take `r round(coef(m_lm)[2])` ms longer, with a standard error of `r round(tidy(m_lm)$std.error[2], 1)` ms. This model treats all 200 responses as independent.
+
+:::
+
+---
+
+## 2. A mixed model
+
+### 2.1 Varying intercepts
+
+Fit a mixed model with `lmer()`: `rt` as a function of `frequency`, with varying intercepts for participants and for words. Print the fixed effects with `fixef()`. Compare them with the coefficients of `m_lm`.
+
+::: solution
+
+```{r}
+m <- lmer(rt ~ frequency + (1 | participant) + (1 | word), data = rt_frequency)
+fixef(m)
+```
+
+The fixed effects are the same as the coefficients of `m_lm`, because every participant saw every word.
+
+:::
+
+### 2.2 More uncertainty
+
+Compare the standard error of `frequencylow` in `m` (`summary(m)$coefficients`) with the one in `m_lm`. Why is it larger?
+
+::: solution
+
+```{r}
+summary(m)$coefficients
+```
+
+The standard error grows from `r round(tidy(m_lm)$std.error[2], 1)` to `r round(summary(m)$coefficients[2, 2], 1)` ms. The frequency effect rests on only 20 words, 10 frequent and 10 rare, and words differ a lot. `m_lm` ignores this and is too sure of itself.
+
+:::
+
+### 2.3 The random effects
+
+Look at the standard deviations of the random effects with `VarCorr(m)`. Say in words what each of the three numbers means.
+
+::: solution
+
+```{r}
+VarCorr(m)
+```
+
+- `word`: words differ in how fast they are recognised, with an SD of about `r round(attr(VarCorr(m)$word, "stddev"))` ms around the mean of their frequency group.
+- `participant`: participants differ in their overall speed, with an SD of about `r round(attr(VarCorr(m)$participant, "stddev"))` ms.
+- `Residual`: what is left over from one trial to the next, an SD of about `r round(sigma(m))` ms.
+
+:::
+
+### 2.4 Bonus: varying slopes
+
+Fit the model again with varying slopes for frequency by participant: `(1 + frequency | participant)`. Look at `VarCorr()` and at `isSingular()`. What is odd about the correlation? And why can the model not have varying frequency slopes by word?
+
+::: {.solution .smaller}
+
+```{r}
+m_slopes <- lmer(rt ~ frequency + (1 + frequency | participant) + (1 | word), data = rt_frequency)
+VarCorr(m_slopes)
+isSingular(m_slopes)
+```
+
+The correlation between the intercepts and the slopes is exactly 1, and the fit is **singular**: `lmer()` reports "boundary (singular) fit". With only 10 participants, the model cannot tell how much their frequency effects really differ. In the simulation they do not differ at all (`?rt_frequency`), so `(1 | participant)` is enough here.
+
+Each word is either frequent or rare, so there is no frequency effect within a word that could vary between words.
+
+:::
+
+---
+
+## 3. Weekly assignment
+
+::: {.assignment .alert .alert-info}
+Exercises 3.1 to 3.3 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
+:::
+
+In `dgs_iconicity`, 30 deaf signers of German Sign Language and 30 hearing non-signers (`group`) each rate the same 300 signs for iconicity, from 1 (not iconic) to 7 (very iconic). `rater` and `sign` identify the raters and the signs.
+
+### 3.1 The design
+
+How many ratings are there from each rater, and for each sign? Compute the mean `rating` of each group.
+
+```{r}
+
+```
+
+### 3.2 A mixed model
+
+Fit a mixed model of `rating` as a function of `group`, with varying intercepts for raters and for signs. Report the difference between the groups in a sentence, and say what the SD of each random effect means.
+
+```{r}
+
+```
+
+### 3.3 Which varying slope?
+
+Could the model have a varying slope for `group` by rater? By sign? Explain your answer in one or two sentences, and fit the model with the varying slope that is possible. Does the difference between the groups change?
+
+```{r}
+
+```

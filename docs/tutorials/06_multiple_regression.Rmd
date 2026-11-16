@@ -1,0 +1,133 @@
+---
+title: "Multiple regression"
+subtitle: "Tutorial 6"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(broom)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data
+
+In `dgs_iconicity`, 30 deaf signers of German Sign Language (DGS) and 30 hearing people who do not sign rate 300 DGS signs for **iconicity**: how much a sign looks like what it means, from 1 (not at all) to 7 (very much). Deaf signers also rated each sign's age of acquisition (`aoa`, in years). The code below makes one row per sign, with the mean rating of each group:
+
+```{r}
+signs <- dgs_iconicity |>
+  summarise(rating = mean(rating), .by = c(sign, aoa, group)) |>
+  pivot_wider(names_from = group, values_from = rating) |>
+  rename(signers = `deaf signer`, non_signers = `hearing non-signer`)
+glimpse(signs)
+```
+
+Today's question: are iconic signs learned earlier, and which group's ratings tell us more about it?
+
+---
+
+## 1. Two predictors
+
+### 1.1 Two scatterplots
+
+Plot `aoa` against `signers`, and in a second plot against `non_signers`. Label the axes in words. Are more iconic signs learned earlier or later?
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+### 1.2 Correlated predictors
+
+Compute the correlation between `signers` and `non_signers`. Do the two groups agree on which signs are iconic?
+
+```{r}
+
+```
+
+### 1.3 Two simple regressions
+
+Fit two models: `aoa` as a function of `signers`, and `aoa` as a function of `non_signers`. Print the coefficients of each. What does each slope say?
+
+```{r}
+
+```
+
+---
+
+## 2. One model, two predictors
+
+### 2.1 Multiple regression
+
+Fit one model of `aoa` with both `signers` and `non_signers` as predictors and save it as `m`. Compare its slopes with the slopes from 1.3. What happened?
+
+```{r}
+
+```
+
+### 2.2 Holding the other predictor constant
+
+Complete the sentence for the slope of `signers` in `m`: "For signs that ___, one point more on the signers' scale goes with ___." Why are both slopes smaller than in 1.3?
+
+### 2.3 Predictions
+
+Predict the age of acquisition of a sign that both groups rate at 2 and of a sign that both groups rate at 6.
+
+```{r}
+
+```
+
+---
+
+## 3. Model fit and collinearity
+
+### 3.1 `R²` and adjusted `R²`
+
+Use `glance()` to get `R²` and adjusted `R²` for `m_s`, `m_n` and `m`. Does the second predictor improve the model much?
+
+```{r}
+
+```
+
+### 3.2 Standard errors
+
+Use `tidy()` on `m_s` and on `m`. How does the standard error of the `signers` slope change? Why?
+
+```{r}
+
+```
+
+### 3.3 Bonus: VIF by hand
+
+The variance inflation factor (VIF) of a predictor is 1 / (1 − R²), where R² comes from a model that predicts it from the other predictors. Compute the VIF of `signers` in `m`.
+
+```{r}
+
+```
+
+### 3.4 Bonus: one iconicity score
+
+When two predictors measure the same thing, you can combine them. Make a column `iconicity`, the mean of `signers` and `non_signers`, and fit a model of `aoa` with `iconicity` as its only predictor. Compare its adjusted `R²` with that of `m`.
+
+```{r}
+
+```

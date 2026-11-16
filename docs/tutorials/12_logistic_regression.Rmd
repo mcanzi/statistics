@@ -1,0 +1,151 @@
+---
+title: "Mixed logistic regression"
+subtitle: "Tutorial 12"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(lme4)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data
+
+In `vot_identification`, 12 English and 12 Spanish listeners hear syllables like *ba* and *pa* made by a speech synthesiser. The **voice onset time** (`vot`) of the first consonant goes from −20 to 60 ms in steps of 5 ms. Listeners hear each step 10 times (`trials`) and say each time whether they heard a voiced (*b*) or a voiceless (*p*) consonant; `voiceless` is how often they said *p*. Today we use only the labial consonants, *b* and *p*:
+
+```{r}
+labials <- vot_identification |>
+  filter(place == "labial")
+glimpse(labials)
+```
+
+Today's question: where do English and Spanish listeners put the boundary between *b* and *p*?
+
+---
+
+## 1. Identification curves
+
+### 1.1 Proportions
+
+Add a column `p`, the proportion of voiceless answers (`voiceless / trials`). Then compute the mean `p` for each `vot` and `language`, and plot it against `vot` with one colour and one line per language.
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+### 1.2 Why not `lm()`?
+
+Why would a straight line be a poor model for these proportions?
+
+---
+
+## 2. A logistic regression
+
+When each row has a number of successes out of a number of trials, `glm()` takes them as `cbind(successes, failures)`: here `cbind(voiceless, trials - voiceless)`.
+
+### 2.1 English listeners
+
+Keep the English listeners, in a data frame `en`. Fit a logistic regression of the voiceless answers as a function of `vot` with `glm()` and `family = binomial`, and print its coefficients.
+
+```{r}
+
+```
+
+### 2.2 Read the coefficients
+
+The intercept is the log odds of a voiceless answer at a VOT of 0 ms. Turn it into a probability with `plogis()`. Then turn the slope into an odds ratio with `exp()`: what happens to the odds of a voiceless answer with each extra millisecond of VOT?
+
+```{r}
+
+```
+
+### 2.3 The category boundary
+
+The boundary between *b* and *p* is the VOT at which both answers are equally likely: a probability of 0.5, or log odds of 0. Where the intercept plus the slope times `vot` is 0, `vot` is −intercept / slope. Compute the boundary. Lisker and Abramson found it at about 25 ms for English labials.
+
+```{r}
+
+```
+
+---
+
+## 3. A mixed logistic regression
+
+### 3.1 Listeners differ
+
+Each listener answers many times, so fit the model again with `glmer()`, with a varying intercept and a varying slope for `vot` by listener. Compare the fixed effects and the boundary with those of `g`.
+
+```{r}
+
+```
+
+### 3.2 Two languages
+
+Fit a mixed model to all labial data, with `vot` and `language` as predictors and the same random effects. Compute the boundary of each language. Spanish listeners should put it at a shorter VOT, about 14 ms.
+
+```{r}
+
+```
+
+### 3.3 Test the difference
+
+Fit the model without `language` and compare the two models with `anova()`. Do the languages differ?
+
+```{r}
+
+```
+
+---
+
+## 4. Weekly assignment
+
+::: {.assignment .alert .alert-info}
+Exercises 4.1 to 4.3 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
+:::
+
+In `speech_to_song`, 86 listeners hear spoken sentences repeated eight times. For some listeners, a repeated sentence starts to sound like song: `transformed` is 1 if a listener said it did. Each sentence comes in three versions (`manipulation`): unchanged (`baseline`), with flattened pitch within syllables (`pitch`), or with lengthened vowels and other sonorous sounds (`duration`).
+
+### 4.1 Proportions
+
+Compute the proportion of transformed sentences in each version. Which version turns into song most often?
+
+```{r}
+
+```
+
+### 4.2 The model
+
+Fit a mixed logistic regression of `transformed` as a function of `manipulation`, with varying intercepts for `listener` and `sentence`. Use `plogis()` to turn the fixed effects into the predicted probability of a transformation in each version, and `exp()` to give the odds ratio of the `pitch` version against the baseline. Report both in a sentence.
+
+```{r}
+
+```
+
+### 4.3 A likelihood ratio test
+
+Compare your model with a model without `manipulation`, with the same random effects. Do the versions differ? Report χ², the degrees of freedom and p.
+
+```{r}
+
+```

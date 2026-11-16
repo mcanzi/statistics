@@ -1,0 +1,134 @@
+---
+title: "Significance testing"
+subtitle: "Tutorial 9"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(broom)
+library(effsize)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data
+
+In `perception_training`, 18 learners of a foreign language try to tell apart two consonants of that language that their own language does not distinguish. They hear 40 words and say which consonant they heard, once before and once after a week of training. `pre` and `post` are the number of correct answers out of 40.
+
+```{r}
+perception_training
+```
+
+Today's question: does the training help?
+
+---
+
+## 1. Effect size
+
+### 1.1 Gains
+
+Add a column `gain`, the difference `post - pre`. Compute the mean and the standard deviation of `gain`. How many learners improved?
+
+```{r}
+
+```
+
+### 1.2 A plot
+
+Make a histogram of `gain` with `binwidth = 1` and add a vertical line at 0 with `geom_vline()`.
+
+```{r}
+
+```
+
+### 1.3 Cohen's d
+
+Compute Cohen's d for the difference between `post` and `pre` with `cohen.d(training$post, training$pre)`. How large is the effect, by the usual rules of thumb?
+
+```{r}
+
+```
+
+---
+
+## 2. Standard errors and confidence intervals
+
+### 2.1 The standard error by hand
+
+Compute the standard error of the mean gain, the standard deviation divided by the square root of the number of learners. Then compute a rough 95% confidence interval: the mean plus and minus two standard errors.
+
+```{r}
+
+```
+
+### 2.2 With `t.test()`
+
+Get the 95% confidence interval of the mean gain from `t.test(training$gain)$conf.int`. Why is it a little wider than yours? Does it include 0?
+
+```{r}
+
+```
+
+---
+
+## 3. Testing
+
+### 3.1 The null hypothesis
+
+What is the null hypothesis here, in words? Test it with `t.test(training$gain)`, which tests whether the mean gain is 0. What do t and p tell you?
+
+```{r}
+
+```
+
+### 3.2 Paired or not?
+
+Now test the same data as if two different groups of learners had been tested, one before and one after training: `t.test(training$post, training$pre)`. Compare the p-value with the one from 3.1. Why is it so much larger?
+
+```{r}
+
+```
+
+### 3.3 Report
+
+Write one sentence that reports the result, with the mean gain, its confidence interval, t, the degrees of freedom and p.
+
+```{r}
+
+```
+
+### 3.4 Bonus: a t-test is a linear model
+
+Fit an intercept-only model of `gain` with `lm(gain ~ 1, data = training)` and look at it with `tidy()`. Compare it with 3.1.
+
+```{r}
+
+```
+
+### 3.5 Bonus: simulating the null
+
+If training did nothing, each gain would be as likely to be positive as negative. Simulate this 5000 times: flip the sign of each gain at random, and compute the mean. How often is a simulated mean as far from 0 as the real one?
+
+```{r}
+set.seed(9)
+```
+
+```{r}
+
+```

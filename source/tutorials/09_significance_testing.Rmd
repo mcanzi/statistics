@@ -1,0 +1,205 @@
+---
+title: "Significance testing"
+subtitle: "Tutorial 9"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(broom)
+library(effsize)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data {.smaller}
+
+In `perception_training`, 18 learners of a foreign language try to tell apart two consonants of that language that their own language does not distinguish. They hear 40 words and say which consonant they heard, once before and once after a week of training. `pre` and `post` are the number of correct answers out of 40.
+
+```{r}
+perception_training
+```
+
+Today's question: does the training help?
+
+---
+
+## 1. Effect size
+
+### 1.1 Gains
+
+Add a column `gain`, the difference `post - pre`. Compute the mean and the standard deviation of `gain`. How many learners improved?
+
+::: solution
+
+```{r}
+training <- perception_training |>
+  mutate(gain = post - pre)
+training |>
+  summarise(mean = mean(gain), sd = sd(gain), improved = sum(gain > 0))
+```
+
+On average, learners got `r round(mean(training$gain), 1)` more words right after training, and `r sum(training$gain > 0)` of the 18 improved.
+
+:::
+
+### 1.2 A plot
+
+Make a histogram of `gain` with `binwidth = 1` and add a vertical line at 0 with `geom_vline()`.
+
+::: solution
+
+```{r}
+training |>
+  ggplot(aes(x = gain)) +
+  geom_histogram(binwidth = 1, fill = "plum2") +
+  geom_vline(xintercept = 0) +
+  xlab("Gain (correct answers out of 40)")
+```
+
+Most gains lie above 0, but a few learners did worse after training.
+
+:::
+
+### 1.3 Cohen's d
+
+Compute Cohen's d for the difference between `post` and `pre` with `cohen.d(training$post, training$pre)`. How large is the effect, by the usual rules of thumb?
+
+::: solution
+
+```{r}
+cohen.d(training$post, training$pre)
+```
+
+d is `r round(cohen.d(training$post, training$pre)$estimate, 2)`: the mean after training is about `r round(cohen.d(training$post, training$pre)$estimate, 1)` standard deviations higher than before, a medium to large effect.
+
+:::
+
+---
+
+## 2. Standard errors and confidence intervals
+
+### 2.1 The standard error by hand
+
+Compute the standard error of the mean gain, the standard deviation divided by the square root of the number of learners. Then compute a rough 95% confidence interval: the mean plus and minus two standard errors.
+
+::: solution
+
+```{r}
+se <- sd(training$gain) / sqrt(nrow(training))
+se
+mean(training$gain) + c(-2, 2) * se
+```
+
+:::
+
+### 2.2 With `t.test()`
+
+Get the 95% confidence interval of the mean gain from `t.test(training$gain)$conf.int`. Why is it a little wider than yours? Does it include 0?
+
+::: solution
+
+```{r}
+t.test(training$gain)$conf.int
+```
+
+`t.test()` uses the t distribution, which needs a little more than two standard errors with only 18 learners. The interval runs from `r round(t.test(training$gain)$conf.int[1], 1)` to `r round(t.test(training$gain)$conf.int[2], 1)` words and does not include 0.
+
+:::
+
+---
+
+## 3. Testing
+
+### 3.1 The null hypothesis
+
+What is the null hypothesis here, in words? Test it with `t.test(training$gain)`, which tests whether the mean gain is 0. What do t and p tell you?
+
+::: solution
+
+The null hypothesis: on average, training does not change how many words learners get right, so the mean gain in the population is 0.
+
+```{r}
+t.test(training$gain)
+```
+
+The mean gain is `r round(t.test(training$gain)$statistic, 1)` standard errors away from 0. If training had no effect, a mean gain this far from 0 would be very unlikely: p = `r signif(t.test(training$gain)$p.value, 2)`.
+
+:::
+
+### 3.2 Paired or not?
+
+Now test the same data as if two different groups of learners had been tested, one before and one after training: `t.test(training$post, training$pre)`. Compare the p-value with the one from 3.1. Why is it so much larger?
+
+::: solution
+
+```{r}
+t.test(training$post, training$pre)$p.value
+t.test(training$gain)$p.value
+```
+
+Learners differ a lot in how good they are to begin with, and that variation hides the effect of training when we compare two groups. With the gains, each learner is compared with themself, so the differences between learners drop out. When the same people are tested twice, use the gains, or `t.test(post, pre, paired = TRUE)`, which gives the same result.
+
+:::
+
+### 3.3 Report
+
+Write one sentence that reports the result, with the mean gain, its confidence interval, t, the degrees of freedom and p.
+
+::: solution
+
+```{r}
+tt <- t.test(training$gain)
+```
+
+After a week of training, learners identified on average `r round(mean(training$gain), 1)` more words correctly out of 40 (95% CI [`r round(tt$conf.int[1], 1)`, `r round(tt$conf.int[2], 1)`]), t(`r tt$parameter`) = `r round(tt$statistic, 2)`, p `r if (tt$p.value < 0.001) "< .001" else paste("=", round(tt$p.value, 3))`.
+
+:::
+
+### 3.4 Bonus: a t-test is a linear model
+
+Fit an intercept-only model of `gain` with `lm(gain ~ 1, data = training)` and look at it with `tidy()`. Compare it with 3.1.
+
+::: solution
+
+```{r}
+tidy(lm(gain ~ 1, data = training))
+```
+
+The intercept is the mean gain, and its t and p are those of the t-test in 3.1.
+
+:::
+
+### 3.5 Bonus: simulating the null
+
+If training did nothing, each gain would be as likely to be positive as negative. Simulate this 5000 times: flip the sign of each gain at random, and compute the mean. How often is a simulated mean as far from 0 as the real one?
+
+```{r}
+set.seed(9)
+```
+
+::: solution
+
+```{r}
+null_means <- replicate(5000, mean(training$gain * sample(c(-1, 1), 18, replace = TRUE)))
+mean(abs(null_means) >= abs(mean(training$gain)))
+```
+
+Hardly ever, as the t-test said. In the simulation behind the data, training raises the log odds of a correct answer by 0.6 on average (`?perception_training`).
+
+:::

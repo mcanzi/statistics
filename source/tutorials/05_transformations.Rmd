@@ -1,0 +1,242 @@
+---
+title: "Transformations"
+subtitle: "Tutorial 5"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(broom)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data {.smaller}
+
+`vocabulary_growth` comes from a simulated study of 80 toddlers. Every two months, from 16 to 30 months, their parents ticked the words their child could say on a checklist of 680 words. Before the study, a day-long recording measured how much speech each child hears at home: `input` is the number of adult words per hour. Today we use only the session at 24 months:
+
+```{r}
+v24 <- vocabulary_growth |>
+  filter(age == 24)
+glimpse(v24)
+```
+
+Today's question: do children who hear more speech say more words?
+
+---
+
+## 1. Centring
+
+### 1.1 A scatterplot
+
+Plot `vocabulary` against `input`, with `input` on the `x` axis and both axes labelled in words. Do children who hear more speech say more words?
+
+::: solution
+
+```{r scatter, eval = FALSE}
+v24 |>
+  ggplot(aes(x = input, y = vocabulary)) +
+  geom_point(colour = "plum2", size = 3) +
+  xlab("Input (adult words per hour)") + ylab("Vocabulary (words)")
+```
+
+:::
+
+::: solution
+
+```{r, ref.label = "scatter", echo = FALSE}
+```
+
+There is a weak upward trend. Most children hear between 500 and 2000 words per hour, and a few hear much more.
+
+:::
+
+### 1.2 Fit a line
+
+Fit a linear model of `vocabulary` as a function of `input` and print its coefficients. The slope is in words per adult word per hour, which is hard to imagine: how many more words does the model predict for a child who hears 100 more words per hour? And what does the intercept mean?
+
+::: solution
+
+```{r}
+m <- lm(vocabulary ~ input, data = v24)
+coef(m)
+100 * coef(m)["input"]
+```
+
+100 more adult words per hour go with about `r round(100 * coef(m)["input"])` more words in the child's vocabulary.
+
+The intercept, `r round(coef(m)[1])` words, is the prediction for a child who hears no speech at all. No child in the data is anywhere near that: the lowest input is `r min(v24$input)` words per hour.
+
+:::
+
+### 1.3 Centre the predictor
+
+Centre `input` on 1200 words per hour, about the median of the data: make a new column `input_c` that is `input` minus 1200. Fit the model again with `input_c`. Which coefficient changes, and what does it mean now?
+
+::: solution
+
+```{r}
+v24 <- v24 |>
+  mutate(input_c = input - 1200)
+m_c <- lm(vocabulary ~ input_c, data = v24)
+coef(m_c)
+```
+
+The slope stays the same. The intercept, `r round(coef(m_c)[1])` words, is now the predicted vocabulary of a child who hears 1200 words per hour, a typical child in the data.
+
+:::
+
+---
+
+## 2. Logarithms
+
+### 2.1 A skewed predictor
+
+Make a histogram of `input`. Then make a second histogram of `log2(input)`. How do the shapes differ?
+
+::: solution
+
+```{r}
+v24 |>
+  ggplot(aes(x = input)) +
+  geom_histogram(binwidth = 200, fill = "plum2") +
+  xlab("Input (adult words per hour)")
+```
+
+:::
+
+::: solution
+
+```{r}
+v24 |>
+  ggplot(aes(x = log2(input))) +
+  geom_histogram(binwidth = 0.25, fill = "plum2") +
+  xlab("log2 input")
+```
+
+`input` is skewed to the right: most children hear between 500 and 2000 words per hour, and a few hear far more. On the log scale, the distribution is much more symmetrical.
+
+:::
+
+### 2.2 A model on the log scale
+
+Fit a model of `vocabulary` as a function of `log2(input)` and print its coefficients. One step on the `log2` scale is a doubling of the input. Complete the sentence: "Each time the input doubles, the vocabulary grows by ___ words."
+
+::: solution
+
+```{r}
+m_log <- lm(vocabulary ~ log2(input), data = v24)
+coef(m_log)
+```
+
+Each time the input doubles, the vocabulary grows by about `r round(coef(m_log)[2])` words.
+
+:::
+
+### 2.3 Doubling the input
+
+Use `predict()` to get the predicted vocabulary for children who hear 600, 1200 and 2400 words per hour. How large is the step from 600 to 1200, and from 1200 to 2400?
+
+::: solution
+
+```{r}
+pred <- predict(m_log, newdata = tibble(input = c(600, 1200, 2400)))
+pred
+diff(pred)
+```
+
+Both steps are `r round(diff(pred)[1])` words, the slope of `m_log`. On the log scale, every doubling adds the same amount, whether a child goes from 600 to 1200 words per hour or from 1200 to 2400.
+
+:::
+
+### 2.4 Which model fits better?
+
+Compare `R²` of `m` and `m_log` with `glance()`.
+
+::: solution
+
+```{r}
+glance(m)$r.squared
+glance(m_log)$r.squared
+```
+
+`m_log` fits a little better (`r round(100 * glance(m_log)$r.squared)`% against `r round(100 * glance(m)$r.squared)`% of the variance). Both numbers are small: children differ in many ways besides how much speech they hear.
+
+:::
+
+---
+
+## 3. Standardising and correlation
+
+### 3.1 Correlation
+
+Use `cor()` to compute the correlation between `vocabulary` and `input`, and between `vocabulary` and `log2(input)`.
+
+::: solution
+
+```{r}
+cor(v24$vocabulary, v24$input)
+cor(v24$vocabulary, log2(v24$input))
+```
+
+Both correlations are weak and positive, and the one with the log input is a little stronger.
+
+:::
+
+### 3.2 Standardise both variables
+
+Add two columns with z-scores: `vocabulary_z`, the standardised vocabulary, and `log_input_z`, the standardised `log2(input)`. Wrap `scale()` in `as.numeric()`, because `scale()` returns a matrix. Fit a model of `vocabulary_z` as a function of `log_input_z`. Which number from 3.1 is the slope?
+
+::: solution
+
+```{r}
+v24 <- v24 |>
+  mutate(vocabulary_z = as.numeric(scale(vocabulary)),
+         log_input_z = as.numeric(scale(log2(input))))
+coef(lm(vocabulary_z ~ log_input_z, data = v24))
+```
+
+The slope is the correlation between `vocabulary` and `log2(input)`, `r round(cor(v24$vocabulary, log2(v24$input)), 2)`: one standard deviation more log input goes with `r round(cor(v24$vocabulary, log2(v24$input)), 2)` standard deviations more vocabulary. The intercept is 0, because both variables have a mean of 0.
+
+:::
+
+### 3.3 Bonus: centre on the log scale
+
+The intercept of `m_log` is the predicted vocabulary for a child who hears one word per hour, because `log2(1)` is 0. Centre the log input on `log2(1200)` and fit the model again. What does the intercept mean now?
+
+::: solution
+
+```{r}
+v24 <- v24 |>
+  mutate(log_input_c = log2(input) - log2(1200))
+coef(lm(vocabulary ~ log_input_c, data = v24))
+```
+
+The intercept is the predicted vocabulary of a child who hears 1200 words per hour. Centring works on the log scale just as it does on the original one.
+
+:::
+
+### 3.4 Bonus: the true model
+
+`?vocabulary_growth` gives the model the data were simulated from. In it, doubling the input moves the steep middle part of each child's growth curve two months earlier. Why does that make a model with `log2(input)` a better choice than one with `input`?
+
+::: solution
+
+In the true model, input acts on the log2 scale: going from 600 to 1200 words per hour helps as much as going from 1200 to 2400. A model with `log2(input)` makes the same assumption, while a model with `input` assumes that every extra word per hour helps equally.
+
+:::

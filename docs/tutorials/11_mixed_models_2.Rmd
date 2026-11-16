@@ -1,0 +1,137 @@
+---
+title: "Mixed models 2"
+subtitle: "Tutorial 11"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(lme4)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data
+
+In `n400`, 30 participants read German sentences that end in an expected or an unexpected word (*Er trinkt seinen Kaffee / Schrank*) while their EEG is recorded. `amplitude` is the mean EEG signal in microvolts (µV), 300 to 500 ms after the last word. Unexpected words make it more negative: this is the **N400**. Each participant reads 80 items, 40 in each condition. Today we use only the electrode Cz, at the top of the head:
+
+```{r}
+cz <- n400 |>
+  filter(electrode == "Cz")
+glimpse(cz)
+```
+
+Today's question: how large is the N400 effect, and how sure can we be about it?
+
+---
+
+## 1. Fitting the model
+
+### 1.1 Condition means
+
+Compute the mean `amplitude` in each `condition`. How large is the difference?
+
+```{r}
+
+```
+
+### 1.2 Which random effects?
+
+Each participant reads items in both conditions, and each item has an expected and an unexpected version. Fit this model and save it as `m`:
+
+```{r, eval = FALSE}
+m <- lmer(amplitude ~ condition + (1 + condition | participant) + (1 | item), data = cz)
+```
+
+Why does the model have a varying slope for `condition` by participant? Look at the fixed effects with `fixef(m)`. What do the intercept and the slope mean?
+
+```{r}
+
+```
+
+### 1.3 The truth
+
+In the true model behind the data (`?n400`), the N400 at Cz is −4 µV times (1 − cloze), where cloze is how predictable a word is. Use the mean `cloze` of each condition to compute the true difference between the conditions. Is the estimate close?
+
+```{r}
+
+```
+
+---
+
+## 2. Extracting information
+
+### 2.1 How much do participants differ?
+
+Use `VarCorr(m)` to find the SD of the participants' N400 effects. About 95% of participants should have an effect within two SDs of the fixed effect. Compute that range. Does every participant show an N400?
+
+```{r}
+
+```
+
+### 2.2 Each participant's effect
+
+`coef(m)$participant` gives each participant's own intercept and slope. Which participant has the weakest N400, and which the strongest?
+
+```{r}
+
+```
+
+### 2.3 Confidence intervals
+
+Compute 95% confidence intervals for the fixed effects with `confint(m, parm = "beta_", method = "Wald")`. Report the N400 effect with its interval.
+
+```{r}
+
+```
+
+### 2.4 Predictions
+
+Predict the amplitude in each condition for an average participant and an average item, with `predict()` and `re.form = NA`.
+
+```{r}
+
+```
+
+---
+
+## 3. Significance testing
+
+### 3.1 A likelihood ratio test
+
+Fit `m` again with `REML = FALSE`, and a model without `condition` but with the same random effects, also with `REML = FALSE`. Compare them with `anova()`. Report χ², the degrees of freedom and p.
+
+```{r}
+
+```
+
+### 3.2 p-values with `lmerTest`
+
+Fit `m` again with `lmerTest::lmer()` and look at `summary()`. Find the degrees of freedom and the p-value of `conditionunexpected`.
+
+```{r}
+
+```
+
+### 3.3 Bonus: cloze as a continuous predictor
+
+The N400 depends on how predictable a word is, not only on the condition. Fit a model of `amplitude` as a function of `cloze`, with `(1 + cloze | participant) + (1 | item)`. What does the slope mean? Compare it with the true model in 1.3.
+
+```{r}
+
+```

@@ -28,7 +28,7 @@ Requires `tidyverse`, `revealjs`, `palmerpenguins`, `simling`, `broom`, `lme4`, 
 
 ## Tutorials
 
-Each tutorial is one file with its solutions in `source/tutorials`, named like its lecture (`03_descriptive_statistics.Rmd`). Every solution sits in a `::: solution` block, and the weekly assignment in a box. The weekly assignment never has solutions in these files (rendering stops if it finds one), so tutorials can be published at any time. Knit `source/render_tutorials.Rmd` to make two versions of each tutorial in `docs/tutorials`:
+Each tutorial is one file with its solutions in `source/tutorials`, named like its lecture (`03_descriptive_statistics.Rmd`). Every solution sits in a `::: solution` block. Tutorials 2, 4, 8, 10 and 12 end with a weekly assignment in a box, and lecture 13 has no tutorial. The weekly assignment never has solutions in these files (rendering stops if it finds one), so tutorials can be published at any time. Knit `source/render_tutorials.Rmd` to make two versions of each tutorial in `docs/tutorials`:
 
 - `03_descriptive_statistics.Rmd`, the exercise sheet for students: the same file without the solutions, with an empty chunk where each piece of solution code was. It knits to a plain page with the `darkly` theme.
 - `03_descriptive_statistics.html`, the slides: the lecture theme, one exercise at a time, each followed by its solution.
@@ -39,6 +39,15 @@ Each tutorial is one file with its solutions in `source/tutorials`, named like i
 |---|---|---|---|
 | 2 | Data wrangling | [02_data_wrangling.html](https://mcanzi.de/statistics/tutorials/02_data_wrangling.html) | [02_data_wrangling.Rmd](https://mcanzi.de/statistics/tutorials/02_data_wrangling.Rmd) |
 | 3 | Descriptive statistics | [03_descriptive_statistics.html](https://mcanzi.de/statistics/tutorials/03_descriptive_statistics.html) | [03_descriptive_statistics.Rmd](https://mcanzi.de/statistics/tutorials/03_descriptive_statistics.Rmd) |
+| 4 | Linear models | [04_linear_models.html](https://mcanzi.de/statistics/tutorials/04_linear_models.html) | [04_linear_models.Rmd](https://mcanzi.de/statistics/tutorials/04_linear_models.Rmd) |
+| 5 | Transformations | [05_transformations.html](https://mcanzi.de/statistics/tutorials/05_transformations.html) | [05_transformations.Rmd](https://mcanzi.de/statistics/tutorials/05_transformations.Rmd) |
+| 6 | Multiple regression | [06_multiple_regression.html](https://mcanzi.de/statistics/tutorials/06_multiple_regression.html) | [06_multiple_regression.Rmd](https://mcanzi.de/statistics/tutorials/06_multiple_regression.Rmd) |
+| 7 | Categorical predictors | [07_categorical_predictors.html](https://mcanzi.de/statistics/tutorials/07_categorical_predictors.html) | [07_categorical_predictors.Rmd](https://mcanzi.de/statistics/tutorials/07_categorical_predictors.Rmd) |
+| 8 | Interactions | [08_interactions.html](https://mcanzi.de/statistics/tutorials/08_interactions.html) | [08_interactions.Rmd](https://mcanzi.de/statistics/tutorials/08_interactions.Rmd) |
+| 9 | Significance testing | [09_significance_testing.html](https://mcanzi.de/statistics/tutorials/09_significance_testing.html) | [09_significance_testing.Rmd](https://mcanzi.de/statistics/tutorials/09_significance_testing.Rmd) |
+| 10 | Mixed models 1 | [10_mixed_models_1.html](https://mcanzi.de/statistics/tutorials/10_mixed_models_1.html) | [10_mixed_models_1.Rmd](https://mcanzi.de/statistics/tutorials/10_mixed_models_1.Rmd) |
+| 11 | Mixed models 2 | [11_mixed_models_2.html](https://mcanzi.de/statistics/tutorials/11_mixed_models_2.html) | [11_mixed_models_2.Rmd](https://mcanzi.de/statistics/tutorials/11_mixed_models_2.Rmd) |
+| 12 | Mixed logistic regression | [12_logistic_regression.html](https://mcanzi.de/statistics/tutorials/12_logistic_regression.html) | [12_logistic_regression.Rmd](https://mcanzi.de/statistics/tutorials/12_logistic_regression.Rmd) |
 
 ## License
 

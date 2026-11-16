@@ -1,0 +1,149 @@
+---
+title: "Interactions"
+subtitle: "Tutorial 8"
+author: "Dr Massimiliano Canzi"
+output:
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Setup
+
+```{r}
+library(tidyverse)
+library(broom)
+library(simling)
+```
+
+`simling` is an R package of simulated linguistic data. If it is not installed yet, run these two lines once, in the Console:
+
+```{r, eval = FALSE}
+install.packages("remotes")
+remotes::install_github("mcanzi/simling")
+```
+
+## The data
+
+In `agreement_attraction`, 40 participants read sentences like *The key to the cabinet(s) was/were rusty* while an eye tracker records their eye movements. The verb is either grammatical (*was*) or ungrammatical (*were*), and the noun before it, the **attractor**, is singular (*cabinet*) or plural (*cabinets*). `gaze_duration` is the time in ms that readers look at the verb the first time they reach it. It is `NA` when they skipped the verb.
+
+```{r}
+glimpse(agreement_attraction)
+```
+
+Today's question: does a plural attractor make an ungrammatical verb easier to read?
+
+---
+
+## 1. Two categorical predictors
+
+### 1.1 Four cell means
+
+Compute the mean `gaze_duration` in each of the four combinations of `grammaticality` and `attractor`, and save the result as `cells`. Use `na.rm = TRUE`, because skipped verbs have no gaze duration.
+
+```{r}
+
+```
+
+### 1.2 An interaction plot
+
+Plot the four means from `cells`, with `grammaticality` on the `x` axis and one colour and one line per `attractor` (`group = attractor`). Are the lines parallel?
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+### 1.3 The model
+
+Fit a linear model of `gaze_duration` with `grammaticality`, `attractor` and their interaction, and print its coefficients. What are the reference levels?
+
+```{r}
+
+```
+
+### 1.4 Rebuild the cell means
+
+Use the four coefficients to compute the predicted gaze duration in each of the four cells. Compare your numbers with `cells`.
+
+```{r}
+
+```
+
+### 1.5 In words
+
+Say in two sentences what the coefficient of `grammaticalityungrammatical` and the interaction coefficient mean.
+
+---
+
+## 2. A categorical and a continuous predictor
+
+`lexical_decision_l2` has reaction times (`rt`, in ms) of 15 L1 and 15 L2 speakers of German to 40 words, with each word's log10 frequency (`log_freq`).
+
+### 2.1 Two groups, two lines
+
+Plot `rt` against `log_freq`, with one colour and one regression line per `group`. Do frequent words help both groups equally?
+
+```{r}
+
+```
+
+```{r}
+
+```
+
+### 2.2 Centre and fit
+
+Centre `log_freq` on its mean, in a new column `freq_c`. Fit a model of `rt` with `freq_c`, `group` and their interaction. What do the coefficients of `freq_c`, `groupL2` and the interaction mean?
+
+```{r}
+
+```
+
+### 2.3 Bonus: without centring
+
+Fit the same model with `log_freq` instead of `freq_c`. Which coefficient changes a lot, and why?
+
+```{r}
+
+```
+
+---
+
+## 3. Weekly assignment
+
+::: {.assignment .alert .alert-info}
+Exercises 3.1 to 3.3 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
+:::
+
+In `acceptability`, 48 participants rate sentences on a scale from 1 (very bad) to 7 (very good). The sentences contain a long or a short dependency (`length`) between a *wh*-word and its gap, and the gap is inside an **island** or not (`structure`). Islands are structures out of which a dependency is hard to form, such as *whether* clauses.
+
+### 3.1 Cell means and plot
+
+Compute the mean `rating` in each combination of `length` and `structure`, and make an interaction plot with `length` on the `x` axis and one line per `structure`. Are the lines parallel?
+
+```{r}
+
+```
+
+### 3.2 The model
+
+Fit a linear model of `rating` with `length`, `structure` and their interaction. Report each of the four coefficients in a sentence.
+
+```{r}
+
+```
+
+### 3.3 The island effect
+
+An **island effect** means that long dependencies out of islands are worse than the two effects on their own predict. Compute, from the cell means, how much ratings drop from short to long dependencies in non-islands, and how much in islands. Which coefficient of your model is the difference between the two drops? Is there an island effect?
+
+```{r}
+
+```
