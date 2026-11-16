@@ -112,7 +112,7 @@ Fit the same model with `log_freq` instead of `freq_c`. Which coefficient change
 ## 3. Weekly assignment
 
 ::: {.assignment .alert .alert-info}
-Exercises 3.1 to 3.3 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
+Exercises 3.1 to 3.3 are this week's assignment. Complete them at home, in a file started from the konstats template "Weekly assignment" (tutorial 1), and hand in the .Rmd file within a week.
 :::
 
 In `acceptability`, 48 participants rate sentences on a scale from 1 (very bad) to 7 (very good). The sentences contain a long or a short dependency (`length`) between a *wh*-word and its gap, and the gap is inside an [island]{.hl} or not (`structure`). Islands are structures out of which a dependency is hard to form, such as *whether* clauses.

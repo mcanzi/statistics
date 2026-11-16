@@ -167,7 +167,7 @@ names(data_no_sepal_lc)
 ## 3. Weekly assignment
 
 ::: {.assignment .alert .alert-info}
-Exercises 3.1 and 3.2 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
+Exercises 3.1 and 3.2 are this week's assignment. Complete them at home, in a file started from the konstats template "Weekly assignment" (tutorial 1), and hand in the .Rmd file within a week.
 :::
 
 ### 3.1 From cm to mm

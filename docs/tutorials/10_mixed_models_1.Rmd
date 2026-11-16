@@ -107,7 +107,7 @@ Fit the model again with varying slopes for frequency by participant: `(1 + freq
 ## 3. Weekly assignment
 
 ::: {.assignment .alert .alert-info}
-Exercises 3.1 to 3.3 are this week's assignment. Complete them at home and hand in your .Rmd file within a week.
+Exercises 3.1 to 3.3 are this week's assignment. Complete them at home, in a file started from the konstats template "Weekly assignment" (tutorial 1), and hand in the .Rmd file within a week.
 :::
 
 In `dgs_iconicity`, 30 deaf signers of German Sign Language and 30 hearing non-signers (`group`) each rate the same 300 signs for iconicity, from 1 (not iconic) to 7 (very iconic). `rater` and `sign` identify the raters and the signs.
