@@ -43,11 +43,11 @@ Call it `statistics`, for example. When you open the project, R works inside tha
 
 ### 1.3 Installing konstats
 
-`{konstats}` is on GitHub, not on CRAN. Type this in the `Console`, once:
+`{konstats}` is not on CRAN, but on R-universe. Type this in the `Console`, once:
 
 ```{r, eval = FALSE}
-install.packages("remotes")
-remotes::install_github("mcanzi/konstats")
+install.packages("konstats", repos = c("https://mcanzi.r-universe.dev",
+                                       "https://cloud.r-project.org"))
 ```
 
 . . .

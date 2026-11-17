@@ -1119,10 +1119,10 @@ looks for them.</p>
 </section>
 <section id="installing-konstats" class="slide level2">
 <h2>1.3 Installing konstats</h2>
-<p><code>{konstats}</code> is on GitHub, not on CRAN. Type this in the
-<code>Console</code>, once:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;remotes&quot;</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;mcanzi/konstats&quot;</span>)</span></code></pre></div>
+<p><code>{konstats}</code> is not on CRAN, but on R-universe. Type this
+in the <code>Console</code>, once:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;konstats&quot;</span>, <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&quot;https://mcanzi.r-universe.dev&quot;</span>,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">&quot;https://cloud.r-project.org&quot;</span>))</span></code></pre></div>
 <div class="fragment">
 <p>This also installs every package the course uses, from the
 <code>tidyverse</code> and <code>swirl</code> of lecture 1 to
