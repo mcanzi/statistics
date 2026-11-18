@@ -22,9 +22,9 @@ The slides are online at [mcanzi.de/statistics](https://mcanzi.de/statistics/01_
 
 ## Rendering the slides
 
-Knit `source/render_all.Rmd` to render every lecture into `docs`, which GitHub Pages serves. Knitting a single lecture also writes its HTML into `docs`. All lectures use the forest theme of mcanzi.de (`source/theme-dark.css`): green-black, leaf green and moon yellow, with rafflesias drawn in ink in the background. `source/slides_setup.R` sets the plot colours to match it. The fonts are in `source/fonts` and are embedded in each HTML file.
+The lectures are [Quarto](https://quarto.org) revealjs decks (`source/*.qmd`). Run `quarto render` in `source` to render every lecture into `docs`, which GitHub Pages serves; `quarto render 04_linear_models.qmd`, or the Render button in RStudio, renders a single one. The options all lectures share (slide size, transitions, chunk defaults) are in `source/_quarto.yml`; each lecture's YAML has only its title, subtitle and footer, and the few options in which it differs. All lectures use the forest theme of mcanzi.de (`source/forest.scss`): green-black, leaf green and moon yellow, with rafflesias drawn in ink in the background. `source/slides_setup.R` sets the plot colours to match it. The fonts are in `source/fonts` (declared in `source/fonts.css`) and are embedded in each HTML file, so every deck is a single file that works offline.
 
-Requires `tidyverse`, `revealjs`, `palmerpenguins`, `simling`, `broom`, `lme4`, `lmerTest` and `effsize`; optional: `qrcode` (QR codes), `ragg` and `systemfonts` (Atkinson Hyperlegible in the figures).
+Requires [Quarto](https://quarto.org) (bundled with RStudio), `tidyverse`, `revealjs` (tutorial slides), `palmerpenguins`, `simling`, `broom`, `lme4`, `lmerTest` and `effsize`; optional: `qrcode` (QR codes), `ragg` and `systemfonts` (Atkinson Hyperlegible in the figures).
 
 ## Tutorials
 

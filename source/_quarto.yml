@@ -1,0 +1,49 @@
+project:
+  output-dir: ../docs
+  # The lectures only; the tutorials are R Markdown, made by render_tutorials.Rmd
+  render:
+    - "[0-9][0-9]_*.qmd"
+    - "!tutorials/"
+
+author: "Dr Massimiliano Canzi"
+
+format:
+  revealjs:
+    theme: [dark, forest.scss]
+    css: fonts.css
+    embed-resources: true
+    width: 1050
+    height: 700
+    margin: 0.04   # as in the {revealjs} decks; Quarto's default (0.1) makes the slides smaller
+    incremental: true
+    transition: fade
+    background-transition: fade
+    transition-speed: fast
+    navigation-mode: linear
+    slide-number: c/t
+    show-slide-number: all
+    controls: true
+    # as in the {revealjs} decks, where Quarto's defaults differ
+    controls-layout: bottom-right
+    controls-tutorial: true
+    fragment-in-url: true
+    pdf-separate-fragments: true
+    touch: true
+    menu: false
+    center-title-slide: false
+    auto-stretch: false
+    highlight-style: zenburn
+    code-line-numbers: false
+    fig-width: 10
+    fig-height: 4.4
+    fig-align: center
+
+execute:
+  echo: true
+  warning: false
+  message: false
+
+knitr:
+  opts_chunk:
+    comment: ""
+    out.width: "100%"

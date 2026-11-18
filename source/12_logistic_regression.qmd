@@ -1,34 +1,12 @@
 ---
 title: "Mixed logistic regression"
 subtitle: "Binary outcomes with glmer()"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Mixed logistic regression"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.4, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
 library(tidyverse)
 library(simling)
 library(lme4)
@@ -42,7 +20,6 @@ options(width = 72, pillar.print_min = 4, pillar.print_max = 4)
 
 <style>
   :root {
-    --footer-text:  "Mixed logistic regression";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -87,7 +64,9 @@ acc
 
 ## Accuracy and frequency
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 acc |>
   mutate(bin = cut_number(freq_c, 8)) |>
   summarise(freq_c = mean(freq_c), p = mean(correct), n = n(), .by = bin) |>
@@ -104,7 +83,9 @@ Grey: every response, 0 or 1. Orange: the proportion correct in 8 frequency bins
 
 ## Why not `lm()`?
 
-```{r, echo = FALSE, fig.height = 3.3}
+```{r}
+#| echo: false
+#| fig-height: 3.3
 m_lm <- lm(correct ~ freq_c, data = acc)
 grid <- tibble(freq_c = seq(-8, 8, by = 0.05))
 m_glm <- glm(correct ~ freq_c, data = acc, family = binomial)
@@ -184,7 +165,9 @@ The [odds]{.hl} say how much more likely something is to happen than not: p = 0.
 
 ## The logistic function
 
-```{r, echo = FALSE, fig.height = 3.8}
+```{r}
+#| echo: false
+#| fig-height: 3.8
 tibble(logit = seq(-6, 6, by = 0.05), p = plogis(logit)) |>
   ggplot(aes(logit, p)) +
   geom_hline(yintercept = c(0, 1), colour = moss, linetype = "dotted") +
@@ -314,7 +297,8 @@ new |> mutate(p = predict(m, newdata = new, re.form = NA, type = "response")) |>
   print(n = 5)
 ```
 
-```{r, include = FALSE}
+```{r}
+#| include: false
 pp <- round(100 * predict(m, newdata = new, re.form = NA, type = "response"))
 ```
 
@@ -340,7 +324,9 @@ So one unit of log frequency changes the probability of a correct response by at
 
 ## Predicted curves
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 grid_p <- crossing(participant = unique(acc$participant), freq_c = seq(-2.6, 2.6, by = 0.1))
 grid_p$p <- predict(m, newdata = grid_p, type = "response",
                     re.form = ~ (1 + freq_c | participant))
@@ -393,7 +379,8 @@ Binary data carry less information per observation than continuous data: complex
 
 ## Reporting {.smaller}
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
 lrt <- anova(m_null, m)
 ```
 
@@ -407,7 +394,8 @@ Report estimates on the log odds scale, and help your reader with odds ratios or
 
 Sometimes data come as counts: 17 correct out of 20 trials. The binomial family handles this too, with successes and failures:
 
-```{r, eval = FALSE}
+```{r}
+#| eval: false
 glmer(cbind(n_correct, n_incorrect) ~ predictor + (1 | participant),
       data = counts, family = binomial)
 ```

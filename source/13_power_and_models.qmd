@@ -1,34 +1,12 @@
 ---
 title: "Power and model building"
 subtitle: "p-values, power, uncertainty and building models"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Power and model building"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.4, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
 library(tidyverse)
 library(simling)
 
@@ -41,7 +19,6 @@ options(width = 72, pillar.print_min = 5, pillar.print_max = 5)
 
 <style>
   :root {
-    --footer-text:  "Power and model building";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -178,7 +155,9 @@ power.t.test(n = 20, delta = 10, sd = 40)$power
 
 ## Power and sample size
 
-```{r, echo = FALSE, fig.height = 3.4}
+```{r}
+#| echo: false
+#| fig-height: 3.4
 set.seed(42)
 pw <- tibble(n = c(20, 50, 100, 200, 300, 400)) |>
   mutate(power = map_dbl(n, \(k) mean(map_dbl(1:500, \(i) sim_study(n = k)$p) < .05)))
@@ -198,7 +177,9 @@ For 80% power, this 10 ms effect needs about `r ceiling(power.t.test(power = 0.8
 
 Gelman & Carlin (2014) showed that with low power, significant results tend to be misleading.
 
-```{r, echo = FALSE, fig.height = 3.4}
+```{r}
+#| echo: false
+#| fig-height: 3.4
 sims20 |>
   mutate(result = if_else(p < .05, "significant", "not significant")) |>
   ggplot(aes(estimate, fill = result)) +
@@ -239,7 +220,8 @@ The `{simr}` package automates this for `lmer()` and `glmer()` models (Green & M
 
 `naming_pilot` from {simling} is a pilot for this workflow: 15 younger and 15 older adults name the same 40 pictures. Is the frequency effect larger for older adults? Fit the model to the pilot, then let `{simr}` simulate larger studies from it:
 
-```{r, eval = FALSE}
+```{r}
+#| eval: false
 library(lme4)
 library(simr)
 pilot_data <- naming_pilot |> mutate(log_latency = log(latency))
@@ -309,7 +291,9 @@ Testing fewer things is even better. Decide which comparisons answer your questi
 
 A tempting plan: test after every 10 participants, and stop as soon as p < .05.
 
-```{r, echo = FALSE, fig.height = 3.2}
+```{r}
+#| echo: false
+#| fig-height: 3.2
 set.seed(8)
 paths <- map(1:20, \(s) {
   a <- rnorm(100); b <- rnorm(100)
@@ -413,7 +397,8 @@ preds
 
 ## Showing uncertainty: categories
 
-```{r, fig.height = 2.9}
+```{r}
+#| fig-height: 2.9
 ggplot(preds, aes(style, fit)) +
   geom_jitter(data = speech_styles, aes(y = duration), width = 0.15,
               colour = kingfisher, alpha = 0.4) +
@@ -435,7 +420,8 @@ grid
 
 ## Showing uncertainty: continuous
 
-```{r, fig.height = 2.2}
+```{r}
+#| fig-height: 2.2
 ggplot(grid, aes(aoa, fit)) +
   geom_point(data = words, aes(y = rt), colour = kingfisher, alpha = 0.4) +
   geom_ribbon(aes(ymin = lwr, ymax = upr), fill = hornbill, alpha = 0.35) +
@@ -455,7 +441,8 @@ _Sources: San Diego Zoo Wildlife Alliance; Mongabay_
 
 ## What you have learned
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
 tibble(
   Outcome = c("continuous", "continuous", "binary (0/1)", "binary (0/1)"),
   `Repeated measures?` = c("no", "yes", "no", "yes"),
@@ -560,7 +547,8 @@ Only the first two (`r paste(round(p.adjust(p_ex, method = "holm")[1:2], 3), col
 
 ## Solutions {.smaller}
 
-```{r, fig.height = 2.9}
+```{r}
+#| fig-height: 2.9
 m_pv <- lm(percent_v ~ language, data = rhythm_metrics)
 anova(lm(percent_v ~ 1, data = rhythm_metrics), m_pv)$`Pr(>F)`[2]
 

@@ -1,34 +1,12 @@
 ---
 title: "Categorical predictors"
 subtitle: "Treatment coding, sum coding and factors"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Categorical predictors"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.4, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
 library(tidyverse)
 library(simling)
 library(broom)
@@ -42,7 +20,6 @@ options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
 
 <style>
   :root {
-    --footer-text:  "Categorical predictors";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -86,7 +63,9 @@ vowels |> summarise(mean = mean(duration), sd = sd(duration), n = n(), .by = voi
 
 ## The data
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 ggplot(vowels, aes(x = voicing, y = duration, colour = voicing)) +
   geom_jitter(width = 0.15, alpha = 0.5, size = 2) +
   stat_summary(fun = mean, geom = "point", size = 6, shape = 18, colour = mist) +
@@ -146,7 +125,9 @@ levels(factor(as.character(vowels$voicing)))
 
 ## Treatment coding, visually
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 means <- vowels |> summarise(duration = mean(duration), .by = voicing) |>
   mutate(x = if_else(voicing == "voiceless", 0, 1))
 
@@ -255,7 +236,9 @@ The mean of the two group means, and half their difference.
 
 ## Sum coding, visually
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 grand <- mean(means$mean)
 ggplot(vowels, aes(x = voicing, y = duration, colour = voicing)) +
   geom_jitter(width = 0.15, alpha = 0.4, size = 2) +
@@ -303,7 +286,9 @@ styles |> summarise(mean = mean(duration), .by = style)
 
 ## Speaking style
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 ggplot(styles, aes(x = style, y = duration, colour = style)) +
   geom_jitter(width = 0.15, alpha = 0.5, size = 2) +
   stat_summary(fun = mean, geom = "point", size = 6, shape = 18, colour = mist) +
@@ -328,7 +313,9 @@ A predictor with `k` levels gets `k − 1` coefficients: each level against the 
 
 ## Three levels, visually
 
-```{r, echo = FALSE, fig.height = 4.0}
+```{r}
+#| echo: false
+#| fig-height: 4.0
 style_means <- styles |> summarise(mean = mean(duration), .by = style)
 casual_mean <- style_means$mean[style_means$style == "casual"]
 ggplot(styles, aes(x = style, y = duration, colour = style)) +
@@ -397,7 +384,9 @@ The intercept is now the grand mean of the three styles. `style1` is casual's de
 glance(m_style)[, 1:2]
 ```
 
-```{r, echo = FALSE, fig.height = 2.8}
+```{r}
+#| echo: false
+#| fig-height: 2.8
 augment(m_style) |>
   ggplot(aes(x = style, y = .resid, colour = style)) +
   geom_hline(yintercept = 0, colour = mist, linetype = "dashed") +
@@ -439,7 +428,9 @@ With vowel in the model, the F2 slope turns positive, as it is within each vowel
 
 ## Three parallel lines
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 formants_fit <- augment(m_formants)
 ggplot(formants_fit, aes(x = f2, colour = vowel)) +
   geom_point(aes(y = f1), alpha = 0.6, size = 2) +

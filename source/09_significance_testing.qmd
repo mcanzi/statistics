@@ -1,34 +1,12 @@
 ---
 title: "Significance testing"
 subtitle: "Effect sizes, standard errors, confidence intervals and p-values"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Significance testing"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.4, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
 library(tidyverse)
 library(simling)
 library(broom)
@@ -45,7 +23,6 @@ vowels <- vowel_voicing
 
 <style>
   :root {
-    --footer-text:  "Significance testing";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -113,7 +90,9 @@ Every sample gives a different estimate.
 
 ## Sampling variation
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 set.seed(2)
 means <- bind_rows(
   tibble(n = "n = 10", mean = replicate(2000, mean(sample(pop, 10)))),
@@ -157,7 +136,9 @@ That depends on how much durations vary anyway. The same difference is huge if t
 
 [Cohen's d]{.hl} is the difference between two means, in units of their standard deviation:
 
-<div class="formula">d = (mean₂ − mean₁) / pooled SD</div>
+::: {.formula}
+d = (mean₂ − mean₁) / pooled SD
+:::
 
 . . .
 
@@ -190,7 +171,9 @@ cohen.d(duration ~ voicing, data = vowels)
 
 ## Interpreting d
 
-```{r, echo = FALSE, fig.height = 3.8}
+```{r}
+#| echo: false
+#| fig-height: 3.8
 tibble(d = c(0.2, 0.5, 0.8, 2)) |>
   mutate(label = paste("d =", d)) |>
   crossing(x = seq(-4, 6, by = 0.02)) |>
@@ -217,7 +200,9 @@ _Source: Australian Museum_
 
 The [standard error]{.hl} (SE) says how much a sample mean would vary from sample to sample:
 
-<div class="formula">SE = SD / √n</div>
+::: {.formula}
+SE = SD / √n
+:::
 
 . . .
 
@@ -239,7 +224,9 @@ The SD describes the data, and the SE describes the estimate.
 
 ## The SE shrinks with n
 
-```{r, echo = FALSE, fig.height = 4}
+```{r}
+#| echo: false
+#| fig-height: 4
 tibble(n = 2:200) |>
   mutate(se = 25 / sqrt(n)) |>
   ggplot(aes(n, se)) +
@@ -265,7 +252,9 @@ t.test(x)$conf.int
 
 ## 95% of intervals
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 set.seed(3)
 cis <- map_dfr(1:100, \(i) {
   x <- sample(pop, 20)
@@ -349,7 +338,9 @@ In about `r round(mean(abs(null_diffs) >= abs(obs_diff)) * 100)`% of shuffles, t
 
 ## Simulating the null
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 tibble(d = null_diffs) |>
   mutate(extreme = abs(d) >= abs(obs_diff)) |>
   ggplot(aes(x = d, fill = extreme)) +
@@ -366,7 +357,9 @@ Pink: differences at least as extreme as the observed one (dashed). Our result i
 
 Instead of simulating, we can measure the difference in units of its standard error:
 
-<div class="formula">t = difference / SE of the difference</div>
+::: {.formula}
+t = difference / SE of the difference
+:::
 
 ```{r}
 s_small <- small |>
@@ -392,7 +385,9 @@ _Source: Anich et al. (2020), Mammalia_
 
 If H₀ is true, t follows a known shape, the [t-distribution]{.hl}, which depends on the [degrees of freedom]{.hl} (roughly, the sample size).
 
-```{r, echo = FALSE, fig.height = 3.6}
+```{r}
+#| echo: false
+#| fig-height: 3.6
 t_obs <- t.test(duration ~ style, data = small)
 df_obs <- t_obs$parameter
 t_val  <- abs(t_obs$statistic)
@@ -480,7 +475,8 @@ big <- tibble(group = rep(c("a", "b"), each = 5000),
               y     = c(rnorm(5000, 100, 15), rnorm(5000, 101, 15)))
 ```
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
 tibble(
   study = c("Small study: 8 vowels per group", "Huge study: 5000 per group"),
   `Cohen's d` = c(abs(cohen.d(duration ~ style, data = small)$estimate),
@@ -519,7 +515,8 @@ The slope's `t value` and `p.value` in `lm()` are exactly a t-test (with equal v
 
 ## Reporting
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
 tt <- t.test(duration ~ voicing, data = vowels)
 dd <- abs(cohen.d(duration ~ voicing, data = vowels)$estimate)
 diff_ms <- -diff(tt$estimate)

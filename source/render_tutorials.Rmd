@@ -16,7 +16,7 @@ Everything after the assignment box (or after a heading with "Weekly assignment"
 
 On the slides, `## 1. Distributions` becomes a section slide and `### 1.1 A normal distribution` a slide; a `##` part without exercises (`## Setup`) is an ordinary slide. Horizontal rules (`---`) only appear on the exercise sheet.
 
-The slides are rendered from a temporary file next to the lectures, because they need `slides_setup.R`, `theme-dark.css` and `fonts/`. Its name starts with `tutorial_`, so `render_all.Rmd` never takes it for a lecture, and it is deleted afterwards. Rendering stops at the first tutorial that fails, and the error names it.
+The slides are R Markdown ({revealjs}), not Quarto like the lectures, and they keep the {revealjs} version of the lecture theme, `theme-dark.css`. They are rendered from a temporary file next to the lectures, because they need `slides_setup.R`, `theme-dark.css` and `fonts/`. Its name starts with `tutorial_`, so `quarto render` never takes it for a lecture, and it is deleted afterwards. Rendering stops at the first tutorial that fails, and the error names it.
 
 ## Reading a tutorial
 

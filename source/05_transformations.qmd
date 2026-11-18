@@ -1,34 +1,12 @@
 ---
 title: "Transformations"
 subtitle: "Centring, standardising, correlation and logarithms"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Transformations"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.4, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
 library(tidyverse)
 library(simling)
 library(broom)
@@ -48,7 +26,6 @@ r2    <- glance(m)$r.squared
 
 <style>
   :root {
-    --footer-text:  "Transformations";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -72,7 +49,8 @@ _Sources: Encyclopaedia Britannica; WWF_
 
 From today, most examples use data sets from `{simling}`, which you met in tutorial 1. The data are simulated, so we know the true effects.
 
-```{r, eval = FALSE}
+```{r}
+#| eval: false
 library(simling)
 ?megastudy
 ```
@@ -111,7 +89,9 @@ The data stay the same. A transformation changes the scale on which we describe 
 
 A [linear]{.hl} transformation adds, subtracts, multiplies or divides by a constant. A non-linear one, such as the logarithm, changes the shape of the distribution.
 
-```{r, echo = FALSE, fig.height = 4.0}
+```{r}
+#| echo: false
+#| fig-height: 4.0
 rt <- tibble(rt_ms = zipf_rt$rt)
 
 bind_rows(
@@ -158,7 +138,9 @@ The line and its `R²` (`r round(r2, 2)`) stay the same; the numbers are just ea
 
 ## Where is the intercept?
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 ggplot(words, aes(x = aoa, y = rt)) +
   geom_point(colour = pandan, alpha = 0.15, size = 1) +
   geom_abline(intercept = b0, slope = b1, colour = hornbill, linewidth = 1.2) +
@@ -190,7 +172,9 @@ The slope does not change. The intercept is now the mean reaction time: the pred
 
 ## Centring
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 ggplot(words, aes(x = aoa_c, y = rt)) +
   geom_vline(xintercept = 0, colour = moss) +
   geom_point(colour = pandan, alpha = 0.15, size = 1) +
@@ -228,7 +212,9 @@ In linguistic data:
 
 [Standardising]{.hl} turns values into [z-scores]{.hl}: subtract the mean, then divide by the standard deviation.
 
-<div class="formula">z = (x − mean) / SD</div>
+::: {.formula}
+z = (x − mean) / SD
+:::
 
 ```{r}
 words <- words |>
@@ -243,7 +229,9 @@ The slope is now the change in reaction time for a word acquired one standard de
 
 ## What a z-score says
 
-```{r, echo = FALSE, fig.height = 3.4}
+```{r}
+#| echo: false
+#| fig-height: 3.4
 aoa_m <- mean(words$aoa); aoa_s <- sd(words$aoa)
 ggplot(words, aes(x = aoa)) +
   geom_histogram(binwidth = 0.5, fill = kingfisher, colour = floor_col, alpha = 0.8) +
@@ -294,7 +282,9 @@ formants
 
 ## Raw formants
 
-```{r, echo = FALSE, fig.height = 4.6}
+```{r}
+#| echo: false
+#| fig-height: 4.6
 ggplot(formants, aes(x = f2, y = f1, colour = speaker, shape = vowel)) +
   geom_point(size = 3, alpha = 0.8) +
   scale_x_reverse() + scale_y_reverse() +
@@ -320,7 +310,9 @@ formants_z <- formants |>
 
 ## After normalisation
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 ggplot(formants_z, aes(x = f2, y = f1, colour = speaker, shape = vowel)) +
   geom_point(size = 3, alpha = 0.8) +
   scale_x_reverse() + scale_y_reverse() +
@@ -340,7 +332,8 @@ Lobanov normalisation removes the differences between speakers, so that vowels c
 
 ## Linear transformations: summary {.smaller}
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
 fit <- function(f) coef(lm(f, data = words))
 tibble(
   predictor = c("aoa", "aoa_months", "aoa_c", "aoa_6", "aoa_z"),
@@ -372,7 +365,9 @@ _Source: Royal Ontario Museum_
 
 The [correlation coefficient]{.hl} r measures how closely two variables follow a straight line.
 
-```{r, echo = FALSE, fig.height = 3.6}
+```{r}
+#| echo: false
+#| fig-height: 3.6
 set.seed(2)
 make_r <- function(r, n = 150) {
   x <- rnorm(n); y <- r * x + sqrt(1 - r^2) * rnorm(n)
@@ -438,7 +433,9 @@ glance(m)$r.squared
 
 Anscombe's quartet (1973), built into R as `anscombe`:
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 quartet <- anscombe |>
   pivot_longer(everything(), names_to = c(".value", "set"), names_pattern = "(.)(.)") |>
   mutate(set = paste("Data set", set))
@@ -561,7 +558,9 @@ log1p(c(0, 9, 99))     # same as log(c(0, 9, 99) + 1)
 
 ## Logging a predictor
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 bind_rows(
   mutate(zipf_rt, x = freq,        scale = "Raw frequency"),
   mutate(zipf_rt, x = log10(freq), scale = "log10(frequency)")
@@ -595,7 +594,9 @@ Frequency effects in language are usually [multiplicative]{.hl}: going from 10 t
 
 Reaction times are positive and [right-skewed]{.hl} (lecture 3). So are the residuals of a model fitted to raw RTs:
 
-```{r, echo = FALSE, fig.height = 3.8}
+```{r}
+#| echo: false
+#| fig-height: 3.8
 m_log <- lm(log(rt) ~ log10(freq), data = zipf_rt)
 
 bind_rows(

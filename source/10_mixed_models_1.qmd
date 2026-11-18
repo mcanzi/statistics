@@ -1,34 +1,12 @@
 ---
 title: "Mixed models 1"
 subtitle: "A conceptual introduction"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Mixed models 1"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.4, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
 library(tidyverse)
 library(simling)
 library(broom)
@@ -43,7 +21,6 @@ options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
 
 <style>
   :root {
-    --footer-text:  "Mixed models 1";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -106,7 +83,9 @@ count(lexdec, participant) |> head(3)
 
 ## Everyone together
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 ggplot(lexdec, aes(x = freq_c, y = rt)) +
   geom_point(colour = pandan, alpha = 0.3, size = 1.6) +
   geom_smooth(method = "lm", colour = hornbill, se = FALSE, linewidth = 1.5) +
@@ -117,7 +96,9 @@ One cloud of 800 points, one line. This is what `lm(rt ~ freq_c)` sees.
 
 ## One participant at a time
 
-```{r, echo = FALSE, fig.height = 4.6}
+```{r}
+#| echo: false
+#| fig-height: 4.6
 ggplot(lexdec, aes(x = freq_c, y = rt)) +
   geom_point(colour = pandan, alpha = 0.35, size = 0.9) +
   geom_smooth(method = "lm", colour = hornbill, se = FALSE, linewidth = 0.9) +
@@ -152,7 +133,9 @@ But we only have 20 participants. If we ran the experiment again with 20 new par
 
 ## The residuals give it away
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 augment(lm(rt ~ freq_c, data = lexdec)) |>
   mutate(participant = lexdec$participant) |>
   ggplot(aes(x = reorder(participant, .resid, FUN = median), y = .resid)) +
@@ -238,7 +221,9 @@ A [linear mixed effects model]{.hl} extends linear regression to repeated measur
 
 ## Three ways to pool {.smaller}
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 grid <- crossing(participant = unique(lexdec$participant),
                  freq_c = range(lexdec$freq_c))
 
@@ -270,14 +255,18 @@ ggplot(lines, aes(x = freq_c, y = fit, group = participant)) +
 
 Each participant gets their own intercept: the overall intercept plus an adjustment.
 
-<div class="formula">rt = (b₀ + u₀ⱼ) + b₁ · freq + e</div>
+::: {.formula}
+rt = (b₀ + u₀ⱼ) + b₁ · freq + e
+:::
 
 - `b₀`, `b₁`: the fixed effects, shared by everyone
 - `u₀ⱼ`: participant j's adjustment, drawn from a normal distribution with mean 0 and an estimated SD
 
 ## Varying intercepts, visually
 
-```{r, echo = FALSE, fig.height = 4}
+```{r}
+#| echo: false
+#| fig-height: 4
 m_int <- lmer(rt ~ freq_c + (1 | participant), data = lexdec)
 grid |>
   mutate(fit = predict(m_int, newdata = grid)) |>
@@ -292,9 +281,13 @@ Parallel lines: participants differ in speed but share the same frequency effect
 
 Each participant also gets their own slope:
 
-<div class="formula">rt = (b₀ + u₀ⱼ) + (b₁ + u₁ⱼ) · freq + e</div>
+::: {.formula}
+rt = (b₀ + u₀ⱼ) + (b₁ + u₁ⱼ) · freq + e
+:::
 
-```{r, echo = FALSE, fig.height = 2.9}
+```{r}
+#| echo: false
+#| fig-height: 2.9
 grid |>
   mutate(fit = predict(m_partial, newdata = grid)) |>
   ggplot(aes(x = freq_c, y = fit, group = participant)) +
@@ -320,7 +313,9 @@ The participants' individual adjustments are then predicted from these, and from
 
 ## Partial pooling = shrinkage
 
-```{r, echo = FALSE, fig.height = 3.5}
+```{r}
+#| echo: false
+#| fig-height: 3.5
 shrink <- by_participant |>
   rename(no_pooling = slope) |>
   left_join(coef(m_partial)$participant |>
@@ -380,7 +375,9 @@ A large random-effect SD means that participants differ a lot, even after accoun
 
 ## Random effect correlations
 
-```{r, echo = FALSE, fig.height = 3.5}
+```{r}
+#| echo: false
+#| fig-height: 3.5
 coef(m_full)$participant |>
   ggplot(aes(x = `(Intercept)`, y = freq_c)) +
   geom_point(colour = kingfisher, size = 3) +
@@ -413,7 +410,8 @@ The `{lme4}` package: `lmer()` works like `lm()`, plus random effects in bracket
 
 ## Our model
 
-```{r, eval = FALSE}
+```{r}
+#| eval: false
 library(lme4)
 lmer(rt ~ freq_c + (1 + freq_c | participant) + (1 | word), data = lexdec)
 ```
@@ -451,7 +449,8 @@ models <- list(
 )
 ```
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
 tibble(model = names(models),
        estimate = map_dbl(models, \(m) coef(summary(m))["freq_c", "Estimate"]),
        SE       = map_dbl(models, \(m) coef(summary(m))["freq_c", "Std. Error"])) |>
@@ -477,7 +476,8 @@ Barr et al. (2013) showed that random-intercept-only models can have Type I erro
 
 ## Compare with averaging
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
 tibble(
   analysis = c("By-participant (F1) analysis",
                "Mixed model, (1 + freq_c | participant)"),

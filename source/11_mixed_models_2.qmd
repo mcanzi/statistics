@@ -1,34 +1,12 @@
 ---
 title: "Mixed models 2"
 subtitle: "Fitting, testing and troubleshooting"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Mixed models 2"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.4, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
 library(tidyverse)
 library(simling)
 library(lme4)
@@ -42,7 +20,6 @@ options(width = 72, pillar.print_min = 4, pillar.print_max = 4)
 
 <style>
   :root {
-    --footer-text:  "Mixed models 2";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -89,7 +66,9 @@ As with every `{simling}` data set (lecture 5), we know the true effects, so we 
 
 ## The true model {.smaller}
 
-<div class="formula">duration = 150 + s₀ + w₀ + (20 + s₁) · voiced + e</div>
+::: {.formula}
+duration = 150 + s₀ + w₀ + (20 + s₁) · voiced + e
+:::
 
 | Term | What it is | SD |
 |:--|:--|:--|
@@ -106,7 +85,9 @@ vowels <- vowel_duration
 
 ## The data
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 vowels |>
   summarise(duration = mean(duration), .by = c(speaker, voicing)) |>
   ggplot(aes(x = voicing, y = duration, group = speaker)) +
@@ -296,7 +277,8 @@ Here the models differ by one parameter, the voicing effect, so the test has 1 d
 
 If you forget, `anova()` refits the models with ML for you, and says so:
 
-```{r, message = TRUE}
+```{r}
+#| message: true
 m_reml <- lmer(duration ~ voicing + (1 + voicing | speaker) + (1 | word), data = vowels)
 m_reml_null <- update(m_reml, . ~ . - voicing)
 anova(m_reml_null, m_reml)$"Pr(>Chisq)"
@@ -312,7 +294,8 @@ m_lt <- lmer(duration ~ voicing + (1 + voicing | speaker) + (1 | word), data = v
 coef(summary(m_lt))
 ```
 
-```{r, include = FALSE}
+```{r}
+#| include: false
 detach("package:lmerTest", unload = TRUE)
 ```
 
@@ -322,7 +305,8 @@ The df are estimated with the [Satterthwaite]{.hl} method: here about `r round(c
 
 ## Reporting
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
 ci <- confint(m, parm = "beta_", method = "profile")
 lrt <- anova(m_null, m_full)
 ```
@@ -339,7 +323,9 @@ Also report the [random effects structure]{.hl}: "The model included by-speaker 
 
 What if we add a random slope for voicing by word?
 
-```{r, warning = TRUE, message = TRUE}
+```{r}
+#| warning: true
+#| message: true
 m_bad <- lmer(duration ~ voicing + (1 + voicing | speaker) + (1 + voicing | word),
               data = vowels)
 ```
@@ -449,7 +435,9 @@ If a model is singular, consider simplifying the random effects (point 5 above),
 
 ## Shrinkage and individual differences
 
-```{r, echo = FALSE, fig.height = 3.3}
+```{r}
+#| echo: false
+#| fig-height: 3.3
 own <- vowels |>
   summarise(own = mean(duration[voicing == "voiced"]) - mean(duration[voicing == "voiceless"]),
             .by = speaker)
@@ -492,7 +480,9 @@ lex |> select(participant, group, word, freq_c, rt) |> head(3)
 
 1. Frequency varies within participants, not within words: `(1 + freq_c | participant)`. Group varies within words, not within participants: `(1 + group | word)`
 
-```{r, warning = TRUE, message = TRUE}
+```{r}
+#| warning: true
+#| message: true
 lex_max <- lmer(log(rt) ~ freq_c + group +
                   (1 + freq_c | participant) + (1 + group | word),
                 data = lex)
@@ -521,7 +511,8 @@ lex_null <- update(lex_full, . ~ . - group)
 anova(lex_null, lex_full)
 ```
 
-```{r, include = FALSE}
+```{r}
+#| include: false
 lex_ri_full <- lmer(log(rt) ~ freq_c + group + (1 | participant) + (1 | word), data = lex, REML = FALSE)
 p_ri <- anova(update(lex_ri_full, . ~ . - group), lex_ri_full)$"Pr(>Chisq)"[2]
 ```

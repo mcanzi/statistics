@@ -1,0 +1,786 @@
+/* forest.scss
+   The forest theme of mcanzi.de as a Quarto revealjs theme: a rainforest
+   at night, green-black, with leaf green for headings, moon yellow for
+   accents, and rafflesias drawn in ink, dimmed, over the background.
+   The theme of Statistics, ported from the {revealjs} version
+   (theme-dark.css, which the tutorial slides still use). Same rules as
+   buttercup.scss (Advanced Statistics) and sunset.scss (fss); only the
+   palette and the background differ. The defaults below feed Quarto's own
+   components; the rules follow the HTML Quarto writes.
+   Fonts: fonts.css. */
+
+/*-- scss:defaults --*/
+
+$body-bg: #0b110e;
+$body-color: #e3e8e1;
+$link-color: #9fd3b8;
+$selection-bg: #72c699;
+$selection-color: #0b110e;
+
+$font-family-sans-serif: "Atkinson Hyperlegible", "Segoe UI", sans-serif;
+$font-family-monospace: "JetBrains Mono", Menlo, Consolas, monospace;
+$presentation-font-size-root: 36px;
+$presentation-line-height: 1.4;
+$presentation-slide-text-align: left;
+$presentation-block-margin: 20px;   /* as in {revealjs} (Quarto: 12px) */
+
+$presentation-heading-font: "Bricolage Grotesque", "Atkinson Hyperlegible", sans-serif;
+$presentation-heading-color: #72c699;
+$presentation-heading-font-weight: 800;
+$presentation-heading-text-transform: none;
+$presentation-heading-letter-spacing: -0.02em;
+$presentation-heading-line-height: 1.05;
+$presentation-heading-text-shadow: none;
+
+$code-color: #f2d45c;
+$code-bg: transparent;
+$code-block-bg: #111a16;
+$code-block-border-color: #24332c;
+$code-block-font-size: 0.53em;
+
+/*-- scss:rules --*/
+
+:root {
+  --floor:      #0b110e;   /* background: green-black */
+  --understory: #111a16;   /* code panels, table header, fact cards */
+  --raised:     #17221d;
+  --vine:       #24332c;   /* borders, grid lines */
+  --mist:       #e3e8e1;   /* body text: moonlit */
+  --muted:      #8e9e96;   /* secondary text */
+  --pandan:     #72c699;   /* leaf green: headings, functions */
+  --hornbill:   #f2d45c;   /* moon yellow: inline code, keywords */
+  --kingfisher: #9fd3b8;   /* pale leaf green: links, numbers */
+  --orchid:     #c3b6d6;   /* strings */
+  --moss:       #6f8a7a;   /* list markers */
+  --comment:    #6f8a7a;   /* code comments */
+  --operator:   #b3c0b8;   /* operators in code */
+  --strong:     #ffffff;
+  --shadow:     0 18px 50px rgba(0, 0, 0, 0.35);
+  --glow-1:     rgba(220, 230, 225, 0.08);   /* moonlight */
+  --glow-2:     rgba(136, 201, 168, 0.04);
+  --on-accent:  #0b110e;
+  --marker:     rgba(242, 212, 92, 0.25);   /* emphasis highlighter */
+  --output-bg:  #0f1713;   /* R output under the code */
+  --error:      #e0675f;
+
+  --title-top:  #ece07e;   /* titles: moonlight above, leaf green below */
+  --title-bottom: #5cc48a;
+
+  /* the {revealjs} base theme reads these */
+  --r-background-color: var(--floor);
+  --r-main-color: var(--mist);
+  --r-heading-color: var(--pandan);
+  --r-link-color: var(--kingfisher);
+  --r-link-color-hover: var(--pandan);
+  --r-selection-background-color: var(--pandan);
+  --r-selection-color: var(--on-accent);
+}
+
+/* ---- canvas: the website's background drawings, faint, in tiles -------
+   The tile is img/motifs/rafflesia.svg from mcanzi.de (rafflesias drawn in ink), dimmed like on
+   the website and with its opacity built in. */
+
+.reveal-viewport,
+body {
+  background-color: var(--floor);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 xmlns:xlink=%22http://www.w3.org/1999/xlink%22 width=%22640%22 height=%22640%22 viewBox=%220 0 640 640%22%3E%3Cdefs%3E%3CclipPath id=%22lobe-clip%22%3E%3Cpath d=%22M-12 -20C-36 -26 -36 -63 -8 -67C0 -68 0 -68 8 -67C36 -63 36 -26 12 -20Z%22/%3E%3C/clipPath%3E%3CclipPath id=%22disc-clip%22%3E%3Ccircle r=%2225%22/%3E%3C/clipPath%3E%3CclipPath id=%22bud-clip%22%3E%3Ccircle r=%2216%22/%3E%3C/clipPath%3E%3Cg id=%22lobe%22 stroke-linejoin=%22round%22 stroke-linecap=%22round%22%3E%3Cpath fill=%22%23906461%22 d=%22M-12 -20C-36 -26 -36 -63 -8 -67C0 -68 0 -68 8 -67C36 -63 36 -26 12 -20Z%22/%3E%3Cg clip-path=%22url(%23lobe-clip)%22%3E%3Cpath fill=%22%236c4543%22 d=%22M-14 -18C-28 -24 -30 -34 -27 -40C-12 -33 12 -33 27 -40C30 -34 28 -24 14 -18Z%22/%3E%3Cpath fill=%22none%22 stroke=%22%230b110e%22 stroke-width=%222.2%22 d=%22M-24.9 -31.1Q-23.4 -35.1 -19.1 -34.9M-19.2 -29.5Q-17 -33.2 -12.8 -32.3M-13.4 -28.9Q-10.6 -32.2 -6.6 -30.7M-7.5 -27.4Q-4.3 -30.3 -0.5 -28.2M-1.5 -27.4Q2.1 -29.7 5.5 -27.1M4.6 -30.6Q8.5 -32.3 11.4 -29.1M10.7 -32.7Q14.9 -33.8 17.3 -30.2M17 -33.1Q21.2 -33.5 23 -29.6M-25 -43.3Q-23.3 -39.3 -26.6 -36.5M25 -43.3Q23.3 -39.3 26.6 -36.5M-24 -47.7Q-22.6 -43.6 -26 -41M24 -47.7Q22.6 -43.6 26 -41M-22.3 -52.3Q-21.2 -48.1 -24.7 -45.7M22.3 -52.3Q21.2 -48.1 24.7 -45.7M-20 -56.9Q-19.1 -52.7 -22.8 -50.5M20 -56.9Q19.1 -52.7 22.8 -50.5%22/%3E%3C/g%3E%3Cg fill=%22%23c2c4bd%22 stroke=%22%230b110e%22 stroke-width=%221.5%22%3E%3Cellipse cx=%220%22 cy=%22-56%22 rx=%224.5%22 ry=%223.3%22/%3E%3Cellipse cx=%22-14%22 cy=%22-50%22 rx=%223.6%22 ry=%222.8%22/%3E%3Cellipse cx=%2214%22 cy=%22-50%22 rx=%223.6%22 ry=%222.8%22/%3E%3Cellipse cx=%22-7%22 cy=%22-42%22 rx=%224%22 ry=%223%22/%3E%3Cellipse cx=%228%22 cy=%22-42%22 rx=%224%22 ry=%223%22/%3E%3Cellipse cx=%22-20%22 cy=%22-42%22 rx=%222.8%22 ry=%222.2%22/%3E%3Cellipse cx=%2220%22 cy=%22-42%22 rx=%222.8%22 ry=%222.2%22/%3E%3Cellipse cx=%220%22 cy=%22-33%22 rx=%223.2%22 ry=%222.4%22/%3E%3C/g%3E%3Cpath fill=%22none%22 stroke=%22%230b110e%22 stroke-width=%224%22 d=%22M-12 -20C-36 -26 -36 -63 -8 -67C0 -68 0 -68 8 -67C36 -63 36 -26 12 -20Z%22/%3E%3C/g%3E%3Cg id=%22r%22 stroke-linejoin=%22round%22 stroke-linecap=%22round%22%3E%3Cuse xlink:href=%22%23lobe%22 href=%22%23lobe%22/%3E%3Cuse xlink:href=%22%23lobe%22 href=%22%23lobe%22 transform=%22rotate(72)%22/%3E%3Cuse xlink:href=%22%23lobe%22 href=%22%23lobe%22 transform=%22rotate(144)%22/%3E%3Cuse xlink:href=%22%23lobe%22 href=%22%23lobe%22 transform=%22rotate(216)%22/%3E%3Cuse xlink:href=%22%23lobe%22 href=%22%23lobe%22 transform=%22rotate(288)%22/%3E%3Ccircle r=%2225%22 fill=%22%236c4543%22/%3E%3Cpath clip-path=%22url(%23disc-clip)%22 fill=%22none%22 stroke=%22%230b110e%22 stroke-width=%222%22 d=%22M19.7 -6.5Q22.2 -3.9 20.7 -0.6M20.7 -1.6Q22.4 1.6 20.2 4.4M20.4 3.5Q21.4 7 18.6 9.2M19 8.3Q19.1 11.9 15.8 13.4M16.4 12.7Q15.6 16.2 12.1 16.8M12.8 16.3Q11.3 19.5 7.7 19.3M8.5 18.9Q6.2 21.6 2.8 20.5M3.7 20.4Q0.8 22.5 -2.3 20.6M-1.3 20.7Q-4.7 22 -7.2 19.4M-6.3 19.7Q-9.9 20.2 -11.7 17.1%22/%3E%3Cg fill=%22%23c2c4bd%22 stroke=%22%230b110e%22 stroke-width=%221.3%22%3E%3Ccircle cx=%2217.5%22 cy=%220%22 r=%222.4%22/%3E%3Ccircle cx=%2215.2%22 cy=%228.7%22 r=%222.4%22/%3E%3Ccircle cx=%228.8%22 cy=%2215.2%22 r=%222.4%22/%3E%3Ccircle cx=%220%22 cy=%2217.5%22 r=%222.4%22/%3E%3Ccircle cx=%22-8.7%22 cy=%2215.2%22 r=%222.4%22/%3E%3Ccircle cx=%22-15.2%22 cy=%228.7%22 r=%222.4%22/%3E%3Ccircle cx=%22-17.5%22 cy=%220%22 r=%222.4%22/%3E%3Ccircle cx=%22-15.2%22 cy=%22-8.8%22 r=%222.4%22/%3E%3Ccircle cx=%22-8.8%22 cy=%22-15.2%22 r=%222.4%22/%3E%3Ccircle cx=%22-0%22 cy=%22-17.5%22 r=%222.4%22/%3E%3Ccircle cx=%228.8%22 cy=%22-15.2%22 r=%222.4%22/%3E%3Ccircle cx=%2215.2%22 cy=%22-8.8%22 r=%222.4%22/%3E%3C/g%3E%3Ccircle r=%2211%22 fill=%22%230b110e%22/%3E%3Cg fill=%22%23906461%22%3E%3Ccircle cx=%22-4%22 cy=%22-3%22 r=%221.6%22/%3E%3Ccircle cx=%224%22 cy=%22-2%22 r=%221.6%22/%3E%3Ccircle cx=%220%22 cy=%224%22 r=%221.6%22/%3E%3C/g%3E%3Ccircle r=%2225%22 fill=%22none%22 stroke=%22%230b110e%22 stroke-width=%224%22/%3E%3C/g%3E%3Cg id=%22bud%22 stroke-linejoin=%22round%22 stroke-linecap=%22round%22%3E%3Ccircle r=%2216%22 fill=%22%236c4543%22/%3E%3Cg clip-path=%22url(%23bud-clip)%22%3E%3Cpath fill=%22%23906461%22 stroke=%22%230b110e%22 stroke-width=%222.4%22 d=%22M-17 -2C-10 -14 10 -14 17 -2C10 -8 -10 -8 -17 -2Z%22/%3E%3Cpath fill=%22%23815654%22 stroke=%22%230b110e%22 stroke-width=%222.4%22 d=%22M-17 8C-10 -4 10 -4 17 8C10 2 -10 2 -17 8Z%22/%3E%3Cpath fill=%22none%22 stroke=%22%230b110e%22 stroke-width=%221.8%22 d=%22M9.5 -6.1Q12 -4.4 11.2 -1.4M11 -2.5Q12.8 0 11 2.5M11.2 1.4Q12 4.4 9.5 6.1M10 5.2Q9.8 8.2 6.8 9M7.7 8.3Q6.4 11.1 3.3 10.8M4.4 10.4Q2.2 12.6 -0.6 11.3%22/%3E%3C/g%3E%3Ccircle r=%2216%22 fill=%22none%22 stroke=%22%230b110e%22 stroke-width=%223.5%22/%3E%3C/g%3E%3C/defs%3E%3Cg opacity=%220.15%22%3E%3Cuse xlink:href=%22%23r%22 href=%22%23r%22 transform=%22translate(120 130) rotate(12) scale(0.95)%22/%3E%3Cuse xlink:href=%22%23r%22 href=%22%23r%22 transform=%22translate(470 110) rotate(-20) scale(0.6)%22/%3E%3Cuse xlink:href=%22%23r%22 href=%22%23r%22 transform=%22translate(330 330) rotate(30) scale(1.2)%22/%3E%3Cuse xlink:href=%22%23r%22 href=%22%23r%22 transform=%22translate(110 470) rotate(-8) scale(0.7)%22/%3E%3Cuse xlink:href=%22%23r%22 href=%22%23r%22 transform=%22translate(530 520) rotate(18) scale(0.75)%22/%3E%3Cuse xlink:href=%22%23bud%22 href=%22%23bud%22 transform=%22translate(300 90) rotate(20) scale(0.9)%22/%3E%3Cuse xlink:href=%22%23bud%22 href=%22%23bud%22 transform=%22translate(560 300) rotate(-15) scale(0.75)%22/%3E%3Cuse xlink:href=%22%23bud%22 href=%22%23bud%22 transform=%22translate(240 580) rotate(5) scale(0.7)%22/%3E%3Cuse xlink:href=%22%23bud%22 href=%22%23bud%22 transform=%22translate(40 300) rotate(-30) scale(0.6)%22/%3E%3C/g%3E%3C/svg%3E") 0 0 / 72vmin 72vmin repeat fixed,
+    radial-gradient(ellipse 75% 60% at 85% -15%, var(--glow-1), transparent 70%) fixed,
+    radial-gradient(ellipse 60% 50% at 0% 70%, var(--glow-2), transparent 70%) fixed,
+    var(--floor);
+}
+
+.reveal {
+  font-family: "Atkinson Hyperlegible", "Segoe UI", sans-serif;
+  font-size: 36px;
+  line-height: 1.4;
+  color: var(--mist);
+}
+
+.reveal .slides section {
+  text-align: left;
+}
+
+/* line height of the {revealjs} base theme, which Quarto's leaves at 1.4 */
+.reveal .slides section,
+.reveal .slides section > section,
+.reveal p {
+  line-height: 1.3;
+}
+
+/* ---- headings ----------------------------------------------------- */
+
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4 {
+  font-family: "Bricolage Grotesque", "Atkinson Hyperlegible", sans-serif;
+  font-weight: 800;
+  color: var(--pandan);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  text-transform: none;
+  text-shadow: none;
+}
+
+.reveal h2 {
+  font-size: 1.45em;
+  margin-bottom: 0.55em;
+}
+
+.reveal h1 code,
+.reveal h2 code {
+  color: inherit;
+  font-weight: 600;
+}
+
+/* ---- title slide and section slides ------------------------------- */
+
+.reveal #title-slide,
+.reveal section.title-slide.level1 {
+  min-height: 700px;
+  box-sizing: border-box;
+}
+
+.reveal section.title-slide.level1 {
+  padding-top: 2.4em;
+}
+
+/* lecture number above the title, set in each lecture's style block
+   (--lecture, made in slides_setup.R) */
+.reveal #title-slide::before {
+  content: var(--lecture);
+  display: block;
+  margin-top: 64px;
+  font-family: "JetBrains Mono", Menlo, Consolas, monospace;
+  font-variant-ligatures: none;
+  font-size: 0.56em;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--hornbill);
+}
+
+.reveal #title-slide h1.title {
+  font-size: 2.6em;
+  margin-top: 0.3em;
+  margin-bottom: 0.25em;
+  max-width: 14ch;
+}
+
+.reveal #title-slide .subtitle {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-size: 1em;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--mist);
+  line-height: 1.05;
+  margin: 0 0 20px;
+}
+
+/* Quarto centres the title block; the course slides keep it on the left */
+.reveal #title-slide {
+  text-align: left;
+}
+
+.reveal #title-slide .quarto-title-authors {
+  display: block;
+  /* 2.2em of the author's 0.7em type, as in the {revealjs} theme */
+  margin-top: 1.54em;
+}
+
+.reveal #title-slide .quarto-title-author {
+  padding: 0;
+}
+
+.reveal #title-slide .quarto-title-author-name {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-size: 0.7em;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--muted);
+  line-height: 1.05;
+  margin: 0;
+}
+
+.reveal section.title-slide.level1 > h1,
+.reveal #title-slide h1.title {
+  /* wrap between words only, never inside a word */
+  overflow-wrap: normal;
+  word-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
+}
+
+.reveal section.title-slide.level1 > h1 {
+  font-size: 2.6em;
+  max-width: 80%;
+}
+
+/* the title of the title slide and of the section slides: a gradient from
+   --title-top to --title-bottom (set with the palette above), as the name
+   and the page titles on mcanzi.de */
+.reveal #title-slide h1.title,
+.reveal section.title-slide.level1 > h1 {
+  background: linear-gradient(180deg, var(--title-top) 8%, var(--title-bottom) 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- fact cards on the section slides (::: {.fact} in the .qmd) -------
+   Like the cards on the home page of the website: paper panel, a thin
+   accent line on top, a small label, and the source in small mono type. */
+
+.reveal .fact {
+  position: relative;
+  max-width: 66%;
+  margin: 0.9em 0 0;
+  padding: 0.95em 1.15em 0.8em;
+  font-size: 0.64em;
+  line-height: 1.5;
+  color: var(--mist);
+  background: color-mix(in srgb, var(--understory) 88%, transparent);
+  border: 1px solid var(--vine);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+.reveal .fact::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 10px 10px 0 0;
+  background: var(--pandan);
+}
+
+.reveal .fact p {
+  margin: 0;
+}
+
+/* "Did you know:" becomes a small label above the fact */
+.reveal .fact > p:first-child > code:first-child {
+  display: block;
+  width: max-content;
+  margin: 0 0 0.55em;
+  font-size: 0.78em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  color: var(--hornbill);
+}
+
+.reveal .fact > p:first-child > code:first-child::before {
+  content: "> ";
+  color: var(--pandan);
+}
+
+.reveal .fact code {
+  font-size: 0.9em;
+}
+
+/* the source: small, muted, below a faint line */
+.reveal .fact > p + p {
+  margin-top: 0.85em;
+  padding-top: 0.55em;
+  border-top: 1px dashed var(--vine);
+  font-family: "JetBrains Mono", Menlo, Consolas, monospace;
+  font-variant-ligatures: none;
+  font-size: 0.62em;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.reveal .fact > p + p em {
+  font-style: normal;
+  color: inherit;
+}
+
+.reveal .fact > p + p em em {
+  font-style: italic;
+}
+
+/* ---- takeaway boxes (::: {.takeaway} in the .qmd, on the Summary slides) */
+
+.reveal .takeaway {
+  position: relative;
+  margin: 0.4em 0 0;
+  padding: 1.75em 1.15em 0.7em;
+  font-size: 0.86em;
+  background: color-mix(in srgb, var(--understory) 88%, transparent);
+  border: 1px solid var(--vine);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+.reveal .takeaway::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 3px;
+  border-radius: 10px 10px 0 0;
+  background: var(--kingfisher);
+}
+
+.reveal .takeaway::after {
+  content: "> take-home";
+  position: absolute;
+  top: 0.9em;
+  left: 1.95em;
+  font-family: "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: 0.58em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--kingfisher);
+}
+
+.reveal .takeaway > :first-child { margin-top: 0; }
+.reveal .takeaway > :last-child { margin-bottom: 0; }
+
+/* ---- text --------------------------------------------------------- */
+
+/* emphasis, written [like this]{.hl} in the .qmd: a highlighter stroke,
+   so it cannot be mistaken for code (code stays in mono type) */
+.reveal .hl {
+  color: var(--strong);
+  background-image: linear-gradient(transparent 52%, var(--marker) 52%, var(--marker) 94%, transparent 94%);
+  padding: 0 0.06em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.reveal strong { color: var(--pandan); }
+.reveal em     { color: var(--mist); }
+
+.reveal a,
+.reveal a:hover {
+  color: var(--kingfisher);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--kingfisher) 45%, transparent);
+  text-underline-offset: 0.15em;
+  text-shadow: none;
+}
+
+.reveal ::selection {
+  background: var(--pandan);
+  color: var(--on-accent);
+}
+
+.reveal ul,
+.reveal ol {
+  display: block;
+  margin-left: 1.1em;
+}
+
+.reveal li { margin-bottom: 0.15em; }
+.reveal ul li::marker { color: var(--moss); }
+.reveal ol li::marker { color: var(--pandan); font-weight: 700; }
+
+.reveal blockquote {
+  background: color-mix(in srgb, var(--understory) 88%, transparent);
+  border-left: 3px solid var(--pandan);
+  border-radius: 6px;
+  box-shadow: none;
+  color: var(--mist);
+}
+
+/* ---- code --------------------------------------------------------- */
+
+.reveal code {
+  font-family: "JetBrains Mono", Menlo, Consolas, monospace;
+  /* no ligatures: students must see |> and <- as typed */
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "calt" 0;
+  font-size: 0.88em;
+  color: var(--hornbill);
+  background: none;
+}
+
+.reveal div.sourceCode,
+.reveal pre,
+.reveal pre.sourceCode {
+  background: var(--understory);
+  border: 0;
+  box-shadow: none;
+}
+
+.reveal pre {
+  width: 100%;
+  margin: 0.45em 0;
+  font-size: 0.53em;
+  line-height: 1.4;
+  border-radius: 6px;
+  border-left: 3px solid var(--vine);
+}
+
+.reveal pre code {
+  padding: 0.6em 0.9em;
+  max-height: none;
+  color: var(--mist);
+  font-size: 1em;
+}
+
+/* syntax colours (every class pandoc uses, so nothing falls back to the
+   colours of the highlight style) */
+.reveal pre code span.fu { color: var(--pandan); }
+.reveal pre code span.kw,
+.reveal pre code span.cf,
+.reveal pre code span.pp,
+.reveal pre code span.im { color: var(--hornbill); font-weight: 400; }
+.reveal pre code span.st,
+.reveal pre code span.ch,
+.reveal pre code span.ss,
+.reveal pre code span.vs { color: var(--orchid); }
+.reveal pre code span.dv,
+.reveal pre code span.fl,
+.reveal pre code span.bn,
+.reveal pre code span.cn { color: var(--kingfisher); font-weight: 400; }
+.reveal pre code span.op,
+.reveal pre code span.ot,
+.reveal pre code span.sc,
+.reveal pre code span.er { color: var(--operator); font-weight: 400; }
+.reveal pre code span.at,
+.reveal pre code span.va,
+.reveal pre code span.dt,
+.reveal pre code span.bu,
+.reveal pre code span.ex { color: var(--mist); }
+.reveal pre code span.co,
+.reveal pre code span.do,
+.reveal pre code span.cv,
+.reveal pre code span.in,
+.reveal pre code span.an,
+.reveal pre code span.wa { color: var(--comment); font-style: italic; font-weight: 400; }
+.reveal pre code span.al { color: var(--pandan); font-weight: 600; }
+
+/* R output: its own block, straight under the code, in muted type, so
+   what students type and what R prints are easy to tell apart.
+   Quarto writes each chunk as div.cell: the code, then one div.cell-output
+   per printed result, each wrapped for the copy button. */
+.reveal .cell {
+  margin: 0.45em 0;
+}
+.reveal .cell div.sourceCode,
+.reveal .cell pre {
+  margin: 0;
+}
+.reveal .cell > .code-copy-outer-scaffold:has(~ .cell-output) div.sourceCode,
+.reveal .cell > .code-copy-outer-scaffold:has(~ .cell-output) pre {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.reveal .cell-output div.sourceCode,
+.reveal pre.r-output {
+  background: var(--output-bg);
+  border-left: 3px solid var(--vine);
+  border-radius: 0 0 6px 6px;
+}
+.reveal .cell-output + .cell-output {
+  margin-top: 0.3em;
+}
+/* students copy code, not output; and messages R prints as blank lines
+   get no empty block */
+.reveal .cell-output .code-copy-button {
+  display: none;
+}
+.reveal .cell-output:has(code:empty) {
+  display: none;
+}
+.reveal pre.r-output code {
+  color: var(--muted);
+  padding-top: 0.45em;
+  padding-bottom: 0.5em;
+}
+.reveal pre.r-message code { font-style: italic; }
+.reveal pre.r-error code { color: var(--error); }
+
+/* ---- images and plots ------------------------------------------- */
+
+.reveal section img {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  max-height: 380px;
+  margin: 0.3em auto;
+}
+
+.reveal section.smaller img {
+  max-height: 340px;
+}
+
+/* formulas written as text (no MathJax needed, works offline) */
+.reveal .formula {
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-size: 1.15em;
+  text-align: center;
+  color: var(--pandan);
+  margin: 0.5em 0;
+}
+/* Greek letters in formulas (Σ): Atkinson Hyperlegible has none, JetBrains Mono does */
+.reveal .sym { font-family: "JetBrains Mono", monospace; }
+
+/* ---- tables ------------------------------------------------------- */
+
+.reveal table {
+  font-size: 0.75em;
+  margin: 0.5em 0;
+  border: 0;
+  border-collapse: collapse;
+}
+
+/* no dotted grey grid from the {revealjs} defaults: only rules between rows */
+.reveal table th,
+.reveal table td {
+  border: 0;
+}
+
+.reveal table th {
+  color: var(--pandan);
+  font-weight: 700;
+  background: var(--understory);
+  border-bottom: 2px solid var(--vine);
+}
+
+.reveal table th,
+.reveal table td {
+  padding: 0.3em 0.75em;
+}
+
+.reveal table td {
+  border-bottom: 1px solid var(--vine);
+}
+
+/* code written as <code> in table cells (to show |) may contain line
+   breaks from pandoc: let them wrap like ordinary text */
+.reveal table td code {
+  white-space: normal;
+}
+
+/* ---- helpers used in the slides ----------------------------------- */
+
+.reveal .slides section.smaller {
+  font-size: 0.75em;
+}
+
+.reveal .slides section.smaller > h2 {
+  font-size: calc(1.45em / 0.75);
+}
+
+.reveal .columns {
+  display: flex;
+  gap: 1.2em;
+}
+
+.reveal .column {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---- chrome (footer text is set per lecture) ---------------------- */
+
+.reveal .controls { color: var(--pandan); }
+.reveal .progress { color: var(--pandan); height: 4px; }
+
+.reveal .slide-number {
+  /* bottom left, on the same line as the footer */
+  left: 18px;
+  right: auto;
+  bottom: 14px;
+  padding: 0;
+  background: transparent;
+  color: var(--muted);
+  font-family: "JetBrains Mono", Menlo, Consolas, monospace;
+  font-variant-ligatures: none;
+  font-size: 13px;
+}
+.reveal .slide-number a,
+.reveal .slide-number a:hover { color: inherit; text-decoration: none; }
+
+/* the footer: Quarto's own (footer: in each lecture's YAML), with the
+   repository after it. .footer-default outranks Quarto's own .reveal .footer
+   (18px), which comes later; italic as in the {revealjs} decks */
+.reveal .footer.footer-default {
+  bottom: 14px;
+  font-family: "Atkinson Hyperlegible", sans-serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--muted);
+  pointer-events: none;
+}
+.reveal .footer p {
+  margin: 0;
+}
+.reveal .footer p::after {
+  content: "\0000A0\0000A0\0000A0\0000B7\0000A0\0000A0\0000A0" var(--repo-text);
+}
+
+/* ---- course links: repository in the footer, QR codes -------------- */
+/* Each lecture sets --qr (a data URI made in R with {qrcode}).          */
+
+:root {
+  --repo-text: "github.com/mcanzi/statistics";
+  --qr: none;
+}
+
+/* small QR code on the title slide, bottom left */
+.reveal #title-slide::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 64px;
+  width: 128px;
+  height: 128px;
+  background: var(--qr) center / contain no-repeat;
+  border-radius: 8px;
+}
+
+/* closing slide: large QR code with the links */
+.reveal .qr-block {
+  display: flex;
+  align-items: center;
+  gap: 1.4em;
+  margin-top: 0.8em;
+}
+.reveal .qr-block img {
+  width: 300px;
+  height: 300px;
+  margin: 0;
+  border-radius: 10px;
+  flex: none;
+}
+.reveal .qr-block p { margin: 0 0 0.25em; font-size: 0.9em; }
+.reveal .qr-block p.qr-link {
+  font-family: "JetBrains Mono", monospace;
+  font-variant-ligatures: none;
+  font-size: 0.58em;
+  color: var(--hornbill);
+  margin-bottom: 1.1em;
+}
+
+/* ---- spacing as in the {revealjs} decks ----------------------------
+   Quarto's own rules for lists and code blocks come later or are more
+   specific than the rules above; these restore the spacing the slides had
+   before the move to Quarto. section.slide outranks Quarto's .slide. */
+
+.reveal .slides section.slide ul,
+.reveal .slides section.slide ol {
+  margin-bottom: 0;
+}
+.reveal .slides section.slide ul li,
+.reveal .slides section.slide ol li {
+  margin-top: 0;
+  margin-bottom: 0.15em;
+}
+.reveal pre.sourceCode code {
+  padding: 0.6em 0.9em;
+}
+
+/* code chunks: Quarto wraps each chunk in div.cell, with every piece of
+   code in div.sourceCode and every result in div.cell-output. As in the
+   {revealjs} decks: 1em above a chunk (and below one without output), the
+   panel's own 0.45em above the code, 0.45em under each result, 0.3em
+   between a result and the next piece of code. */
+.reveal .slides section .cell {
+  margin: 1em 0;
+}
+.reveal .slides section .cell:has(.cell-output) {
+  margin-bottom: 0;
+}
+.reveal .slides section .cell div.sourceCode pre {
+  margin: 0.45em 0;
+}
+.reveal .slides section .cell .code-copy-outer-scaffold:has(+ .cell-output) div.sourceCode pre {
+  margin-bottom: 0;
+}
+.reveal .slides section .cell pre.r-output {
+  margin: 0 0 0.45em;
+}
+.reveal .slides section .cell .cell-output + .cell-output {
+  margin-top: 0;
+}
+.reveal .slides section .cell .cell-output + .cell-output pre.r-output {
+  margin-top: 0.3em;
+}
+.reveal .slides section .cell .cell-output + .code-copy-outer-scaffold {
+  margin-top: 0.3em;
+}
+/* plots: a paragraph in {revealjs}, with the paragraph's margins (the
+   image's own margin collapsed into them); in Quarto, div.cell-output-display
+   inside div.cell. A chunk with only a plot gets no margins of its own. */
+.reveal .slides section .cell:not(:has(.cell-code)) {
+  margin: 0;
+}
+.reveal .slides section .cell:has(> .cell-output-display:last-child) {
+  margin-bottom: 0;
+}
+.reveal .slides section .cell-output-display {
+  margin: var(--r-block-margin) 0;
+}
+.reveal .slides section .code-copy-outer-scaffold + .cell-output-display {
+  margin-top: 1em;
+}
+.reveal .slides section .cell-output-display img {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* plots: knitr writes out.width as an inline style in Quarto (a width
+   attribute in {revealjs}, which the rule for section img overrode); keep
+   the plot's proportions within max-height, as before */
+.reveal section img[style*="width"] {
+  width: auto !important;
+}
+
+/* columns: no side margins inside the columns, as in {revealjs} */
+.reveal .slides section .columns > .column > :not(ul, ol) {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* tables printed by a chunk (knitr::kable): Quarto wraps them in
+   div.cell-output-display, which scrolls (overflow) and so keeps the
+   table's margins inside; let them collapse as before */
+.reveal .slides section .cell-output-display:has(> table) {
+  margin: 0;
+  overflow: visible;
+}
+.reveal .slides section .code-copy-outer-scaffold + .cell-output-display:has(> table) {
+  margin-top: 1em;
+}
+
+/* columns: no extra space above them (Quarto adds 0.8em) */
+.reveal .slides section.slide .columns {
+  margin-block-start: 0;
+}
+
+/* block quotes as in the {revealjs} base theme: 70% wide, centred, italic */
+.reveal .slides section.slide blockquote {
+  width: 70%;
+  margin: var(--r-block-margin) auto;
+  padding: 5px;
+  font-style: italic;
+}
+.reveal .slides section.slide blockquote p:first-child,
+.reveal .slides section.slide blockquote p:last-child {
+  display: inline-block;
+}
+
+/* formulas: ::: {.formula} wraps the text in a paragraph, whose margins
+   would win over the formula's own */
+.reveal .formula > p {
+  margin: 0;
+}
+
+/* code blocks that are not R chunks (```markdown): 1em above and below,
+   as in {revealjs} (Quarto sets their margin to 0) */
+.reveal .slides section :not(.cell) > .code-copy-outer-scaffold {
+  margin: 1em 0;
+}

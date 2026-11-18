@@ -1,34 +1,12 @@
 ---
 title: "Interactions"
 subtitle: "When the effect of one predictor depends on another"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Interactions"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.4, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
 library(tidyverse)
 library(simling)
 library(broom)
@@ -42,7 +20,6 @@ options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
 
 <style>
   :root {
-    --footer-text:  "Interactions";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -69,7 +46,9 @@ Lectures 6 and 7: several predictors, each with one effect.
 
 . . .
 
-```{r, echo = FALSE, fig.height = 3.4}
+```{r}
+#| echo: false
+#| fig-height: 3.4
 tibble(x = rep(0:10, 2), group = rep(c("A", "B"), each = 11)) |>
   mutate(no = if_else(group == "A", 10 + 2 * x, 18 + 2 * x),
          yes = if_else(group == "A", 10 + 2 * x, 18 + 0.5 * x)) |>
@@ -91,7 +70,8 @@ In an [interaction]{.hl}, the effect of one predictor depends on the value of an
 
 `*` adds both predictors and their interaction:
 
-```{r, eval = FALSE}
+```{r}
+#| eval: false
 lm(y ~ x * group)            # is the same as
 lm(y ~ x + group + x:group)
 ```
@@ -130,7 +110,9 @@ In this simulation, frequency matters more for L2 speakers: their reaction times
 
 ## The data
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 ggplot(lex, aes(x = log_freq, y = rt, colour = group)) +
   geom_point(alpha = 0.4, size = 1.8) +
   geom_smooth(method = "lm", se = FALSE, linewidth = 1.5) +
@@ -146,7 +128,9 @@ m_add <- lm(rt ~ log_freq + group, data = lex)
 coef(m_add)
 ```
 
-```{r, echo = FALSE, fig.height = 2.8}
+```{r}
+#| echo: false
+#| fig-height: 2.8
 augment(m_add) |>
   ggplot(aes(x = log_freq, colour = group)) +
   geom_point(aes(y = rt), alpha = 0.3, size = 1.5) +
@@ -238,7 +222,9 @@ vs |> summarise(mean = mean(duration), .by = c(style, voicing))
 
 ## An interaction plot
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 vs |>
   summarise(mean = mean(duration), .by = c(style, voicing)) |>
   ggplot(aes(x = style, y = mean, colour = voicing, group = voicing)) +
@@ -343,7 +329,9 @@ Centred, the simple effects describe a word of average frequency and length. The
 
 ## Simple slopes
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 m_w <- lm(rt ~ lf_c * len_c, data = w)
 lf_mean <- mean(w$log_freq)
 grid_w <- crossing(length = 3:12, log_freq = c(2, 3.5, 5)) |>
@@ -360,7 +348,9 @@ The effect of length at three frequencies. Compare lecture 6: the lines now fan 
 
 ## A twisted plane
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 plane <- crossing(log_freq = seq(1, 6, length.out = 80), length = seq(3, 12, length.out = 80)) |>
   mutate(lf_c = log_freq - lf_mean, len_c = length - mean(w$length))
 plane$fit <- predict(m_w, newdata = plane)
@@ -386,7 +376,8 @@ _Source: Spottiswoode, Begg & Begg (2016), Science_
 
 ## Three-way interactions
 
-```{r, eval = FALSE}
+```{r}
+#| eval: false
 lm(y ~ a * b * c)
 ```
 

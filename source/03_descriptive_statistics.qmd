@@ -1,34 +1,17 @@
 ---
 title: "Descriptive statistics"
 subtitle: "Describing distributions: centre and spread"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Descriptive statistics"
+format:
+  revealjs:
+    fig-height: 4.6
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = TRUE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.6, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
+# messages on in this lecture (execute: message in the YAML has no effect in revealjs)
+knitr::opts_chunk$set(message = TRUE)
 library(tidyverse)
 library(palmerpenguins)
 
@@ -47,7 +30,6 @@ bill_mad  <- mad(bill, na.rm = TRUE)
 
 <style>
   :root {
-    --footer-text:  "Descriptive statistics";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -90,7 +72,8 @@ We compare the two all the time: does our sample look like a shape we know?
 
 Last week's promise: `{ggplot2}` builds a plot in layers, added with `+`.
 
-```{r, eval = FALSE}
+```{r}
+#| eval: false
 ggplot(data, aes(x = column)) +   # the data, and which column goes where
   geom_histogram() +              # how to draw it
   labs(x = "Axis label")          # labels
@@ -106,7 +89,8 @@ Our slides use a theme set up in the hidden first chunk of the .Rmd: your plots 
 
 ## An empirical distribution {.smaller}
 
-```{r, fig.height = 4}
+```{r}
+#| fig-height: 4
 ggplot(penguins, aes(x = flipper_length_mm)) +
   geom_histogram(binwidth = 3, fill = "#5aa0e0", colour = "#0b110e") +
   labs(x = "Flipper length (mm)", y = "Count")
@@ -116,7 +100,8 @@ Each bar counts the penguins whose flipper length falls in a 3 mm bin.
 
 ## Histogram or density? {.smaller}
 
-```{r, fig.height = 4}
+```{r}
+#| fig-height: 4
 ggplot(penguins, aes(x = flipper_length_mm)) +
   geom_histogram(aes(y = after_stat(density)), binwidth = 3,
                  fill = "#5aa0e0", colour = "#0b110e", alpha = 0.5) +
@@ -144,7 +129,8 @@ head(round(normal, 2))
 
 ## Sample vs theory {.smaller}
 
-```{r, fig.height = 4.2}
+```{r}
+#| fig-height: 4.2
 tibble(value = normal) |>
   ggplot(aes(x = value)) +
   geom_histogram(aes(y = after_stat(density)), bins = 30,
@@ -157,7 +143,9 @@ The bars show our 500 random values, and the line is the theoretical normal curv
 
 ## The 68–95–99.7 rule
 
-```{r, echo = FALSE, fig.height = 4.6}
+```{r}
+#| echo: false
+#| fig-height: 4.6
 curve_df <- tibble(x = seq(-4, 4, by = 0.01), y = dnorm(x))
 
 ggplot(curve_df, aes(x, y)) +
@@ -181,7 +169,9 @@ In a normal distribution, about 68% of values lie within 1 SD of the mean, 95% w
 
 Not every variable is normal. Three shapes you will meet in linguistic data:
 
-```{r, echo = FALSE, fig.height = 4}
+```{r}
+#| echo: false
+#| fig-height: 4
 set.seed(1)
 discrete <- bind_rows(
   tibble(dist = "Binomial: correct out of 20",
@@ -265,7 +255,9 @@ Rule of thumb: drop `NA`s only in the columns you are analysing, with `na.rm = T
 
 The mean is the sum of all values divided by their number
 
-<div class="formula"><span style="text-decoration: overline;">x</span> = (x₁ + x₂ + … + xₙ) / n</div>
+::: {.formula}
+<span style="text-decoration: overline;">x</span> = (x₁ + x₂ + … + xₙ) / n
+:::
 
 . . .
 
@@ -282,7 +274,9 @@ penguins |>
   summarise(mean_bill = mean(bill_length_mm, na.rm = TRUE))
 ```
 
-```{r, echo = FALSE, fig.height = 3.8}
+```{r}
+#| echo: false
+#| fig-height: 3.8
 ggplot(penguins, aes(x = bill_length_mm)) +
   geom_density(fill = pandan, colour = pandan, alpha = 0.25, linewidth = 1) +
   geom_vline(xintercept = bill_mean, colour = kingfisher, linewidth = 1.2, linetype = "dashed") +
@@ -314,7 +308,9 @@ penguins |>
             median_bill = median(bill_length_mm, na.rm = TRUE))
 ```
 
-```{r, echo = FALSE, fig.height = 3.8}
+```{r}
+#| echo: false
+#| fig-height: 3.8
 ggplot(penguins, aes(x = bill_length_mm)) +
   geom_density(fill = pandan, colour = pandan, alpha = 0.25, linewidth = 1) +
   geom_vline(xintercept = bill_mean, colour = kingfisher, linewidth = 1.2, linetype = "dashed") +
@@ -328,7 +324,9 @@ ggplot(penguins, aes(x = bill_length_mm)) +
 
 ## One number can hide a lot
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 ggplot(drop_na(penguins, bill_length_mm), aes(x = bill_length_mm)) +
   geom_density(aes(fill = species, colour = species), alpha = 0.3, linewidth = 0.8) +
   geom_density(colour = mist, linewidth = 1.2) +
@@ -350,7 +348,9 @@ rt |> summarise(mean = mean(rt), median = median(rt))
 
 ## Skewed data: reaction times
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 ggplot(rt, aes(x = rt)) +
   geom_histogram(bins = 50, fill = orchid, colour = floor_col, alpha = 0.8) +
   geom_vline(xintercept = mean(rt$rt), colour = kingfisher, linewidth = 1.2, linetype = "dashed") +
@@ -435,7 +435,9 @@ _Sources: National Geographic; ScienceDaily_
 
 ## Same centre, different spread
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 set.seed(11)
 two_groups <- tibble(
   group = rep(c("Speaker A: SD = 20 ms", "Speaker B: SD = 60 ms"), each = 1000),
@@ -453,7 +455,9 @@ Both speakers have a mean of 150 ms. Speaker B is far less consistent.
 
 The [standard deviation]{.hl} measures how spread out the values are around the mean: roughly, how far a typical value is from it.
 
-<div class="formula">s = √( Σ (xᵢ − <span style="text-decoration: overline;">x</span>)² / (n − 1) )</div>
+::: {.formula}
+s = √( Σ (xᵢ − <span style="text-decoration: overline;">x</span>)² / (n − 1) )
+:::
 
 . . .
 
@@ -472,7 +476,9 @@ penguins |>
             sd_bill   = sd(bill_length_mm, na.rm = TRUE))
 ```
 
-```{r, echo = FALSE, fig.height = 3.4}
+```{r}
+#| echo: false
+#| fig-height: 3.4
 ggplot(penguins, aes(x = bill_length_mm)) +
   annotate("rect", xmin = bill_mean - bill_sd, xmax = bill_mean + bill_sd,
            ymin = -Inf, ymax = Inf, fill = kingfisher, alpha = 0.15) +
@@ -522,7 +528,9 @@ penguins |>
             mad_bill    = mad(bill_length_mm, na.rm = TRUE))
 ```
 
-```{r, echo = FALSE, fig.height = 3.8}
+```{r}
+#| echo: false
+#| fig-height: 3.8
 ggplot(penguins, aes(x = bill_length_mm)) +
   annotate("rect", xmin = bill_med - bill_mad, xmax = bill_med + bill_mad,
            ymin = -Inf, ymax = Inf, fill = hornbill, alpha = 0.15) +
@@ -575,7 +583,9 @@ It works on a whole data frame too: try `summary(penguins)`.
 
 ## Boxplots draw the quartiles
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 ggplot(drop_na(penguins, bill_length_mm),
        aes(x = species, y = bill_length_mm, colour = species)) +
   geom_jitter(width = 0.2, alpha = 0.35, size = 1.8) +
@@ -675,7 +685,8 @@ penguins |>
 
 ## Plotting group summaries {.smaller}
 
-```{r, fig.height = 2.7}
+```{r}
+#| fig-height: 2.7
 bill_summary <- penguins |>
   drop_na(bill_length_mm) |>
   summarise(mean = mean(bill_length_mm), sd = sd(bill_length_mm), .by = species)

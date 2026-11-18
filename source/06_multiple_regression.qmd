@@ -1,34 +1,12 @@
 ---
 title: "Multiple regression"
 subtitle: "More than one continuous predictor"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    mathjax: null
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "Multiple regression"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
-                      comment = "",
-                      fig.width = 10, fig.height = 4.4, out.width = "100%")
-
+```{r}
+#| label: setup
+#| include: false
 library(tidyverse)
 library(simling)
 library(broom)
@@ -42,7 +20,6 @@ options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
 
 <style>
   :root {
-    --footer-text:  "Multiple regression";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -92,7 +69,9 @@ words
 
 ## Two predictors, one outcome
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 bind_rows(
   transmute(words, x = log_freq, rt, predictor = "log10 frequency"),
   transmute(words, x = length,   rt, predictor = "Length (letters)")
@@ -108,7 +87,9 @@ Frequent words are faster and long words are slower.
 
 ## The predictors are correlated {.smaller}
 
-```{r, echo = FALSE, fig.height = 3.4}
+```{r}
+#| echo: false
+#| fig-height: 3.4
 ggplot(words, aes(x = log_freq, y = length)) +
   geom_jitter(height = 0.2, colour = kingfisher, alpha = 0.5, size = 1.8) +
   labs(x = "log10 frequency", y = "Length (letters)")
@@ -145,7 +126,9 @@ _Sources: National Geographic; Born Free Foundation_
 
 ## The equation
 
-<div class="formula">y = b₀ + b₁ · x₁ + b₂ · x₂ + e</div>
+::: {.formula}
+y = b₀ + b₁ · x₁ + b₂ · x₂ + e
+:::
 
 - The intercept `b₀` is the predicted `y` when both predictors are 0
 - Each slope is the change in `y` when its predictor goes up by 1 [while the other stays the same]{.hl}
@@ -154,7 +137,8 @@ _Sources: National Geographic; Born Free Foundation_
 
 In R, add predictors with `+`:
 
-```{r, eval = FALSE}
+```{r}
+#| eval: false
 lm(outcome ~ predictor1 + predictor2, data = ...)
 ```
 
@@ -176,7 +160,8 @@ Both slopes are smaller than in the simple regressions. The multiple regression 
 
 ## Simple vs multiple {.smaller}
 
-```{r, echo = FALSE}
+```{r}
+#| echo: false
 slope <- function(f, term) coef(lm(f, data = words))[term]
 tibble(
   predictor = c("log_freq", "length"),
@@ -193,7 +178,9 @@ With correlated predictors, a simple regression answers "what goes with `x`?". A
 
 ## Holding the other predictor constant
 
-```{r, echo = FALSE, fig.height = 4.2}
+```{r}
+#| echo: false
+#| fig-height: 4.2
 grid_len <- crossing(length = 2:14, log_freq = c(1, 3, 5))
 grid_len$fit <- predict(m, newdata = grid_len)
 
@@ -215,7 +202,9 @@ If the effect of length were different for frequent and rare words, the lines wo
 
 ## A regression plane
 
-```{r, echo = FALSE, fig.height = 4.4}
+```{r}
+#| echo: false
+#| fig-height: 4.4
 plane <- crossing(log_freq = seq(-0.3, 6, length.out = 80),
                   length   = seq(2, 14, length.out = 80))
 plane$fit <- predict(m, newdata = plane)
@@ -363,7 +352,9 @@ Use adjusted R² to compare models with different numbers of predictors. A predi
 
 ## Checking assumptions
 
-```{r, echo = FALSE, fig.height = 4}
+```{r}
+#| echo: false
+#| fig-height: 4
 aug <- augment(m)
 hist_df    <- transmute(aug, panel = "Histogram of residuals", x = .resid)
 scatter_df <- transmute(aug, panel = "Residuals vs fitted", x = .fitted, y = .resid)
@@ -411,7 +402,9 @@ Adding syllables makes the estimate for length less precise: its standard error,
 
 ## Collinearity, visually
 
-```{r, echo = FALSE, fig.height = 3.6}
+```{r}
+#| echo: false
+#| fig-height: 3.6
 bind_rows(`Without syllables` = tidy(lm(rt ~ log_freq + length, data = words)),
           `With syllables` = tidy(lm(rt ~ log_freq + length + syllables, data = words)), .id = "model") |>
   filter(term %in% c("length", "syllables")) |>
@@ -431,7 +424,9 @@ With syllables in the model, the interval for length is wider, and the interval 
 
 The [variance inflation factor]{.hl} (VIF) measures how well a predictor can be predicted from the other predictors.
 
-<div class="formula">VIF = 1 / (1 − R²ⱼ)</div>
+::: {.formula}
+VIF = 1 / (1 − R²ⱼ)
+:::
 
 ```{r}
 r2_len <- glance(lm(length ~ log_freq + syllables, data = words))$r.squared

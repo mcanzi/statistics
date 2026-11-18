@@ -1,3 +1,7 @@
+# R started from a shell (quarto render, Rscript) can run in the C locale,
+# where plot labels lose non-ASCII characters (ΔC becomes <U+0394>C)
+if (!l10n_info()[["UTF-8"]]) invisible(Sys.setlocale("LC_CTYPE", "en_US.UTF-8"))
+
 slide_palette <- list(
   pandan = "#5cc48a", hornbill = "#f2d45c", kingfisher = "#5aa0e0", orchid = "#e08ab8",
   mist = "#e3e8e1", moss = "#6f8a7a", muted = "#8e9e96", floor_col = "#0b110e",
@@ -52,8 +56,10 @@ options(
   ggplot2.discrete.fill = c(kingfisher, hornbill, orchid)
 )
 
-lecture_file <- sub("(\\.knit)?\\.(Rmd|md)$", ".html", knitr::current_input())
-lecture_count <- length(list.files(pattern = "^[0-9]{2}_.*\\.Rmd$"))
+# Quarto knits a copy such as 01_course_introduction.rmarkdown; the tutorial
+# slides (render_tutorials.Rmd) set lecture_file and lecture_label again
+lecture_file <- sub("\\..*$", ".html", basename(knitr::current_input()))
+lecture_count <- length(list.files(pattern = "^[0-9]{2}_.*\\.qmd$"))
 lecture_label <- sprintf('"lecture %s / %s"', substr(lecture_file, 1, 2), lecture_count)
 slides_url <- paste0("https://mcanzi.de/statistics/", lecture_file)
 

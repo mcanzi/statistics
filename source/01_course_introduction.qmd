@@ -1,30 +1,14 @@
 ---
 title: "Course introduction"
 subtitle: "Organisation, R and RStudio, and first steps in R"
-author: "Dr Massimiliano Canzi"
-knit: (function(input, ...) rmarkdown::render(input, output_dir = file.path(dirname(input), "..", "docs")))
-output:
-  revealjs::revealjs_presentation:
-    theme: black
-    css: theme-dark.css
-    highlight: zenburn
-    incremental: true
-    transition: fade
-    background_transition: fade
-    self_contained: true
-    reveal_options:
-      width: 1050
-      height: 700
-      slideNumber: "c/t"
-      showSlideNumber: all
-      controls: true
-      touch: true
-      transitionSpeed: fast
-      navigationMode: linear
+footer: "massimiliano.canzi@uni-konstanz.de"
 ---
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = TRUE,
-                      comment = "")
+
+```{r}
+#| label: setup
+#| include: false
+# messages on in this lecture (execute: message in the YAML has no effect in revealjs)
+knitr::opts_chunk$set(message = TRUE)
 library(tidyverse)
 
 source("slides_setup.R", local = knitr::knit_global())
@@ -35,7 +19,6 @@ options(width = 70)
 
 <style>
   :root {
-    --footer-text:  "massimiliano.canzi@uni-konstanz.de";
     --qr:           `r qr_css`;
     --lecture:      `r lecture_label`;
   }
@@ -404,7 +387,8 @@ mean(c(4, NA, 8), na.rm = TRUE)
 
 R and its packages are written by researchers. Cite them in your work:
 
-```{r, eval=FALSE}
+```{r}
+#| eval: false
 citation()                 # how to cite R
 citation("tidyverse")      # how to cite a package
 ```
@@ -417,7 +401,8 @@ citation("tidyverse")      # how to cite a package
 
 It comes with `{konstats}`. To start a lesson:
 
-```{r, eval=FALSE}
+```{r}
+#| eval: false
 library(swirl)
 swirl()
 ```
