@@ -233,7 +233,7 @@ ggplot(search, aes(x = slope, y = sq / 1000)) +
   geom_line(colour = kingfisher, linewidth = 1.3) +
   geom_vline(xintercept = b1, colour = hornbill, linetype = "dashed") +
   annotate("point", x = b1, y = min(search$sq) / 1000, colour = hornbill, size = 4) +
-  labs(x = "Slope of a line through the middle of the data", y = "Sum of squared residuals (× 1,000)")
+  labs(x = "Slope of a line through the middle of the data", y = "Sum of squared\nresiduals (× 1,000)")
 ```
 
 Each point on the curve is one candidate line. The sum of squared residuals is smallest at a slope of `r round(b1, 4)`. That is line B from the previous slide, and it is the line `lm()` finds.
