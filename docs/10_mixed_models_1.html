@@ -1146,16 +1146,16 @@ difficulty: <code>?lexical_decision</code> gives the true values.</p>
 <section id="rows-but-not-800-independent-observations" class="slide level2 smaller">
 <h2 class="smaller">800 rows, but not 800 independent observations</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lexdec</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 800 x 5
+<pre class="r-output"><code># A tibble: 800 × 5
   participant word  log_freq freq_c    rt
   &lt;fct&gt;       &lt;fct&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
 1 P01         w01       3.61 -0.169   655
 2 P01         w02       5.95  2.17    529
 3 P01         w03       1.32 -2.46    722
 4 P01         w04       5.31  1.53    590
-# i 796 more rows</code></pre>
+# ℹ 796 more rows</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(lexdec, participant) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 2
+<pre class="r-output"><code># A tibble: 3 × 2
   participant     n
   &lt;fct&gt;       &lt;int&gt;
 1 P01            40
@@ -1188,7 +1188,7 @@ colony’s dialect and largely ignored the others.</p>
 <section id="what-goes-wrong-with-lm" class="slide level2">
 <h2>What goes wrong with <code>lm()</code>?</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(<span class="fu">lm</span>(rt <span class="sc">~</span> freq_c, <span class="at">data =</span> lexdec))</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 2 x 5
+<pre class="r-output"><code># A tibble: 2 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 1 (Intercept)    667.       3.64     183.  0       
@@ -1260,7 +1260,7 @@ attr(,&quot;conf.level&quot;)
 participants, giving one RT per word.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>by_word <span class="ot">&lt;-</span> lexdec <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">rt =</span> <span class="fu">mean</span>(rt), <span class="at">freq_c =</span> <span class="fu">first</span>(freq_c), <span class="at">.by =</span> word)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(<span class="fu">lm</span>(rt <span class="sc">~</span> freq_c, <span class="at">data =</span> by_word))[<span class="dv">2</span>, ]</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 1 x 5
+<pre class="r-output"><code># A tibble: 1 × 5
   term   estimate std.error statistic  p.value
   &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 1 freq_c    -31.1      2.93     -10.6 6.00e-13</code></pre>

@@ -1100,10 +1100,10 @@ below makes one row per sign, with the mean rating of each group:</p>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(signs)</span></code></pre></div>
 <pre class="r-output"><code>Rows: 300
 Columns: 4
-$ sign        &lt;fct&gt; sign001, sign002, sign003, sign004, sign005, sig~
-$ aoa         &lt;dbl&gt; 4.5, 6.9, 5.0, 8.8, 6.8, 6.4, 3.7, 5.2, 2.3, 5.7~
-$ signers     &lt;dbl&gt; 5.666667, 5.266667, 4.500000, 2.933333, 6.266667~
-$ non_signers &lt;dbl&gt; 4.266667, 3.800000, 5.133333, 1.900000, 3.733333~</code></pre>
+$ sign        &lt;fct&gt; sign001, sign002, sign003, sign004, sign005, sig…
+$ aoa         &lt;dbl&gt; 4.5, 6.9, 5.0, 8.8, 6.8, 6.4, 3.7, 5.2, 2.3, 5.7…
+$ signers     &lt;dbl&gt; 5.666667, 5.266667, 4.500000, 2.933333, 6.266667…
+$ non_signers &lt;dbl&gt; 4.266667, 3.800000, 5.133333, 1.900000, 3.733333…</code></pre>
 <p>Today’s question: are iconic signs learned earlier, and which group’s
 ratings tell us more about it?</p>
 </section>
@@ -1235,17 +1235,17 @@ iconic.</p>
 <section id="solution-7" class="slide level2">
 <h2>3.1 Solution</h2>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(m_s)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 1 x 2
+<pre class="r-output"><code># A tibble: 1 × 2
   r.squared adj.r.squared
       &lt;dbl&gt;         &lt;dbl&gt;
 1     0.210         0.208</code></pre>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(m_n)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 1 x 2
+<pre class="r-output"><code># A tibble: 1 × 2
   r.squared adj.r.squared
       &lt;dbl&gt;         &lt;dbl&gt;
 1     0.264         0.262</code></pre>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(m)[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 1 x 2
+<pre class="r-output"><code># A tibble: 1 × 2
   r.squared adj.r.squared
       &lt;dbl&gt;         &lt;dbl&gt;
 1     0.272         0.268</code></pre>
@@ -1265,13 +1265,13 @@ Why?</p>
 <section id="solution-9" class="slide level2 smaller">
 <h2 class="smaller">3.2 Solution</h2>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m_s)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 2 x 5
+<pre class="r-output"><code># A tibble: 2 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 1 (Intercept)    7.91     0.293      27.0  4.61e-82
 2 signers       -0.569    0.0638     -8.91 5.06e-17</code></pre>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(m)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 5
+<pre class="r-output"><code># A tibble: 3 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 1 (Intercept)    8.03     0.283      28.4  1.00e-86

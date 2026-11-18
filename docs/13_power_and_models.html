@@ -1265,7 +1265,7 @@ SD = 40 ms.</p>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>one <span class="ot">&lt;-</span> <span class="fu">sim_study</span>(<span class="at">n =</span> <span class="dv">20</span>)</span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>one</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 1 x 2
+<pre class="r-output"><code># A tibble: 1 × 2
   estimate     p
      &lt;dbl&gt; &lt;dbl&gt;
 1    -8.52 0.583</code></pre>
@@ -1370,7 +1370,7 @@ Mongabay</em></p>
 <code>k</code> tests:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">k =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">at_least_one_false_alarm =</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.95</span><span class="sc">^</span>k)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 4 x 2
+<pre class="r-output"><code># A tibble: 4 × 2
       k at_least_one_false_alarm
   &lt;dbl&gt;                    &lt;dbl&gt;
 1     1                   0.0500
@@ -1513,7 +1513,7 @@ predictor improve the model?</p>
 <div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>new_sp <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">style =</span> <span class="fu">levels</span>(speech_styles<span class="sc">$</span>style))</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>preds  <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(new_sp, <span class="fu">predict</span>(m_sp, <span class="at">newdata =</span> new_sp, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>))</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>preds</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 4
+<pre class="r-output"><code># A tibble: 3 × 4
   style    fit   lwr   upr
   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 1 casual  108.  103.  114.
@@ -1543,7 +1543,7 @@ data:</p>
 <div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">aoa =</span> <span class="fu">seq</span>(<span class="fu">min</span>(words<span class="sc">$</span>aoa), <span class="fu">max</span>(words<span class="sc">$</span>aoa), <span class="at">length.out =</span> <span class="dv">50</span>))</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>grid <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(grid, <span class="fu">predict</span>(m, <span class="at">newdata =</span> grid, <span class="at">interval =</span> <span class="st">&quot;confidence&quot;</span>))</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>grid</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 50 x 4
+<pre class="r-output"><code># A tibble: 50 × 4
     aoa   fit   lwr   upr
   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 1  2     667.  649.  684.
@@ -1551,7 +1551,7 @@ data:</p>
 3  2.49  676.  660.  693.
 4  2.73  681.  665.  697.
 5  2.98  686.  670.  701.
-# i 45 more rows</code></pre>
+# ℹ 45 more rows</code></pre>
 </section>
 <section id="showing-uncertainty-continuous-1" class="slide level2">
 <h2>Showing uncertainty: continuous</h2>

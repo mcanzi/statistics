@@ -8,6 +8,10 @@ Knit this file, or run its chunks, to render all lectures in this folder. Each d
 To render a single lecture, open it and press Knit: each lecture also writes its HTML into `docs`.
 
 ```{r render, message = TRUE}
+# Rscript from a shell can start in the C locale, where plot labels lose
+# non-ASCII characters (ΔC becomes <U+0394>C). Each document is rendered in a
+# child R session that inherits these variables.
+if (!l10n_info()[["UTF-8"]]) Sys.setenv(LANG = "en_US.UTF-8", LC_ALL = "en_US.UTF-8")
 docs <- normalizePath(file.path("..", "docs"))
 lectures <- list.files(pattern = "^[0-9]{2}_.*\\.Rmd$")
 for (lecture in lectures) {

@@ -1091,14 +1091,14 @@ penguins, 3 species, 3 islands.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code></pre></div>
 <pre class="r-output"><code>Rows: 344
 Columns: 8
-$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Ad~
-$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen~
-$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39~
-$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19~
-$ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193~
-$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 46~
-$ sex               &lt;fct&gt; male, female, female, NA, female, male, fe~
-$ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, ~</code></pre>
+$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Ad…
+$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen…
+$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39…
+$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19…
+$ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193…
+$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 46…
+$ sex               &lt;fct&gt; male, female, female, NA, female, male, fe…
+$ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, …</code></pre>
 <p>Some values are missing (<code>NA</code>). Keep that in mind: it
 matters for almost everything we do today.</p>
 </section>
@@ -1249,14 +1249,14 @@ Levels: Adelie Chinstrap Gentoo</code></pre>
 <section id="solution-9" class="slide level2">
 <h2>2.3 Solution</h2>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">count</span>(island)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 2
+<pre class="r-output"><code># A tibble: 3 × 2
   island        n
   &lt;fct&gt;     &lt;int&gt;
 1 Biscoe      168
 2 Dream       124
 3 Torgersen    52</code></pre>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">count</span>(species)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 2
+<pre class="r-output"><code># A tibble: 3 × 2
   species       n
   &lt;fct&gt;     &lt;int&gt;
 1 Adelie      152
@@ -1344,7 +1344,7 @@ deviation and the number of penguins in each group, with
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_mass =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_mass =</span> <span class="fu">sd</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">n =</span> <span class="fu">n</span>())</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 4
+<pre class="r-output"><code># A tibble: 3 × 4
   species   mean_mass sd_mass     n
   &lt;fct&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;
 1 Adelie        3701.    459.   152
@@ -1363,7 +1363,7 @@ deviation and the number of penguins in each group, with
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_mass =</span> <span class="fu">sd</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">n =</span> <span class="fu">n</span>(),</span>
 <span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">.by =</span> species)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 4
+<pre class="r-output"><code># A tibble: 3 × 4
   species   mean_mass sd_mass     n
   &lt;fct&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;
 1 Adelie        3701.    459.   152
@@ -1383,7 +1383,7 @@ from heaviest to lightest with <code>arrange(desc())</code>.</p>
 <div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_mass =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.by =</span> island) <span class="sc">|&gt;</span></span>
 <span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_mass))</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 2
+<pre class="r-output"><code># A tibble: 3 × 2
   island    mean_mass
   &lt;fct&gt;         &lt;dbl&gt;
 1 Biscoe        4716.
@@ -1398,7 +1398,7 @@ from heaviest to lightest with <code>arrange(desc())</code>.</p>
 <section id="solution-17" class="slide level2 smaller">
 <h2 class="smaller">4.3 Solution</h2>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(penguins, island, species)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 5 x 3
+<pre class="r-output"><code># A tibble: 5 × 3
   island    species       n
   &lt;fct&gt;     &lt;fct&gt;     &lt;int&gt;
 1 Biscoe    Adelie       44

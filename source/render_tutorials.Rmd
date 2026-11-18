@@ -267,6 +267,10 @@ make_tutorial <- function(path, out_dir) {
 ```
 
 ```{r render, message = TRUE}
+# Rscript from a shell can start in the C locale, where plot labels lose
+# non-ASCII characters (ΔC becomes <U+0394>C). Each document is rendered in a
+# child R session that inherits these variables.
+if (!l10n_info()[["UTF-8"]]) Sys.setenv(LANG = "en_US.UTF-8", LC_ALL = "en_US.UTF-8")
 out_dir <- normalizePath(file.path("..", "docs"))
 out_dir <- file.path(out_dir, "tutorials")
 dir.create(out_dir, showWarnings = FALSE)

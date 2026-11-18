@@ -1140,10 +1140,10 @@ in the <code>Console</code>, once:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(konstats)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">check_setup</span>(<span class="st">&quot;statistics&quot;</span>)</span></code></pre></div>
 <pre class="r-output r-message"><code></code></pre>
-<pre class="r-output r-message"><code>-- Setup for Statistics --</code></pre>
+<pre class="r-output r-message"><code>── Setup for Statistics ──</code></pre>
 <pre class="r-output r-message"><code></code></pre>
-<pre class="r-output r-message"><code>v R 4.6.2</code></pre>
-<pre class="r-output r-message"><code>v All 10 packages are installed.</code></pre>
+<pre class="r-output r-message"><code>✔ R 4.6.2</code></pre>
+<pre class="r-output r-message"><code>✔ All 10 packages are installed.</code></pre>
 <div class="fragment">
 <p>If a package is missing, the message tells you which, and what to
 run. Run <code>check_setup()</code> again whenever code from the course
@@ -1155,20 +1155,20 @@ fails on your computer.</p>
 <p><code>lectures()</code> lists the lectures, with their chapters of
 Winter (2019) and data sets:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lectures</span>(<span class="st">&quot;statistics&quot;</span>)[, <span class="fu">c</span>(<span class="st">&quot;number&quot;</span>, <span class="st">&quot;topic&quot;</span>, <span class="st">&quot;winter&quot;</span>, <span class="st">&quot;datasets&quot;</span>)]</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 13 x 4
+<pre class="r-output"><code># A tibble: 13 × 4
    number topic                  winter datasets                      
     &lt;int&gt; &lt;chr&gt;                  &lt;chr&gt;  &lt;chr&gt;                         
  1      1 Course introduction    1      &lt;NA&gt;                          
  2      2 Data wrangling         2      penguins                      
  3      3 Descriptive statistics 3      penguins                      
  4      4 Linear models          4      penguins                      
- 5      5 Transformations        5      formants, language_attitudes,~
+ 5      5 Transformations        5      formants, language_attitudes,…
  6      6 Multiple regression    6      megastudy                     
- 7      7 Categorical predictors 7      formants, korean_stops, rhyth~
- 8      8 Interactions           8      cantonese_tone_merger, freq_l~
- 9      9 Significance testing   9      accent, style_voicing, vowel_~
+ 7      7 Categorical predictors 7      formants, korean_stops, rhyth…
+ 8      8 Interactions           8      cantonese_tone_merger, freq_l…
+ 9      9 Significance testing   9      accent, style_voicing, vowel_…
 10     10 Mixed models 1         14     lexical_decision              
-# i 3 more rows</code></pre>
+# ℹ 3 more rows</code></pre>
 <div class="fragment">
 <p><code>slides()</code> opens the slides of a lecture in your browser,
 by number or by topic:</p>
@@ -1225,20 +1225,20 @@ package:</p>
 <p><code>simling_datasets()</code> lists all of them, with their branch,
 language, size, response and topic:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">simling_datasets</span>()</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 56 x 7
+<pre class="r-output"><code># A tibble: 56 × 7
    name               branch    language   rows columns response topic
    &lt;chr&gt;              &lt;fct&gt;     &lt;chr&gt;     &lt;int&gt;   &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;
- 1 formants           Phonetics &lt;NA&gt;        120       5 continu~ &quot;Nor~
- 2 vowel_voicing      Phonetics English     120       2 continu~ &quot;Two~
- 3 speech_styles      Phonetics &lt;NA&gt;        150       2 continu~ &quot;Cat~
- 4 style_voicing      Phonetics &lt;NA&gt;        160       3 continu~ &quot;Cat~
- 5 vowel_duration     Phonetics &lt;NA&gt;        384       4 continu~ &quot;Mix~
- 6 korean_stops       Phonetics Korean     1440       8 continu~ &quot;Clu~
- 7 price_f2           Phonetics English ~  2200       6 traject~ &quot;GAM~
- 8 mandarin_tones     Phonetics Mandarin   4224       8 traject~ &quot;Con~
- 9 vot_identification Phonetics English,~  1224       6 binomia~ &quot;Psy~
-10 hungarian_harmony  Phonology Hungarian  4200       6 binary   &quot;Mix~
-# i 46 more rows</code></pre>
+ 1 formants           Phonetics &lt;NA&gt;        120       5 continu… Norm…
+ 2 vowel_voicing      Phonetics English     120       2 continu… Two …
+ 3 speech_styles      Phonetics &lt;NA&gt;        150       2 continu… Cate…
+ 4 style_voicing      Phonetics &lt;NA&gt;        160       3 continu… Cate…
+ 5 vowel_duration     Phonetics &lt;NA&gt;        384       4 continu… Mixe…
+ 6 korean_stops       Phonetics Korean     1440       8 continu… Clus…
+ 7 price_f2           Phonetics English …  2200       6 traject… GAMs…
+ 8 mandarin_tones     Phonetics Mandarin   4224       8 traject… Cont…
+ 9 vot_identification Phonetics English,…  1224       6 binomia… Psyc…
+10 hungarian_harmony  Phonology Hungarian  4200       6 binary   Mixe…
+# ℹ 46 more rows</code></pre>
 </section>
 <section id="a-first-data-set" class="slide level2 smaller">
 <h2 class="smaller">2.3 A first data set</h2>
@@ -1246,7 +1246,7 @@ language, size, response and topic:</p>
 before voiceless consonants (<em>beat</em>) and before voiced ones
 (<em>bead</em>).</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowel_voicing)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 6 x 2
+<pre class="r-output"><code># A tibble: 6 × 2
   voicing   duration
   &lt;fct&gt;        &lt;dbl&gt;
 1 voiceless      166
@@ -1388,7 +1388,7 @@ columns are vectors of the same length.</p>
 <div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(vowel_voicing)</span></code></pre></div>
 <pre class="r-output"><code>[1] 120</code></pre>
 <div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>vowel_voicing[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 2
+<pre class="r-output"><code># A tibble: 3 × 2
   voicing   duration
   &lt;fct&gt;        &lt;dbl&gt;
 1 voiceless      166

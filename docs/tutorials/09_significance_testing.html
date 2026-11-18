@@ -1095,7 +1095,7 @@ consonant they heard, once before and once after a week of training.
 <code>pre</code> and <code>post</code> are the number of correct answers
 out of 40.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>perception_training</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 18 x 3
+<pre class="r-output"><code># A tibble: 18 × 3
    learner   pre  post
    &lt;fct&gt;   &lt;int&gt; &lt;int&gt;
  1 L01        26    33
@@ -1108,7 +1108,7 @@ out of 40.</p>
  8 L08        23    20
  9 L09        28    30
 10 L10        22    30
-# i 8 more rows</code></pre>
+# ℹ 8 more rows</code></pre>
 <p>Today’s question: does the training help?</p>
 </section>
 <section>
@@ -1128,7 +1128,7 @@ out of 40.</p>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">gain =</span> post <span class="sc">-</span> pre)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>training <span class="sc">|&gt;</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(gain), <span class="at">sd =</span> <span class="fu">sd</span>(gain), <span class="at">improved =</span> <span class="fu">sum</span>(gain <span class="sc">&gt;</span> <span class="dv">0</span>))</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 1 x 3
+<pre class="r-output"><code># A tibble: 1 × 3
    mean    sd improved
   &lt;dbl&gt; &lt;dbl&gt;    &lt;int&gt;
 1  3.22  3.00       15</code></pre>
@@ -1282,7 +1282,7 @@ words correctly out of 40 (95% CI [1.7, 4.7]), t(17) = 4.56, p &lt;
 <section id="solution-9" class="slide level2">
 <h2>3.4 Solution</h2>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(<span class="fu">lm</span>(gain <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> training))</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 1 x 5
+<pre class="r-output"><code># A tibble: 1 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
 1 (Intercept)     3.22     0.707      4.56 0.000281</code></pre>

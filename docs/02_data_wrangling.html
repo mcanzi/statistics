@@ -1327,13 +1327,13 @@ table into a tidy one:</p>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>wide <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(rt_high, rt_low), <span class="at">names_to =</span> <span class="st">&quot;frequency&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;rt&quot;</span>,</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_prefix =</span> <span class="st">&quot;rt_&quot;</span>)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 4 x 3
+<pre class="r-output"><code># A tibble: 4 × 3
   participant frequency    rt
   &lt;chr&gt;       &lt;chr&gt;     &lt;dbl&gt;
 1 P01         high        580
 2 P01         low         642
 3 P02         high        611
-# i 1 more row</code></pre>
+# ℹ 1 more row</code></pre>
 <div class="fragment">
 <p><code>pivot_wider()</code> goes the other way, which is sometimes
 handy for tables in a paper.</p>
@@ -1344,14 +1344,14 @@ handy for tables in a paper.</p>
 <p>A <span class="hl">tibble</span> is a data frame with nicer
 defaults.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>penguins</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 344 x 8
+<pre class="r-output"><code># A tibble: 344 × 8
   species island    bill_length_mm bill_depth_mm flipper_length_mm
   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
 1 Adelie  Torgersen           39.1          18.7               181
 2 Adelie  Torgersen           39.5          17.4               186
 3 Adelie  Torgersen           40.3          18                 195
-# i 341 more rows
-# i 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+# ℹ 341 more rows
+# ℹ 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 <p>It prints only the first rows and the columns that fit, and shows the
 type of each column: <code>&lt;fct&gt;</code>, <code>&lt;dbl&gt;</code>,
 <code>&lt;int&gt;</code>, <code>&lt;chr&gt;</code>.</p>
@@ -1362,14 +1362,14 @@ type of each column: <code>&lt;fct&gt;</code>, <code>&lt;dbl&gt;</code>,
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code></pre></div>
 <pre class="r-output"><code>Rows: 344
 Columns: 8
-$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Ad~
-$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen~
-$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39~
-$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19~
-$ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193~
-$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 46~
-$ sex               &lt;fct&gt; male, female, female, NA, female, male, fe~
-$ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, ~</code></pre>
+$ species           &lt;fct&gt; Adelie, Adelie, Adelie, Adelie, Adelie, Ad…
+$ island            &lt;fct&gt; Torgersen, Torgersen, Torgersen, Torgersen…
+$ bill_length_mm    &lt;dbl&gt; 39.1, 39.5, 40.3, NA, 36.7, 39.3, 38.9, 39…
+$ bill_depth_mm     &lt;dbl&gt; 18.7, 17.4, 18.0, NA, 19.3, 20.6, 17.8, 19…
+$ flipper_length_mm &lt;int&gt; 181, 186, 195, NA, 193, 190, 181, 195, 193…
+$ body_mass_g       &lt;int&gt; 3750, 3800, 3250, NA, 3450, 3650, 3625, 46…
+$ sex               &lt;fct&gt; male, female, female, NA, female, male, fe…
+$ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, …</code></pre>
 </section></section>
 <section>
 <section id="example-data" class="title-slide slide level1">
@@ -1481,13 +1481,13 @@ decimal commas, as in German Excel exports</td>
 <h2 class="smaller">What <code>read_csv()</code> tells you</h2>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rt <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(example_file)</span></code></pre></div>
 <pre class="r-output r-message"><code>Rows: 6 Columns: 5
--- Column specification ----------------------------------------------
+── Column specification ──────────────────────────────────────────────
 Delimiter: &quot;,&quot;
 chr (3): participant, word, frequency
 dbl (2): rt, accuracy
 
-i Use `spec()` to retrieve the full column specification for this data.
-i Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <div class="fragment">
 <ul>
 <li class="fragment">How many rows and columns it read, and the type it
@@ -1606,14 +1606,14 @@ names without quotes</li>
 <section id="the-verb-never-changes-your-data" class="slide level2 smaller">
 <h2 class="smaller">The verb never changes your data</h2>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">&quot;Gentoo&quot;</span>)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 124 x 8
+<pre class="r-output"><code># A tibble: 124 × 8
   species island bill_length_mm bill_depth_mm flipper_length_mm
   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
 1 Gentoo  Biscoe           46.1          13.2               211
 2 Gentoo  Biscoe           50            16.3               230
 3 Gentoo  Biscoe           48.7          14.1               210
-# i 121 more rows
-# i 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+# ℹ 121 more rows
+# ℹ 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins)</span></code></pre></div>
 <pre class="r-output"><code>[1] 344</code></pre>
 <div class="fragment">
@@ -1633,13 +1633,13 @@ assign it:</p>
 <h2><code>select()</code></h2>
 <p>Keep the columns you name:</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(penguins, species, bill_length_mm)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 344 x 2
+<pre class="r-output"><code># A tibble: 344 × 2
   species bill_length_mm
   &lt;fct&gt;            &lt;dbl&gt;
 1 Adelie            39.1
 2 Adelie            39.5
 3 Adelie            40.3
-# i 341 more rows</code></pre>
+# ℹ 341 more rows</code></pre>
 <div class="fragment">
 <p>Drop a column with <code>-</code></p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(penguins, <span class="sc">-</span>year)</span></code></pre></div>
@@ -1656,13 +1656,13 @@ assign it:</p>
 <span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(penguins, sex, <span class="fu">everything</span>())       <span class="co"># move sex to the front</span></span></code></pre></div>
 <div class="fragment">
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(penguins, <span class="fu">ends_with</span>(<span class="st">&quot;_mm&quot;</span>))</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 344 x 3
+<pre class="r-output"><code># A tibble: 344 × 3
   bill_length_mm bill_depth_mm flipper_length_mm
            &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
 1           39.1          18.7               181
 2           39.5          17.4               186
 3           40.3          18                 195
-# i 341 more rows</code></pre>
+# ℹ 341 more rows</code></pre>
 </div>
 </section>
 <section id="select-by-position" class="slide level2">
@@ -1681,25 +1681,25 @@ Selecting by name avoids this.</p>
 <h2 class="smaller"><code>rename()</code></h2>
 <p><code>new_name = old_name</code></p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rename</span>(penguins, <span class="at">Type =</span> species)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 344 x 8
+<pre class="r-output"><code># A tibble: 344 × 8
   Type   island    bill_length_mm bill_depth_mm flipper_length_mm
   &lt;fct&gt;  &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
 1 Adelie Torgersen           39.1          18.7               181
 2 Adelie Torgersen           39.5          17.4               186
 3 Adelie Torgersen           40.3          18                 195
-# i 341 more rows
-# i 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+# ℹ 341 more rows
+# ℹ 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 <div class="fragment">
 <p><code>select()</code> can rename too, but drops everything you do not
 name:</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(penguins, <span class="at">Type =</span> species, bill_length_mm)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 344 x 2
+<pre class="r-output"><code># A tibble: 344 × 2
   Type   bill_length_mm
   &lt;fct&gt;           &lt;dbl&gt;
 1 Adelie           39.1
 2 Adelie           39.5
 3 Adelie           40.3
-# i 341 more rows</code></pre>
+# ℹ 341 more rows</code></pre>
 </div>
 </section>
 <section id="mutate" class="slide level2 smaller">
@@ -1709,13 +1709,13 @@ name:</p>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">body_mass_kg =</span> body_mass_g <span class="sc">/</span> <span class="dv">1000</span>,</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">bill_ratio   =</span> bill_length_mm <span class="sc">/</span> bill_depth_mm)</span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(penguins_2, species, body_mass_kg, bill_ratio)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 344 x 3
+<pre class="r-output"><code># A tibble: 344 × 3
   species body_mass_kg bill_ratio
   &lt;fct&gt;          &lt;dbl&gt;      &lt;dbl&gt;
 1 Adelie          3.75       2.09
 2 Adelie          3.8        2.27
 3 Adelie          3.25       2.24
-# i 341 more rows</code></pre>
+# ℹ 341 more rows</code></pre>
 <div class="fragment">
 <p>New columns are added at the end. You can use a column you just
 created in the same <code>mutate()</code>.</p>
@@ -1736,13 +1736,13 @@ order, and rows matching none of them get <code>NA</code>:</p>
 <span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(penguins_2, size)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 4 x 2
+<pre class="r-output"><code># A tibble: 4 × 2
   size       n
   &lt;chr&gt;  &lt;int&gt;
 1 large    118
 2 medium   153
 3 small     71
-# i 1 more row</code></pre>
+# ℹ 1 more row</code></pre>
 </div>
 </section>
 <section id="mutate-on-many-columns-across" class="slide level2 smaller">
@@ -1774,14 +1774,14 @@ these columns</em></p>
 <h2><code>filter()</code></h2>
 <p>Keep the rows where a condition is <code>TRUE</code>:</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">&quot;Gentoo&quot;</span>)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 124 x 8
+<pre class="r-output"><code># A tibble: 124 × 8
   species island bill_length_mm bill_depth_mm flipper_length_mm
   &lt;fct&gt;   &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
 1 Gentoo  Biscoe           46.1          13.2               211
 2 Gentoo  Biscoe           50            16.3               230
 3 Gentoo  Biscoe           48.7          14.1               210
-# i 121 more rows
-# i 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+# ℹ 121 more rows
+# ℹ 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </section>
 <section id="comparison-operators" class="slide level2 smaller">
 <h2 class="smaller">Comparison operators</h2>
@@ -1901,14 +1901,14 @@ drop</li>
 <h2><code>arrange()</code></h2>
 <p>Sort rows, smallest first</p>
 <div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(penguins, body_mass_g)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 344 x 8
+<pre class="r-output"><code># A tibble: 344 × 8
   species   island bill_length_mm bill_depth_mm flipper_length_mm
   &lt;fct&gt;     &lt;fct&gt;           &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;
 1 Chinstrap Dream            46.9          16.6               192
 2 Adelie    Biscoe           36.5          16.6               181
 3 Adelie    Biscoe           36.4          17.1               184
-# i 341 more rows
-# i 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
+# ℹ 341 more rows
+# ℹ 3 more variables: body_mass_g &lt;int&gt;, sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 <div class="fragment">
 <p>Largest first with <code>desc()</code>; sort by several columns in
 turn</p>
@@ -1932,7 +1932,7 @@ each, which add up to about 11 hours of sleep.</p>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">mean_mass =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">sd_mass   =</span> <span class="fu">sd</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">n         =</span> <span class="fu">n</span>())</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 1 x 3
+<pre class="r-output"><code># A tibble: 1 × 3
   mean_mass sd_mass     n
       &lt;dbl&gt;   &lt;dbl&gt; &lt;int&gt;
 1     4202.    802.   344</code></pre>
@@ -1949,7 +1949,7 @@ each, which add up to about 11 hours of sleep.</p>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise</span>(penguins_grouped,</span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">mean_mass =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">n         =</span> <span class="fu">n</span>())</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 3
+<pre class="r-output"><code># A tibble: 3 × 3
   species   mean_mass     n
   &lt;fct&gt;         &lt;dbl&gt; &lt;int&gt;
 1 Adelie        3701.   152
@@ -1967,13 +1967,13 @@ next verb to work group by group.</p>
 <span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">mean_mass =</span> <span class="fu">mean</span>(body_mass_g, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
 <span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">n         =</span> <span class="fu">n</span>(),</span>
 <span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>          <span class="at">.by       =</span> <span class="fu">c</span>(species, sex))</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 8 x 4
+<pre class="r-output"><code># A tibble: 8 × 4
   species sex    mean_mass     n
   &lt;fct&gt;   &lt;fct&gt;      &lt;dbl&gt; &lt;int&gt;
 1 Adelie  male       4043.    73
 2 Adelie  female     3369.    73
 3 Adelie  &lt;NA&gt;       3540      6
-# i 5 more rows</code></pre>
+# ℹ 5 more rows</code></pre>
 <div class="fragment">
 <p><code>.by</code> groups for this verb only, so you never forget to
 <code>ungroup()</code>. It works in <code>summarise()</code>,
@@ -1985,13 +1985,13 @@ next verb to work group by group.</p>
 <h2><code>count()</code></h2>
 <p>A shortcut for counting rows per group</p>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">count</span>(penguins, species, island)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 5 x 3
+<pre class="r-output"><code># A tibble: 5 × 3
   species island        n
   &lt;fct&gt;   &lt;fct&gt;     &lt;int&gt;
 1 Adelie  Biscoe       44
 2 Adelie  Dream        56
 3 Adelie  Torgersen    52
-# i 2 more rows</code></pre>
+# ℹ 2 more rows</code></pre>
 <div class="fragment">
 <p>Same counts as
 <code>summarise(penguins, n = n(), .by = c(species, island))</code>, but
@@ -2041,13 +2041,13 @@ object at every step</li>
 <span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">bill_length_cm =</span> bill_length_mm <span class="sc">/</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
 <span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, bill_length_cm)</span>
 <span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>penguins_2</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 192 x 2
+<pre class="r-output"><code># A tibble: 192 × 2
   species bill_length_cm
   &lt;fct&gt;            &lt;dbl&gt;
 1 Gentoo            4.61
 2 Gentoo            5   
 3 Gentoo            4.87
-# i 189 more rows</code></pre>
+# ℹ 189 more rows</code></pre>
 </div>
 </section>
 <section id="reading-a-pipe-aloud" class="slide level2">

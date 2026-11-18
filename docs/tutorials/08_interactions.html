@@ -1098,16 +1098,16 @@ that readers look at the verb the first time they reach it. It is
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(agreement_attraction)</span></code></pre></div>
 <pre class="r-output"><code>Rows: 1,280
 Columns: 10
-$ participant    &lt;fct&gt; P01, P01, P01, P01, P01, P01, P01, P01, P01, ~
-$ list           &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
-$ item           &lt;fct&gt; i01, i02, i03, i04, i05, i06, i07, i08, i09, ~
-$ grammaticality &lt;fct&gt; ungrammatical, ungrammatical, grammatical, gr~
-$ attractor      &lt;fct&gt; singular, plural, singular, plural, singular,~
-$ skipped        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ~
-$ first_fixation &lt;dbl&gt; 398, 349, 135, 217, 229, 265, 237, 200, 549, ~
-$ gaze_duration  &lt;dbl&gt; 398, 349, 186, 217, 229, 265, 237, 200, 549, ~
-$ regression     &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, ~
-$ total_time     &lt;dbl&gt; 687, 349, 186, 217, 361, 265, 237, 200, 950, ~</code></pre>
+$ participant    &lt;fct&gt; P01, P01, P01, P01, P01, P01, P01, P01, P01, …
+$ list           &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ item           &lt;fct&gt; i01, i02, i03, i04, i05, i06, i07, i08, i09, …
+$ grammaticality &lt;fct&gt; ungrammatical, ungrammatical, grammatical, gr…
+$ attractor      &lt;fct&gt; singular, plural, singular, plural, singular,…
+$ skipped        &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, …
+$ first_fixation &lt;dbl&gt; 398, 349, 135, 217, 229, 265, 237, 200, 549, …
+$ gaze_duration  &lt;dbl&gt; 398, 349, 186, 217, 229, 265, 237, 200, 549, …
+$ regression     &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, …
+$ total_time     &lt;dbl&gt; 687, 349, 186, 217, 361, 265, 237, 200, 950, …</code></pre>
 <p>Today’s question: does a plural attractor make an ungrammatical verb
 easier to read?</p>
 </section>
@@ -1129,7 +1129,7 @@ duration.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cells <span class="ot">&lt;-</span> agreement_attraction <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">gaze =</span> <span class="fu">mean</span>(gaze_duration, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">.by =</span> <span class="fu">c</span>(grammaticality, attractor))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>cells</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 4 x 3
+<pre class="r-output"><code># A tibble: 4 × 3
   grammaticality attractor  gaze
   &lt;fct&gt;          &lt;fct&gt;     &lt;dbl&gt;
 1 ungrammatical  singular   307.

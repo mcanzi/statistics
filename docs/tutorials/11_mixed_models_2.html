@@ -1099,15 +1099,15 @@ head:</p>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cz)</span></code></pre></div>
 <pre class="r-output"><code>Rows: 2,400
 Columns: 9
-$ participant &lt;fct&gt; P01, P01, P01, P01, P01, P01, P01, P01, P01, P01~
-$ list        &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ~
-$ item        &lt;fct&gt; i01, i02, i03, i04, i05, i06, i07, i08, i09, i10~
-$ condition   &lt;fct&gt; expected, unexpected, expected, unexpected, expe~
-$ cloze       &lt;dbl&gt; 0.75, 0.02, 0.84, 0.01, 0.81, 0.02, 0.80, 0.00, ~
-$ electrode   &lt;fct&gt; Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, ~
-$ anteriority &lt;fct&gt; central, central, central, central, central, cen~
-$ laterality  &lt;fct&gt; midline, midline, midline, midline, midline, mid~
-$ amplitude   &lt;dbl&gt; -0.50, -4.60, 5.27, -3.50, 3.91, 4.61, -1.70, 1.~</code></pre>
+$ participant &lt;fct&gt; P01, P01, P01, P01, P01, P01, P01, P01, P01, P01…
+$ list        &lt;int&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, …
+$ item        &lt;fct&gt; i01, i02, i03, i04, i05, i06, i07, i08, i09, i10…
+$ condition   &lt;fct&gt; expected, unexpected, expected, unexpected, expe…
+$ cloze       &lt;dbl&gt; 0.75, 0.02, 0.84, 0.01, 0.81, 0.02, 0.80, 0.00, …
+$ electrode   &lt;fct&gt; Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, Cz, …
+$ anteriority &lt;fct&gt; central, central, central, central, central, cen…
+$ laterality  &lt;fct&gt; midline, midline, midline, midline, midline, mid…
+$ amplitude   &lt;dbl&gt; -0.50, -4.60, 5.27, -3.50, 3.91, 4.61, -1.70, 1.…</code></pre>
 <p>Today’s question: how large is the N400 effect, and how sure can we
 be about it?</p>
 </section>
@@ -1125,7 +1125,7 @@ be about it?</p>
 <h2>1.1 Solution</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cz <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">amplitude =</span> <span class="fu">mean</span>(amplitude), <span class="at">.by =</span> condition)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 2 x 2
+<pre class="r-output"><code># A tibble: 2 × 2
   condition  amplitude
   &lt;fct&gt;          &lt;dbl&gt;
 1 expected        1.06
@@ -1164,7 +1164,7 @@ difference between the conditions. Is the estimate close?</p>
 <h2>1.3 Solution</h2>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cz <span class="sc">|&gt;</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">cloze =</span> <span class="fu">mean</span>(cloze), <span class="at">.by =</span> condition)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 2 x 2
+<pre class="r-output"><code># A tibble: 2 × 2
   condition   cloze
   &lt;fct&gt;       &lt;dbl&gt;
 1 expected   0.723 

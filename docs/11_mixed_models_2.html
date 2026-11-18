@@ -1652,7 +1652,7 @@ words. <code>rt</code> is in ms, so we model <code>log(rt)</code>
 (lecture 5), with frequency centred:</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>lex <span class="ot">&lt;-</span> lexical_decision_l2 <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">freq_c =</span> log_freq <span class="sc">-</span> <span class="fu">mean</span>(log_freq))</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>lex <span class="sc">|&gt;</span> <span class="fu">select</span>(participant, group, word, freq_c, rt) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 5
+<pre class="r-output"><code># A tibble: 3 × 5
   participant group word  freq_c    rt
   &lt;fct&gt;       &lt;fct&gt; &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;
 1 P01         L1    w01    0.971   568

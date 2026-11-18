@@ -1097,12 +1097,12 @@ looking at the person answering.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(turn_taking)</span></code></pre></div>
 <pre class="r-output"><code>Rows: 3,000
 Columns: 6
-$ language     &lt;fct&gt; Danish, Danish, Danish, Danish, Danish, Danish,~
-$ conversation &lt;fct&gt; dan_01, dan_01, dan_01, dan_01, dan_01, dan_01,~
-$ response     &lt;fct&gt; disconfirmation, disconfirmation, disconfirmati~
-$ answer       &lt;fct&gt; answer, answer, answer, answer, answer, answer,~
-$ gaze         &lt;fct&gt; no, no, no, no, yes, yes, no, no, no, yes, no, ~
-$ offset       &lt;dbl&gt; 416, 575, 636, 115, 622, 74, 457, 1252, 828, -5~</code></pre>
+$ language     &lt;fct&gt; Danish, Danish, Danish, Danish, Danish, Danish,…
+$ conversation &lt;fct&gt; dan_01, dan_01, dan_01, dan_01, dan_01, dan_01,…
+$ response     &lt;fct&gt; disconfirmation, disconfirmation, disconfirmati…
+$ answer       &lt;fct&gt; answer, answer, answer, answer, answer, answer,…
+$ gaze         &lt;fct&gt; no, no, no, no, yes, yes, no, no, no, yes, no, …
+$ offset       &lt;dbl&gt; 416, 575, 636, 115, 622, 74, 457, 1252, 828, -5…</code></pre>
 <p>Today’s question: what makes an answer come sooner or later?</p>
 </section>
 <section>
@@ -1120,7 +1120,7 @@ Then plot <code>offset</code> by <code>response</code> with
 <h2>1.1 Solution</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>turn_taking <span class="sc">|&gt;</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">offset =</span> <span class="fu">mean</span>(offset), <span class="at">.by =</span> response)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 2 x 2
+<pre class="r-output"><code># A tibble: 2 × 2
   response        offset
   &lt;fct&gt;            &lt;dbl&gt;
 1 disconfirmation   390.
@@ -1204,7 +1204,7 @@ the mean <code>offset</code> of each language.</p>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">droplevels</span>()</span>
 <span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>tt3 <span class="sc">|&gt;</span></span>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">offset =</span> <span class="fu">mean</span>(offset), <span class="at">.by =</span> language)</span></code></pre></div>
-<pre class="r-output"><code># A tibble: 3 x 2
+<pre class="r-output"><code># A tibble: 3 × 2
   language offset
   &lt;fct&gt;     &lt;dbl&gt;
 1 Danish    473. 
