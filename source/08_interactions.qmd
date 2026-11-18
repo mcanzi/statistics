@@ -66,7 +66,7 @@ tibble(x = rep(0:10, 2), group = rep(c("A", "B"), each = 11)) |>
 
 In an [interaction]{.hl}, the effect of one predictor depends on the value of another, and the lines are no longer parallel.
 
-## Interactions in R
+## Fitting an interaction in R
 
 `*` adds both predictors and their interaction:
 

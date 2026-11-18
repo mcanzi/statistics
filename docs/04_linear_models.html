@@ -1293,15 +1293,15 @@ Dr Massimiliano Canzi
 <p>Each point on the curve is one candidate line. The sum of squared residuals is smallest at a slope of 0.0153. That is line B from the previous slide, and it is the line <code>lm()</code> finds.</p>
 </section></section>
 <section>
-<section id="linear-models-in-r" class="title-slide slide level1">
-<h1>Linear models in R</h1>
+<section id="fitting-linear-models-in-r" class="title-slide slide level1">
+<h1>Fitting linear models in R</h1>
 <div class="fact">
 <p><code>Did you know:</code> a male Alpine ibex weighs about 90 kg, and his horns grow to about 92 cm on average. A female weighs 35 to 49 kg, with horns of about 34 cm. A model of horn length would need very different <span class="hl">intercepts</span> for the two sexes.</p>
 <p><em>Source: Gran Paradiso National Park</em></p>
 </div>
 </section>
-<section id="lm-in-r" class="slide level2">
-<h2><code>lm()</code> in <code>R</code></h2>
+<section id="fitting-a-model-with-lm" class="slide level2">
+<h2>Fitting a model with <code>lm()</code></h2>
 <p><code>lm()</code> fits a <span class="hl">linear model</span>. The <span class="hl">formula</span> <code>outcome ~ predictor</code> reads “flipper length as a function of body mass”.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">lm</span>(flipper_length_mm <span class="sc">~</span> body_mass_g, <span class="at">data =</span> pengs)</span>
@@ -1505,8 +1505,8 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><em>Sources: Giacometti et al. (2002), Journal of Mammalogy; Büntgen et al. (2014), Ecology Letters</em></p>
 </div>
 </section>
-<section id="the-1-in-a-formula" class="slide level2">
-<h2>The <code>1</code> in a formula</h2>
+<section id="writing-the-intercept-as-1" class="slide level2">
+<h2>Writing the intercept as <code>1</code></h2>
 <p>The <code>1</code> in a formula stands for the intercept, and <code>R</code> adds it for you.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(flipper_length_mm <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> body_mass_g, <span class="at">data =</span> pengs))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

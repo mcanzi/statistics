@@ -156,7 +156,7 @@ pooled_sd <- sqrt(((s$n[1] - 1) * s$sd[1]^2 + (s$n[2] - 1) * s$sd[2]^2) /
 
 The voiced mean is almost 2 SDs above the voiceless mean.
 
-## Cohen's d in R
+## Computing Cohen's d in R
 
 With the `{effsize}` package, which came with `{konstats}`:
 

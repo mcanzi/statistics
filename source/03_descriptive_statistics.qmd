@@ -501,7 +501,7 @@ The [median absolute deviation]{.hl} (MAD) is the robust partner of the SD: the 
 | 2. Distance of each value from 2 | 1, 1, 0, 0, 2, 4, 7 | |
 | 3. The same distances, sorted | 0, 0, 1, __1__, 2, 4, 7 | MAD = 1 |
 
-## `mad()` in R {.smaller}
+## Computing the MAD in R {.smaller}
 
 ```{r}
 x <- c(1, 1, 2, 2, 4, 6, 9)

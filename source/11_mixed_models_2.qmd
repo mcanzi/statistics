@@ -16,7 +16,7 @@ source("slides_setup.R", local = knitr::knit_global())
 options(width = 72, pillar.print_min = 4, pillar.print_max = 4)
 ```
 
-# Mixed models in practice
+# Working with mixed models
 
 <style>
   :root {

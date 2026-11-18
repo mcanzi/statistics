@@ -237,7 +237,7 @@ ggplot(search, aes(x = slope, y = sq / 1000)) +
 
 Each point on the curve is one candidate line. The sum of squared residuals is smallest at a slope of `r round(b1, 4)`. That is line B from the previous slide, and it is the line `lm()` finds.
 
-# Linear models in R
+# Fitting linear models in R
 
 ::: {.fact}
 `Did you know:` a male Alpine ibex weighs about 90 kg, and his horns grow to about 92 cm on average. A female weighs 35 to 49 kg, with horns of about 34 cm. A model of horn length would need very different [intercepts]{.hl} for the two sexes.
@@ -245,7 +245,7 @@ Each point on the curve is one candidate line. The sum of squared residuals is s
 _Source: Gran Paradiso National Park_
 :::
 
-## `lm()` in `R`
+## Fitting a model with `lm()`
 
 `lm()` fits a [linear model]{.hl}. The [formula]{.hl} `outcome ~ predictor` reads "flipper length as a function of body mass".
 
@@ -373,7 +373,7 @@ The data cover `r min(pengs$body_mass_g)` to `r max(pengs$body_mass_g)` g (shade
 _Sources: Giacometti et al. (2002), Journal of Mammalogy; Büntgen et al. (2014), Ecology Letters_
 :::
 
-## The `1` in a formula
+## Writing the intercept as `1`
 
 The `1` in a formula stands for the intercept, and `R` adds it for you.
 

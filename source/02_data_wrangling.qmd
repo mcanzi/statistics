@@ -215,7 +215,7 @@ _Sources: Gorman, Williams & Fraser (2014), PLoS ONE; palmerpenguins documentati
 library(palmerpenguins)
 ```
 
-## `penguins` in base R {.smaller}
+## Two `penguins` data sets {.smaller}
 
 `Heads up!` Since R 4.5.0, base R also ships a `penguins` data set, but with shorter column names:
 

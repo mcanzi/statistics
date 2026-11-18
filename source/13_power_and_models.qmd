@@ -338,7 +338,7 @@ After 20 participants, your result is p = .07. Your supervisor suggests testing 
 - What is the problem with this plan?
 - What could you do instead, and how would you report what happened honestly?
 
-# Uncertainty in regression
+# Uncertainty of regression estimates
 
 ::: {.fact}
 `Did you know:` in cool months, pygmy slow lorises can go into [torpor]{.hl}, a short form of hibernation. One study recorded inactivity lasting up to 63 hours.

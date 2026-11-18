@@ -385,7 +385,7 @@ bind_rows(make_r(-0.8), make_r(0), make_r(0.4), make_r(0.9)) |>
 - From -1 (perfect negative) through 0 (no linear relation) to +1 (perfect positive)
 - It has no units: it is the same whether you measure in years, months or days
 
-## `cor()` in R {.smaller}
+## Computing correlations with `cor()` {.smaller}
 
 ```{r}
 cor(words$rt, words$aoa)

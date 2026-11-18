@@ -395,7 +395,7 @@ The model estimates a correlation of about `r round(attr(VarCorr(m_full)$partici
 _Sources: Park et al. (2017), Science; Max Delbrück Center_
 :::
 
-## Random effects in `lmer()` {.smaller}
+## Writing random effects in `lmer()` {.smaller}
 
 The `{lme4}` package: `lmer()` works like `lm()`, plus random effects in brackets, `(effects | group)`.
 
