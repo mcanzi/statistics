@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 
 ## Setup
 
-Today we need two packages, which came with `{konstats}` in tutorial 1. Load them at the start of every session:
+Today we need two packages, which `install_course("statistics")` installed in tutorial 1. Load them at the start of every session:
 
 ```{r}
 library(tidyverse)
