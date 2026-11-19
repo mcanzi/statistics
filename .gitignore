@@ -3,3 +3,4 @@
 .Rproj.user/
 *_cache/
 *_files/
+.claude/launch.json
