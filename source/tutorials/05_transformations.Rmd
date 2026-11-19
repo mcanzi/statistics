@@ -233,3 +233,9 @@ The intercept is the predicted vocabulary of a child who hears 1200 words per ho
 In the true model, input acts on the log2 scale: going from 600 to 1200 words per hour helps as much as going from 1200 to 2400. A model with `log2(input)` makes the same assumption, while a model with `input` assumes that every extra word per hour helps equally.
 
 :::
+
+## Reading
+
+This tutorial goes with chapter 5 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

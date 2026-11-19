@@ -73,7 +73,7 @@ If a package is missing, the message tells you which, and what to run. Run `chec
 
 ### 1.5 Lectures and slides {.smaller}
 
-`lectures()` lists the lectures, with their chapters of Winter (2019) and data sets:
+The lectures follow the textbook by Winter (2019), with new examples and data sets. `lectures()` lists the lectures, with their chapters of the book and data sets:
 
 ```{r}
 lectures("statistics")[, c("number", "topic", "winter", "datasets")]
@@ -374,3 +374,9 @@ Next week: data wrangling with the tidyverse. Copy the exercise sheet into your 
 ```{r, eval = FALSE}
 get_tutorial(2, ".")
 ```
+
+## Reading
+
+This tutorial goes with chapter 1 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

@@ -499,6 +499,12 @@ r2_aoa <- glance(lm(aoa ~ log_freq + concreteness, data = megastudy))$r.squared
 - [Collinearity]{.hl} inflates standard errors: check correlations and VIFs
 :::
 
+## Reading
+
+This lecture follows chapter 6 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

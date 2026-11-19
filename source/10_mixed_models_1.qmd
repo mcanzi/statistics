@@ -548,6 +548,12 @@ For each design, name the grouping factors, and the varying slopes the design al
 - "Random effect" has several meanings: think [constant]{.hl} vs [varying]{.hl}
 :::
 
+## Reading
+
+This lecture follows chapter 14 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

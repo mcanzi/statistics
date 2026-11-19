@@ -135,3 +135,8 @@ The intercept of `m_log` is the predicted vocabulary for a child who hears one w
 
 `?vocabulary_growth` gives the model the data were simulated from. In it, doubling the input moves the steep middle part of each child's growth curve two months earlier. Why does that make a model with `log2(input)` a better choice than one with `input`?
 
+## Reading
+
+This tutorial goes with chapter 5 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

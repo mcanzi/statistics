@@ -739,6 +739,12 @@ If the data change, the text updates itself, so you never copy numbers by hand.
 - Per group: `summarise()` with `.by` or `group_by()`; many columns with `across()`
 :::
 
+## Reading
+
+This lecture follows chapter 3 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

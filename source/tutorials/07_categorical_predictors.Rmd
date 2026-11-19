@@ -194,3 +194,9 @@ coef(m3)[1:3]
 The model has `r length(coef(m3))` coefficients: the intercept, one for `response`, one for `gaze` and nine for `language`, one for each language that is not the reference. The slope of `response` hardly changes, because every language has both kinds of answer. In the simulation, disconfirmations come 207 ms later and gaze makes answers 69 ms faster (`?turn_taking`).
 
 :::
+
+## Reading
+
+This tutorial goes with chapter 7 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

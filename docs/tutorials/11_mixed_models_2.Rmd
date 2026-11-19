@@ -128,3 +128,9 @@ The N400 depends on how predictable a word is, not only on the condition. Fit a 
 ```{r}
 
 ```
+
+## Reading
+
+This tutorial goes with chapter 15 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

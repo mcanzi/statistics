@@ -530,6 +530,12 @@ With random intercepts only, the same test gives p = `r format(signif(p_ri, 2), 
 - Marginal vs conditional `R²`
 :::
 
+## Reading
+
+This lecture follows chapter 15 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

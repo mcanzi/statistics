@@ -212,3 +212,9 @@ glance(m_i)$adj.r.squared
 One predictor fits about as well as two (`r round(100 * glance(m_i)$adj.r.squared)`% against `r round(100 * glance(m)$adj.r.squared)`%), and its slope is easy to read: one point more iconicity goes with signs learned `r round(abs(coef(m_i)[2]), 2)` years earlier.
 
 :::
+
+## Reading
+
+This tutorial goes with chapter 6 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

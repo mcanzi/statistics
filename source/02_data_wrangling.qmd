@@ -790,6 +790,12 @@ Note: `{ggplot2}` layers are added with `+`, not `|>`. More next class.
 - Always assign the result if you want to keep it
 :::
 
+## Reading
+
+This lecture follows chapter 2 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

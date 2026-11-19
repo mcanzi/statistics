@@ -574,6 +574,12 @@ Speech rate differs clearly, while H1-H2 does not reach significance. A non-sign
 - A significant effect need not be large or important, so report [effect sizes]{.hl} and [CIs]{.hl}
 :::
 
+## Reading
+
+This lecture follows chapter 9 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

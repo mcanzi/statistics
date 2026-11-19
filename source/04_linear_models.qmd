@@ -569,6 +569,12 @@ augment(m_bill, data = bill_data) |>
 - Predict only within the range of the data, and look for groups that a single line hides
 :::
 
+## Reading
+
+This lecture follows chapter 4 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

@@ -512,6 +512,12 @@ Each extra syllable per second goes with a `delta_c` `r round(-coef(m_rhythm)["r
 - Categorical and continuous predictors can be combined: one slope, several intercepts
 :::
 
+## Reading
+
+This lecture follows chapter 7 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

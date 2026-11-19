@@ -158,3 +158,9 @@ Predict the reaction time for words with a log frequency of 2 and of 5. Then pre
 ```{r}
 
 ```
+
+## Reading
+
+This tutorial goes with chapter 4 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

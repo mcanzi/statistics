@@ -129,3 +129,9 @@ Repeat all the steps above in a single chain with `|>`: start from the `iris` da
 ```{r}
 
 ```
+
+## Reading
+
+This tutorial goes with chapter 2 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

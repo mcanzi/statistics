@@ -450,6 +450,12 @@ With treatment coding, the intercept is the mean VOT of lenis stops from older s
 - Use higher-order interactions only when the research question needs them
 :::
 
+## Reading
+
+This lecture follows chapter 8 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

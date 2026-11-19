@@ -206,3 +206,9 @@ fixef(m_cloze)
 From a word nobody expects (cloze 0) to a word everybody expects (cloze 1), the amplitude rises by `r round(fixef(m_cloze)[2], 1)` µV. In the true model this is 4 µV.
 
 :::
+
+## Reading
+
+This tutorial goes with chapter 15 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

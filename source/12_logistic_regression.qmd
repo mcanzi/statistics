@@ -464,6 +464,12 @@ Readers skip predictable words more often than unpredictable ones: about `r roun
 - The random effects logic is the same as for `lmer()`
 :::
 
+## Reading
+
+This lecture follows chapter 12 and section 15.8 of Winter (2019).
+
+Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
 ## Slides and code
 
 <div class="qr-block">

@@ -323,3 +323,9 @@ count(penguins, island, species)
 Only Biscoe has Gentoo penguins, the heaviest species, so most of the difference between the islands comes from the species that live there.
 
 :::
+
+## Reading
+
+This tutorial goes with chapter 3 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>

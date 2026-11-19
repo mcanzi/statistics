@@ -142,3 +142,9 @@ Compare your model with a model without `manipulation`, with the same random eff
 ```{r}
 
 ```
+
+## Reading
+
+This tutorial goes with chapter 12 and section 15.8 of Winter (2019).
+
+Winter, B. (2019). *Statistics for linguists: An introduction using R*. Routledge. <https://doi.org/10.4324/9781315165547>
