@@ -1147,7 +1147,7 @@ Dr Massimiliano Canzi
 </div>
 </div>
 </div>
-<p>If we know a penguin’s body mass, we can do better: the <span class="hl">conditional mean</span> is the mean flipper length of penguins with a given body mass (orange). The conditional means lie close to a straight line.</p>
+<p>If we know a penguin’s body mass, we can do better: the <span class="hl">conditional mean</span> is the mean flipper length of penguins with a given body mass (yellow). The conditional means lie close to a straight line.</p>
 </section>
 <section id="outcome-and-predictor" class="slide level2">
 <h2>Outcome and predictor</h2>
@@ -1230,7 +1230,7 @@ Dr Massimiliano Canzi
 </div>
 </div>
 </div>
-<p>The intercept moves the line up or down, and the slope tilts it. A positive slope rises from left to right, while a negative one falls.</p>
+<p>The intercept moves the line up or down, and the slope tilts it. A positive slope rises from left to right, while a negative one falls. See also Winter (2019), figure 4.2.</p>
 </section>
 <section id="which-line" class="slide level2">
 <h2>Which line?</h2>
@@ -1290,7 +1290,7 @@ Dr Massimiliano Canzi
 </div>
 </div>
 </div>
-<p>Each point on the curve is one candidate line. The sum of squared residuals is smallest at a slope of 0.0153. That is line B from the previous slide, and it is the line <code>lm()</code> finds.</p>
+<p>Each point on the curve is one candidate line. The sum of squared residuals is smallest at a slope of 0.0153. That is line B from the previous slide, and it is the line <code>lm()</code> finds. See also Winter (2019), figure 4.5.</p>
 </section></section>
 <section>
 <section id="fitting-linear-models-in-r" class="title-slide slide level1">
@@ -1522,7 +1522,7 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>So <code>y ~ x</code> and <code>y ~ 1 + x</code> fit the same model. <code>y ~ 1</code> fits an <span class="hl">intercept-only model</span>: its one estimate is the mean flipper length, the model from last week.</p>
+<p>So <code>y ~ x</code> and <code>y ~ 1 + x</code> fit the same model. <code>y ~ 1</code> fits an <span class="hl">intercept-only model</span>: its one estimate is the mean flipper length, the model from last week. See also Winter (2019), section 4.8.</p>
 </div>
 </section>
 <section id="the-mean-as-a-baseline" class="slide level2">
@@ -1552,7 +1552,7 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>Σe² is a sum of squared residuals, as in least squares. <span class="hl">R²</span> is the proportion of the squared misses of the mean that the line removes, here 76%.</p>
+<p>Σe² is a sum of squared residuals, as in least squares. <span class="hl">R²</span> is the proportion of the squared misses of the mean that the line removes, here 76%. See also Winter (2019), section 4.5.</p>
 </div>
 </section>
 <section id="reading-r²" class="slide level2">

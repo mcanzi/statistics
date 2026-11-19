@@ -76,7 +76,7 @@ ggplot(pengs, aes(x = body_mass_g, y = flipper_length_mm)) +
   labs(x = "Body mass (g)", y = "Flipper length (mm)")
 ```
 
-If we know a penguin's body mass, we can do better: the [conditional mean]{.hl} is the mean flipper length of penguins with a given body mass (orange). The conditional means lie close to a straight line.
+If we know a penguin's body mass, we can do better: the [conditional mean]{.hl} is the mean flipper length of penguins with a given body mass (yellow). The conditional means lie close to a straight line.
 
 ## Outcome and predictor
 
@@ -166,7 +166,7 @@ ggplot(lines) +
   labs(x = "x", y = "y")
 ```
 
-The intercept moves the line up or down, and the slope tilts it. A positive slope rises from left to right, while a negative one falls.
+The intercept moves the line up or down, and the slope tilts it. A positive slope rises from left to right, while a negative one falls. See also Winter (2019), figure 4.2.
 
 ## Which line?
 
@@ -235,7 +235,7 @@ ggplot(search, aes(x = slope, y = sq / 1000)) +
   labs(x = "Slope of a line through the middle of the data", y = "Sum of squared\nresiduals (× 1,000)")
 ```
 
-Each point on the curve is one candidate line. The sum of squared residuals is smallest at a slope of `r round(b1, 4)`. That is line B from the previous slide, and it is the line `lm()` finds.
+Each point on the curve is one candidate line. The sum of squared residuals is smallest at a slope of `r round(b1, 4)`. That is line B from the previous slide, and it is the line `lm()` finds. See also Winter (2019), figure 4.5.
 
 # Fitting linear models in R
 
@@ -385,7 +385,7 @@ coef(m0)
 
 . . .
 
-So `y ~ x` and `y ~ 1 + x` fit the same model. `y ~ 1` fits an [intercept-only model]{.hl}: its one estimate is the mean flipper length, the model from last week.
+So `y ~ x` and `y ~ 1 + x` fit the same model. `y ~ 1` fits an [intercept-only model]{.hl}: its one estimate is the mean flipper length, the model from last week. See also Winter (2019), section 4.8.
 
 ## The mean as a baseline
 
@@ -419,7 +419,7 @@ sq_line <- sum(residuals(m)^2)
 
 . . .
 
-Σe² is a sum of squared residuals, as in least squares. [R²]{.hl} is the proportion of the squared misses of the mean that the line removes, here `r round(r2 * 100)`%.
+Σe² is a sum of squared residuals, as in least squares. [R²]{.hl} is the proportion of the squared misses of the mean that the line removes, here `r round(r2 * 100)`%. See also Winter (2019), section 4.5.
 
 ## Reading R²
 

@@ -46,7 +46,7 @@ A data set with 344 penguins is too much to take in at once. A [descriptive stat
 
 . . .
 
-Like a map, a summary leaves most of the detail out. Today is about choosing a good summary, and noticing when it hides something important.
+Like a map, a summary leaves most of the detail out. Today is about choosing a good summary, and noticing when it hides something important. See also Winter (2019), section 3.1.
 
 ## Today
 
@@ -84,7 +84,7 @@ ggplot(data, aes(x = column)) +
 
 . . .
 
-Our slides use a theme set up in the hidden first chunk of the .Rmd: your plots will look different, but show the same data.
+Our slides use a theme set up in `slides_setup.R`: your plots will look different, but show the same data.
 
 ## An empirical distribution {.smaller}
 
