@@ -101,7 +101,7 @@ Changing units, centring and standardising relabel the axis and leave the shape 
 
 ## Linear vs non-linear {.smaller}
 
-A [linear]{.hl} transformation adds, subtracts, multiplies or divides by a constant. A non-linear one, such as the logarithm, changes the shape of the distribution.
+A [linear]{.hl} transformation shifts every value by the same amount, rescales every value by the same factor, or both. A non-linear one, such as the logarithm, changes the shape of the distribution.
 
 ```{r}
 #| echo: false
