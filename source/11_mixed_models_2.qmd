@@ -59,7 +59,7 @@ As with every `{simling}` data set (lecture 5), we know the true effects, so we 
 
 . . .
 
-`vowel_duration` from {simling} follows the simulation in Winter (2019, section 15.2):
+`vowel_duration` from {simling} is based on the vowel duration simulation in Winter (2019, section 15.2), with voicing instead of word frequency and by-speaker random slopes:
 
 - 16 speakers each read the same 24 words. Half the words end in a voiced consonant, half in a voiceless one
 - True voicing effect: vowels 20 ms longer before voiced consonants
