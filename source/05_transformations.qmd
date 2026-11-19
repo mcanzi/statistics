@@ -16,10 +16,10 @@ source("slides_setup.R", local = knitr::knit_global())
 options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
 
 words <- megastudy
-m     <- lm(rt ~ aoa, data = words)
-b0    <- coef(m)[1]
-b1    <- coef(m)[2]
-r2    <- glance(m)$r.squared
+m <- lm(rt ~ aoa, data = words)
+b0 <- coef(m)[1]
+b1 <- coef(m)[2]
+r2 <- glance(m)$r.squared
 ```
 
 # Transforming variables
@@ -59,9 +59,23 @@ library(simling)
 
 `megastudy`: item norms for 6000 words, as in large lexical decision megastudies. One row per word, with its mean reaction time (`rt`, in ms) and its age of acquisition (`aoa`, in years).
 
-## A model like last week's
+## Age of acquisition and reaction time
 
 ```{r}
+#| echo: false
+#| fig-height: 4.4
+ggplot(words, aes(x = aoa, y = rt)) +
+  geom_point(colour = pandan, alpha = 0.15, size = 1) +
+  labs(x = "Age of acquisition (years)", y = "Reaction time (ms)")
+```
+
+Each point is one of the 6000 words. Words learned later tend to take longer to recognise, and the cloud of points is roughly straight, so a linear model is a reasonable start.
+
+## A simple regression
+
+```{r}
+words <- megastudy
+m <- lm(rt ~ aoa, data = words)
 tidy(m)[, 1:3]
 ```
 
@@ -83,7 +97,7 @@ The model is fine, but its intercept describes a word learned at birth, far outs
 
 . . .
 
-The data stay the same. A transformation changes the scale on which we describe them.
+Changing units, centring and standardising relabel the axis and leave the shape of the data as it is. The logarithm changes the shape as well.
 
 ## Linear vs non-linear {.smaller}
 
@@ -95,13 +109,13 @@ A [linear]{.hl} transformation adds, subtracts, multiplies or divides by a const
 rt <- tibble(rt_ms = zipf_rt$rt)
 
 bind_rows(
-  tibble(scale = "Milliseconds",       value = rt$rt_ms),
-  tibble(scale = "Seconds (÷ 1000)",   value = rt$rt_ms / 1000),
-  tibble(scale = "z-score",            value = as.numeric(scale(rt$rt_ms))),
-  tibble(scale = "log(milliseconds)",  value = log(rt$rt_ms))
+  tibble(scale = "Milliseconds", value = rt$rt_ms),
+  tibble(scale = "Seconds (÷ 1000)", value = rt$rt_ms / 1000),
+  tibble(scale = "z-score", value = as.numeric(scale(rt$rt_ms))),
+  tibble(scale = "log(milliseconds)", value = log(rt$rt_ms))
 ) |>
   mutate(scale = fct_inorder(scale),
-         type  = if_else(scale == "log(milliseconds)", "non-linear", "linear")) |>
+         type = if_else(scale == "log(milliseconds)", "non-linear", "linear")) |>
   ggplot(aes(x = value, fill = type)) +
   geom_histogram(bins = 40, colour = floor_col) +
   facet_wrap(~ scale, nrow = 1, scales = "free_x") +
@@ -134,7 +148,7 @@ Multiply the predictor by 12, and the slope is divided by 12: `r round(b1 / 12, 
 
 . . .
 
-The line and its `R²` (`r round(r2, 2)`) stay the same; the numbers are just easier to read.
+The line and its R² (`r round(r2, 2)`) stay the same; the numbers are just easier to read.
 
 ## Where is the intercept?
 
@@ -152,7 +166,7 @@ ggplot(words, aes(x = aoa, y = rt)) +
   labs(x = "Age of acquisition (years)", y = "Reaction time (ms)")
 ```
 
-The intercept is where the line crosses `x = 0`: far outside the data.
+The intercept is where the line crosses x = 0: far outside the data.
 
 ## Centring {.smaller}
 
@@ -241,14 +255,14 @@ ggplot(words, aes(x = aoa)) +
   labs(x = "Age of acquisition (years)", y = "Count")
 ```
 
-A z-score says how many standard deviations a value lies from the mean: `z = 0` is average, `z = -2` is two SDs below it. From lecture 3, about 95% of values in a normal distribution lie between `z = -2` and `z = 2`.
+A z-score says how many standard deviations a value lies from the mean: z = 0 is average, z = −2 is two SDs below it. From lecture 3, about 95% of values in a normal distribution lie between z = −2 and z = 2.
 
 ## Comparing predictors {.smaller}
 
 Which predicts reaction time more strongly: age of acquisition (years) or word length (letters)?
 
 ```{r}
-c(coef(lm(rt ~ aoa,    data = words))[2],
+c(coef(lm(rt ~ aoa, data = words))[2],
   coef(lm(rt ~ length, data = words))[2])
 ```
 
@@ -258,7 +272,7 @@ Years and letters cannot be compared. Standardise both. `scale()` computes z-sco
 
 ```{r}
 words <- words |> mutate(length_z = as.numeric(scale(length)))
-c(coef(lm(rt ~ aoa_z,    data = words))[2],
+c(coef(lm(rt ~ aoa_z, data = words))[2],
   coef(lm(rt ~ length_z, data = words))[2])
 ```
 
@@ -340,10 +354,10 @@ tibble(
   `0 means` = c("age 0", "age 0", "average age of acquisition", "age 6", "average age of acquisition"),
   intercept = c(fit(rt ~ aoa)[1], fit(rt ~ aoa_months)[1], fit(rt ~ aoa_c)[1],
                 fit(rt ~ aoa_6)[1], fit(rt ~ aoa_z)[1]),
-  slope     = c(fit(rt ~ aoa)[2], fit(rt ~ aoa_months)[2], fit(rt ~ aoa_c)[2],
+  slope = c(fit(rt ~ aoa)[2], fit(rt ~ aoa_months)[2], fit(rt ~ aoa_c)[2],
                 fit(rt ~ aoa_6)[2], fit(rt ~ aoa_z)[2]),
   `slope per` = c("1 year", "1 month", "1 year", "1 year", "1 SD"),
-  R2        = round(r2, 2)
+  R2 = round(r2, 2)
 ) |>
   mutate(across(intercept:slope, \(x) round(x, 3))) |>
   knitr::kable()
@@ -393,10 +407,17 @@ cor(words$rt, words$aoa)
 
 . . .
 
-`language_attitudes`: 320 respondents rate dialect speakers on 1 to 5 scales. Some skipped items:
+`language_attitudes`: 320 respondents rate dialect speakers on 1 to 5 scales. Some respondents skipped items, so those cells are `NA`:
 
 ```{r}
 cor(language_attitudes$friendly, language_attitudes$warm)
+```
+
+. . .
+
+As with `mean()` in lecture 2, one `NA` makes the whole result `NA`. In `cor()`, the argument is `use = "complete.obs"`, which keeps only the respondents who answered both items:
+
+```{r}
 cor(language_attitudes$friendly, language_attitudes$warm, use = "complete.obs")
 ```
 
@@ -422,16 +443,16 @@ cor(words$rt, words$aoa)
 
 . . .
 
-And in simple regression, `R² = r²`:
+And in simple regression, R² = r²:
 
 ```{r}
 cor(words$rt, words$aoa)^2
 glance(m)$r.squared
 ```
 
-## Same r, different data {.smaller}
+## Anscombe's quartet {.smaller}
 
-Anscombe's quartet (1973), built into R as `anscombe`:
+Anscombe (1973) built four data sets, available in R as `anscombe`:
 
 ```{r}
 #| echo: false
@@ -468,7 +489,7 @@ formants |> summarise(r = cor(f1, f2), .by = vowel)
 
 Negative overall, positive within every vowel: Simpson's paradox, as with last week's penguins. Across vowels, a high F1 goes with a low F2 (/a/ against /i/). Within a vowel, speaker B has both formants higher. A correlation describes only the data you give it, and says nothing about the process behind them.
 
-## Correlation is not causation
+## Correlation and causation
 
 In children, shoe size and vocabulary size are correlated: children with bigger feet tend to know more words.
 
@@ -495,7 +516,7 @@ Suppose children who are read to at home every day know more words than children
 _Source: WWF_
 :::
 
-## Magnitudes {.smaller}
+## Orders of magnitude {.smaller}
 
 Some linguistic variables span many orders of magnitude. Word frequency is the classic example:
 
@@ -519,11 +540,13 @@ So the log turns multiplying into adding: each step of 1 on the log scale is one
 . . .
 
 ```{r}
-log10(1000)        # 10^3 = 1000
-log2(8)            # 2^3  = 8
-log(exp(2))        # natural log, base e = 2.718...
-exp(log(50))       # exp() undoes log()
+log10(1000)
+log2(8)
+log(exp(2))
+exp(log(50))
 ```
+
+`log()` is the natural log, with base e ≈ 2.718, and `exp()` undoes it.
 
 ## Which base?
 
@@ -550,10 +573,10 @@ The log is only defined for positive numbers.
 
 . . .
 
-Frequency counts often contain zeros (a word that never occurs in a corpus). A common fix is to add 1 first:
+Frequency counts often contain zeros (a word that never occurs in a corpus). A common fix is to add 1 first. `log1p(x)` is the same as `log(x + 1)`:
 
 ```{r}
-log1p(c(0, 9, 99))     # same as log(c(0, 9, 99) + 1)
+log1p(c(0, 9, 99))
 ```
 
 ## Logging a predictor
@@ -562,7 +585,7 @@ log1p(c(0, 9, 99))     # same as log(c(0, 9, 99) + 1)
 #| echo: false
 #| fig-height: 4.2
 bind_rows(
-  mutate(zipf_rt, x = freq,        scale = "Raw frequency"),
+  mutate(zipf_rt, x = freq, scale = "Raw frequency"),
   mutate(zipf_rt, x = log10(freq), scale = "log10(frequency)")
 ) |>
   mutate(scale = fct_inorder(scale)) |>
@@ -600,7 +623,7 @@ Reaction times are positive and [right-skewed]{.hl} (lecture 3). So are the resi
 m_log <- lm(log(rt) ~ log10(freq), data = zipf_rt)
 
 bind_rows(
-  tibble(model = "lm(rt ~ log10(freq))",      resid = as.numeric(scale(residuals(m_freq)))),
+  tibble(model = "lm(rt ~ log10(freq))", resid = as.numeric(scale(residuals(m_freq)))),
   tibble(model = "lm(log(rt) ~ log10(freq))", resid = as.numeric(scale(residuals(m_log))))
 ) |>
   mutate(model = fct_inorder(model)) |>
@@ -646,7 +669,7 @@ A log transformation does not fix every problem. Report which variables you tran
 
 # The word "normalising"
 
-## A slippery word {.smaller}
+## Kinds of normalising {.smaller}
 
 "Normalising" is used for several different operations:
 
@@ -659,9 +682,11 @@ A log transformation does not fix every problem. Report which variables you tran
 
 . . .
 
+Min-max scaling in R:
+
 ```{r}
 x <- c(4, 8, 15, 16, 23, 42)
-(x - min(x)) / (max(x) - min(x))     # min-max scaling
+(x - min(x)) / (max(x) - min(x))
 ```
 
 . . .
