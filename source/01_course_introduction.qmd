@@ -1,6 +1,6 @@
 ---
 title: "Course introduction"
-subtitle: "Organisation, R and RStudio, and first steps in R"
+subtitle: "The book, {konstats}, R and RStudio, and first steps in R"
 footer: "massimiliano.canzi@uni-konstanz.de"
 ---
 
@@ -14,7 +14,7 @@ source("slides_setup.R", local = knitr::knit_global())
 options(width = 70)
 ```
 
-# Introduction
+# The course
 
 <style>
   :root {
@@ -28,104 +28,6 @@ options(width = 70)
 
 _Source: Duke Lemur Center_
 :::
-
-## Who I am
-
-Dr Massimiliano Canzi, Max for short.
-
-<div style="display:grid; grid-template-columns: 6.5em 1fr; gap: 0.55em 1em; margin-top: 0.6em;">
-<div style="color: var(--pandan); font-weight: 700;">Now</div><div>Data scientist and manager of the LingLab, Universität Konstanz, since 2021</div>
-<div style="color: var(--pandan); font-weight: 700;">Studied</div><div>Linguistics in Milan (BA), Manchester (MA) and York (MSc); PhD in Manchester</div>
-<div style="color: var(--pandan); font-weight: 700;">Research</div><div>How listeners perceive speech and how speakers produce it, with experiments and quantitative methods</div>
-<div style="color: var(--pandan); font-weight: 700;">Also</div><div>Forensic speech science, and a lot of <code>R</code></div>
-</div>
-
-## Some of my research
-
-- _What PMN?_ How listeners process a phonological mismatch when the speech carries no meaning
-- Whether what we know about a speaker's body changes how we hear their voice
-- How loud speech differs acoustically from speech at a normal level
-
-. . .
-
-All three needed the tools of this course: experiments with many participants and items, and regression models to make sense of them.
-
-## Who are you?
-
-Tell us, briefly:
-
-- Your name and your programme
-- The data you work with, or would like to work with
-- Your experience with R: none, some, lots
-- One thing you would like to take away from this course
-
-# The course
-
-::: {.fact}
-`Did you know:` aye-ayes have [incisors that never stop growing]{.hl}, like a rodent's. No other primate has them.
-
-_Source: Duke Lemur Center_
-:::
-
-## How the course works
-
-| | When | What happens |
-|:--|:--|:--|
-| Lecture | Fridays, 11:45 | New concepts, and the code that goes with them |
-| Tutorial | Wednesdays, 13:30 | You practise, with help at hand |
-| Office hours | Fridays, 10:00–11:30, by appointment | Questions about the course or your own data |
-
-. . .
-
-Announcements, homework and submissions are on Ilias.
-
-## Assessment
-
-| Component | Weight |
-|---|---|
-| Final assignment | 90% |
-| Homework: four of the five exercises count | 10% |
-
-. . .
-
-The homework exercises are short, a few questions each, and practise what we covered in class.
-
-## The final assignment
-
-You analyse a set of linguistic data and write it up as a scientific report of about 3000 words, in the style of an experimental paper.
-
-. . .
-
-You hand in one file that contains the text of your paper alongside the code of your analysis. Anyone who opens it can rerun your analysis and get the same numbers.
-
-## Your own work
-
-- The text and the code you submit must be your own
-- Cite every source you build on (papers, books, tutorials, code you adapt), and if in doubt, ask before you submit
-
-. . .
-
-Plagiarism tends to get noticed, as The Smiths remind us in _Cemetry Gates_ (1986).
-
-## Dissertations
-
-I can supervise up to two dissertations per semester as first supervisor, and up to two as second supervisor.
-
-. . .
-
-If you would like to write a quantitative dissertation, get in touch early.
-
-## Slides and materials
-
-The slides are written in R Markdown and shown with `reveal.js`. Each week you get:
-
-- the slides (.html)
-- the code behind them (.Rmd)
-- the homework exercises
-
-. . .
-
-Open the .Rmd in RStudio and run it yourself: every number, table and plot on the slides comes from that code. Slides and code are also online, at `github.com/mcanzi/statistics`.
 
 ## The book
 
@@ -198,11 +100,38 @@ RStudio needs R to work, so install R first.
 
 ## Packages
 
-[Packages]{.hl} add functions and data sets to R. Every package this course uses comes with `{konstats}`, the course package, which we install together in tutorial 1.
+[Packages]{.hl} add functions and data sets to R. Every package this course uses comes with `{konstats}`, the course package.
 
 . . .
 
 You [install]{.hl} a package once. You [load]{.hl} it with `library()` in every session.
+
+## `{konstats}` {.smaller}
+
+`{konstats}` is on R-universe, not on CRAN. Install it once:
+
+```{r}
+#| eval: false
+install.packages("konstats", repos = c("https://mcanzi.r-universe.dev",
+                                       "https://cloud.r-project.org"))
+```
+
+. . .
+
+This also installs the other packages of the course. Then `{konstats}` checks your setup and finds the [materials]{.hl} of each lecture:
+
+```{r}
+#| eval: false
+library(konstats)
+check_setup("statistics")   # is your computer ready?
+lectures("statistics")      # the lectures, with their chapters and data sets
+slides(4)                   # opens the slides of lecture 4
+get_tutorial(2, ".")        # copies exercise sheet 2 into your folder
+```
+
+. . .
+
+Tutorial 1 goes through it step by step.
 
 # First steps in R
 
