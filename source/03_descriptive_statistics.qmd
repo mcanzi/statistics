@@ -10,7 +10,6 @@ format:
 ```{r}
 #| label: setup
 #| include: false
-# messages on in this lecture (execute: message in the YAML has no effect in revealjs)
 knitr::opts_chunk$set(message = TRUE)
 library(tidyverse)
 library(palmerpenguins)
@@ -19,11 +18,11 @@ source("slides_setup.R", local = knitr::knit_global())
 
 options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
 
-bill      <- penguins$bill_length_mm
+bill <- penguins$bill_length_mm
 bill_mean <- mean(bill, na.rm = TRUE)
-bill_med  <- median(bill, na.rm = TRUE)
-bill_sd   <- sd(bill, na.rm = TRUE)
-bill_mad  <- mad(bill, na.rm = TRUE)
+bill_med <- median(bill, na.rm = TRUE)
+bill_sd <- sd(bill, na.rm = TRUE)
+bill_mad <- mad(bill, na.rm = TRUE)
 ```
 
 # Distributions
@@ -74,9 +73,9 @@ Last week's promise: `{ggplot2}` builds a plot in layers, added with `+`.
 
 ```{r}
 #| eval: false
-ggplot(data, aes(x = column)) +   # the data, and which column goes where
-  geom_histogram() +              # how to draw it
-  labs(x = "Axis label")          # labels
+ggplot(data, aes(x = column)) +
+  geom_histogram() +
+  labs(x = "Axis label")
 ```
 
 - `ggplot()` and `aes()` say which data to use and which column goes on `x`, `y` or `colour`
@@ -121,8 +120,10 @@ Two parameters describe it completely: the [mean]{.hl} and the [standard deviati
 
 . . .
 
+`set.seed()` makes R draw the same random numbers every time we knit:
+
 ```{r}
-set.seed(42)    # same random numbers every time we knit
+set.seed(42)
 normal <- rnorm(500, mean = 0, sd = 1)
 head(round(normal, 2))
 ```
@@ -201,7 +202,7 @@ Accuracy out of a fixed number of trials is [binomial]{.hl} (lecture 12). Counts
 _Source: Hashimoto et al. (2016), Nature Communications_
 :::
 
-## The tools of the trade
+## Measures of centre and spread
 
 Descriptive measures come in two kinds:
 
@@ -228,24 +229,25 @@ mean(penguins$bill_length_mm, na.rm = TRUE)
 
 . . .
 
-Three ways to drop missing values give three different data sets:
+Three ways to drop missing values give three different data sets: keep all rows, drop rows with `NA` in bill length only, or drop rows with `NA` in any column.
 
 ```{r}
-nrow(penguins)                               # all rows
-nrow(drop_na(penguins, bill_length_mm))      # NA in bill length only
-nrow(na.omit(penguins))                      # NA in any column
+#| collapse: true
+nrow(penguins)
+nrow(drop_na(penguins, bill_length_mm))
+nrow(na.omit(penguins))
 ```
 
 ## `na.omit()` changes your result
 
 ```{r}
-mean(penguins$bill_length_mm, na.rm = TRUE)   # 342 penguins
-mean(na.omit(penguins)$bill_length_mm)        # 333 penguins
+mean(penguins$bill_length_mm, na.rm = TRUE)
+mean(na.omit(penguins)$bill_length_mm)
 ```
 
 . . .
 
-`na.omit()` also dropped 9 penguins with a known bill length but unknown `sex`.
+The first mean uses 342 penguins and the second 333. `na.omit()` also dropped 9 penguins with a known bill length but unknown `sex`.
 
 . . .
 
@@ -292,19 +294,19 @@ The [median]{.hl} is the middle value once all values are sorted from lowest to 
 . . .
 
 ```{r}
-median(c(3, 1, 5))        # sorted: 1 3 5
-median(c(3, 1, 5, 7))     # sorted: 1 3 5 7 -> mean of 3 and 5
+median(c(3, 1, 5))
+median(c(3, 1, 5, 7))
 ```
 
 . . .
 
-With an even number of values, the median is the mean of the two middle values.
+Sorted, the values are 1 3 5 and 1 3 5 7. With an even number of values, the median is the mean of the two middle values, here 3 and 5.
 
 ## `median()` {.smaller}
 
 ```{r}
 penguins |>
-  summarise(mean_bill   = mean(bill_length_mm, na.rm = TRUE),
+  summarise(mean_bill = mean(bill_length_mm, na.rm = TRUE),
             median_bill = median(bill_length_mm, na.rm = TRUE))
 ```
 
@@ -322,7 +324,7 @@ ggplot(penguins, aes(x = bill_length_mm)) +
   labs(x = "Bill length (mm)", y = "Density")
 ```
 
-## One number can hide a lot
+## Bill length by species
 
 ```{r}
 #| echo: false
@@ -369,8 +371,8 @@ set.seed(7)
 rts <- round(rlnorm(40, meanlog = log(600), sdlog = 0.25))
 rts_sleepy <- c(rts, 5000)
 
-tibble(data   = c("40 trials", "40 trials + one 5000 ms"),
-       mean   = c(mean(rts), mean(rts_sleepy)),
+tibble(data = c("40 trials", "40 trials + one 5000 ms"),
+       mean = c(mean(rts), mean(rts_sleepy)),
        median = c(median(rts), median(rts_sleepy)))
 ```
 
@@ -404,7 +406,7 @@ words <- tibble(word = c("the", "cat", "saw", "the", "dog", "and", "the", "bird"
 words |> count(word, sort = TRUE) |> head(3)
 ```
 
-## Mode: a trap {.smaller}
+## The `mode()` function {.smaller}
 
 R has a function called `mode()`, but it does not compute the mode:
 
@@ -451,7 +453,7 @@ ggplot(two_groups, aes(x = duration, fill = group, colour = group)) +
 
 Both speakers have a mean of 150 ms. Speaker B is far less consistent.
 
-## `sd()`
+## `sd()` {.smaller}
 
 The [standard deviation]{.hl} measures how spread out the values are around the mean: roughly, how far a typical value is from it.
 
@@ -465,15 +467,17 @@ s = √( Σ (xᵢ − <span style="text-decoration: overline;">x</span>)² / (n 
 x <- c(4, 8, 15, 16, 23, 42)
 sqrt(sum((x - mean(x))^2) / (length(x) - 1))
 sd(x)
-var(x)       # the variance is the SD squared
+var(x)
 ```
+
+`var()` gives the variance, which is the SD squared.
 
 ## `sd()` {.smaller}
 
 ```{r}
 penguins |>
   summarise(mean_bill = mean(bill_length_mm, na.rm = TRUE),
-            sd_bill   = sd(bill_length_mm, na.rm = TRUE))
+            sd_bill = sd(bill_length_mm, na.rm = TRUE))
 ```
 
 ```{r}
@@ -515,9 +519,11 @@ By default, `mad()` multiplies the result by 1.4826. With normal data, this make
 
 . . .
 
+The SD and the MAD of the 40 trials, then with the 5000 ms trial added:
+
 ```{r}
-c(sd = sd(rts), mad = mad(rts))                    # 40 trials
-c(sd = sd(rts_sleepy), mad = mad(rts_sleepy))      # + one 5000 ms trial
+c(sd = sd(rts), mad = mad(rts))
+c(sd = sd(rts_sleepy), mad = mad(rts_sleepy))
 ```
 
 ## `mad()` {.smaller}
@@ -525,7 +531,7 @@ c(sd = sd(rts_sleepy), mad = mad(rts_sleepy))      # + one 5000 ms trial
 ```{r}
 penguins |>
   summarise(median_bill = median(bill_length_mm, na.rm = TRUE),
-            mad_bill    = mad(bill_length_mm, na.rm = TRUE))
+            mad_bill = mad(bill_length_mm, na.rm = TRUE))
 ```
 
 ```{r}
@@ -562,12 +568,12 @@ The range depends on two values only, the most extreme ones. One outlier changes
 
 ```{r}
 quantile(penguins$bill_length_mm, na.rm = TRUE)
-IQR(penguins$bill_length_mm, na.rm = TRUE)     # 75% minus 25%
+IQR(penguins$bill_length_mm, na.rm = TRUE)
 ```
 
 . . .
 
-The median is the 50% quantile. The [IQR]{.hl} (interquartile range) holds the middle half of the data.
+The median is the 50% quantile. The [IQR]{.hl} (interquartile range) is the 75% quantile minus the 25% quantile, and holds the middle half of the data.
 
 ## `summary()`
 
@@ -617,27 +623,27 @@ Usually we want the same summary for each group: `bill_length_mm` for each speci
 The bad way to do it:
 
 ```{r}
-Adelie    <- filter(penguins, species == "Adelie")
-Gentoo    <- filter(penguins, species == "Gentoo")
+Adelie <- filter(penguins, species == "Adelie")
+Gentoo <- filter(penguins, species == "Gentoo")
 Chinstrap <- filter(penguins, species == "Chinstrap")
 mean(Adelie$bill_length_mm, na.rm = TRUE)
 mean(Gentoo$bill_length_mm, na.rm = TRUE)
 mean(Chinstrap$bill_length_mm, na.rm = TRUE)
 ```
 
-## The good way {.smaller}
+## Summaries per group with `.by` {.smaller}
 
 Last week: `group_by()` + `summarise()`, or `summarise(.by = )`
 
 ```{r}
 penguins |>
   drop_na(bill_length_mm) |>
-  summarise(n      = n(),
-            mean   = mean(bill_length_mm),
-            sd     = sd(bill_length_mm),
+  summarise(n = n(),
+            mean = mean(bill_length_mm),
+            sd = sd(bill_length_mm),
             median = median(bill_length_mm),
-            IQR    = IQR(bill_length_mm),
-            .by    = species)
+            IQR = IQR(bill_length_mm),
+            .by = species)
 ```
 
 . . .
@@ -674,7 +680,7 @@ From last week: `across(columns, function)`
 penguins |>
   summarise(across(ends_with("_mm"),
                    list(mean = \(x) mean(x, na.rm = TRUE),
-                        sd   = \(x) sd(x, na.rm = TRUE))),
+                        sd = \(x) sd(x, na.rm = TRUE))),
             .by = species) |>
   select(species, starts_with("bill_length"))
 ```

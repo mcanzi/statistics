@@ -1159,7 +1159,7 @@ Forensic speech science, and a lot of <code>R</code>
 <ul>
 <li class="fragment">Your name and your programme</li>
 <li class="fragment">The data you work with, or would like to work with</li>
-<li class="fragment">Your experience with <code>R</code>: none, some, lots</li>
+<li class="fragment">Your experience with R: none, some, lots</li>
 <li class="fragment">One thing you would like to take away from this course</li>
 </ul>
 </section></section>
@@ -1273,7 +1273,7 @@ Forensic speech science, and a lot of <code>R</code>
 <p>Winter, B. (2019). <em>Statistics for linguists: An introduction using R</em>. Routledge.</p>
 <div class="fragment">
 <ul>
-<li class="fragment">Written for linguists, with linguistic data throughout, and uses <code>R</code> and the <code>tidyverse</code>, like this course</li>
+<li class="fragment">Written for linguists, with linguistic data throughout, and uses R and the <code>tidyverse</code>, like this course</li>
 <li class="fragment">Builds everything around the <span class="hl">linear model</span></li>
 </ul>
 </div>
@@ -1387,7 +1387,7 @@ Forensic speech science, and a lot of <code>R</code>
 <h2>Software</h2>
 <p>You need two free programs:</p>
 <ol type="1">
-<li class="fragment"><code>R</code>, the language itself. Download it from <a href="https://cloud.r-project.org/">CRAN</a></li>
+<li class="fragment">R, the language itself. Download it from <a href="https://cloud.r-project.org/">CRAN</a></li>
 <li class="fragment"><code>RStudio</code>, the program you write and run R code in. Download it from <a href="https://docs.posit.co/ide/user/download.html">Posit</a></li>
 </ol>
 <div class="fragment">
@@ -1457,7 +1457,7 @@ Forensic speech science, and a lot of <code>R</code>
 </section>
 <section id="your-first-script" class="slide level2">
 <h2>Your first script</h2>
-<p>Code typed in the <code>Console</code> is gone once you close RStudio. Write it in a <span class="hl">script</span> instead: <em>File &gt; New File &gt; R Script</em>.</p>
+<p>Code typed in the Console is gone once you close RStudio. Write it in a <span class="hl">script</span> instead: <em>File &gt; New File &gt; R Script</em>.</p>
 <div class="fragment">
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href aria-hidden="true" tabindex="-1"></a><span class="co"># everything after a hash is a comment: R ignores it</span></span>
@@ -1487,7 +1487,7 @@ Forensic speech science, and a lot of <code>R</code>
 </div>
 <div class="fragment">
 <ul>
-<li class="fragment">The object now appears in your <code>Environment</code></li>
+<li class="fragment">The object now appears in your Environment</li>
 <li class="fragment">Names are <span class="hl">case sensitive</span>, so <code>x</code> and <code>X</code> are two different objects. They cannot start with a number or contain spaces: <code>word_freq</code> works, word freq does not</li>
 </ul>
 </div>
@@ -1522,7 +1522,7 @@ Forensic speech science, and a lot of <code>R</code>
 </section>
 <section id="indexing" class="slide level2 smaller">
 <h2>Indexing</h2>
-<p>Square brackets pick out elements by position:</p>
+<p>Square brackets pick out elements by position. A negative index drops that element:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>)</span>
 <span id="cb23-2"><a href aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1533,7 +1533,7 @@ Forensic speech science, and a lot of <code>R</code>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1]  8 15 16</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href aria-hidden="true" tabindex="-1"></a>x[<span class="sc">-</span><span class="dv">1</span>]          <span class="co"># everything except the first</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href aria-hidden="true" tabindex="-1"></a>x[<span class="sc">-</span><span class="dv">1</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1]  8 15 16 23 42</code></pre>
 </div>
@@ -1558,13 +1558,13 @@ Forensic speech science, and a lot of <code>R</code>
 </div>
 </div>
 <div class="fragment">
-<p><code>TRUE</code> counts as 1 and <code>FALSE</code> as 0, so you can count and take proportions:</p>
+<p><code>TRUE</code> counts as 1 and <code>FALSE</code> as 0, so <code>sum()</code> counts the matches and <code>mean()</code> gives their proportion:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x <span class="sc">&gt;</span> <span class="dv">15</span>)    <span class="co"># how many?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x <span class="sc">&gt;</span> <span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 3</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x <span class="sc">&gt;</span> <span class="dv">15</span>)   <span class="co"># what proportion?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x <span class="sc">&gt;</span> <span class="dv">15</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 0.5</code></pre>
 </div>
@@ -1615,12 +1615,13 @@ bird  cat  dog
 </div>
 </div>
 <div class="fragment">
+<p><code>d$freq</code> picks one column. <code>d[2, ]</code> picks the second row, with all columns:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>freq          <span class="co"># one column</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href aria-hidden="true" tabindex="-1"></a>d<span class="sc">$</span>freq</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 120  95  30</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href aria-hidden="true" tabindex="-1"></a>d[<span class="dv">2</span>, ]          <span class="co"># second row, all columns</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href aria-hidden="true" tabindex="-1"></a>d[<span class="dv">2</span>, ]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>  word freq
 2  dog   95</code></pre>
@@ -1658,10 +1659,10 @@ bird  cat  dog
 <li class="fragment">Copy an error message into a search engine, where someone has almost always seen it before, or ask in the tutorial or in office hours</li>
 </ul>
 <div class="fragment">
-<p>R and its packages are written by researchers. Cite them in your work:</p>
+<p>R and its packages are written by researchers. Cite them in your work. <code>citation()</code> gives the reference for R, and <code>citation(&quot;tidyverse&quot;)</code> the reference for a package:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>()                 <span class="co"># how to cite R</span></span>
-<span id="cb53-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;tidyverse&quot;</span>)      <span class="co"># how to cite a package</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>()</span>
+<span id="cb53-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">citation</span>(<span class="st">&quot;tidyverse&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>

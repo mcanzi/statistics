@@ -1119,7 +1119,7 @@ Dr Massimiliano Canzi
 <li class="fragment">Intercepts, slopes and residuals</li>
 <li class="fragment">Fitting a line with least squares and <code>lm()</code></li>
 <li class="fragment">Reading a model and making predictions</li>
-<li class="fragment">Measuring how well the line fits with <code>R²</code></li>
+<li class="fragment">Measuring how well the line fits with R²</li>
 <li class="fragment">Checking the model, and a warning about groups</li>
 </ul>
 </section>
@@ -1155,8 +1155,8 @@ Dr Massimiliano Canzi
 <div class="columns">
 <div class="column" style="width:52%;">
 <ul>
-<li class="fragment">The <span class="hl">outcome</span> (dependent or response variable, <code>y</code>) is what you measure</li>
-<li class="fragment">The <span class="hl">predictor</span> (independent variable, <code>x</code>) is what you manipulate, or measure alongside, to see whether the outcome changes with it</li>
+<li class="fragment">The <span class="hl">outcome</span> (dependent or response variable, y) is what you measure</li>
+<li class="fragment">The <span class="hl">predictor</span> (independent variable, x) is what you manipulate, or measure alongside, to see whether the outcome changes with it</li>
 </ul>
 </div><div class="column" style="width:48%;">
 <table class="caption-top">
@@ -1203,9 +1203,9 @@ Dr Massimiliano Canzi
 <p>y = b₀ + b₁ · x + e</p>
 </div>
 <ul>
-<li class="fragment">The <span class="hl">intercept</span> <code>b₀</code> is where the line crosses the vertical axis, at <code>x = 0</code></li>
-<li class="fragment">The <span class="hl">slope</span> <code>b₁</code> is how much <code>y</code> changes when <code>x</code> goes up by 1</li>
-<li class="fragment">The <span class="hl">error</span> <code>e</code> is the part of each observation the line misses</li>
+<li class="fragment">The <span class="hl">intercept</span> b₀ is where the line crosses the vertical axis, at x = 0</li>
+<li class="fragment">The <span class="hl">slope</span> b₁ is how much y changes when x goes up by 1</li>
+<li class="fragment">The <span class="hl">error</span> e is the part of each observation the line misses</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell">
@@ -1366,7 +1366,7 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>Coefficients</code>, <code>Estimate</code></td>
-<td style="text-align: left;">The intercept <code>b₀</code> and the slope <code>b₁</code></td>
+<td style="text-align: left;">The intercept b₀ and the slope b₁</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>Std. Error</code>, <code>t value</code>, <code>Pr(&gt;|t|)</code></td>
@@ -1481,7 +1481,7 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>Each prediction is <code>b₀ + b₁ · x</code>. For 4000 g: 136.7 + 0.0153 × 4000 = 197.8 mm.</p>
+<p>Each prediction is b₀ + b₁ · x. For 4000 g: 136.7 + 0.0153 × 4000 = 197.8 mm.</p>
 </div>
 </section>
 <section id="stay-within-the-data" class="slide level2">
@@ -1507,7 +1507,7 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 </section>
 <section id="writing-the-intercept-as-1" class="slide level2">
 <h2>Writing the intercept as <code>1</code></h2>
-<p>The <code>1</code> in a formula stands for the intercept, and <code>R</code> adds it for you.</p>
+<p>The <code>1</code> in a formula stands for the intercept, and R adds it for you.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(<span class="fu">lm</span>(flipper_length_mm <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> body_mass_g, <span class="at">data =</span> pengs))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1539,7 +1539,7 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>The left panel shows each penguin’s distance from the mean, the residuals of <code>y ~ 1</code>. With our line (right, same 30 penguins) the residuals are much shorter.</p>
 </section>
 <section id="r²-step-by-step" class="slide level2">
-<h2><code>R²</code> step by step</h2>
+<h2>R² step by step</h2>
 <div class="formula">
 <p>R² = 1 − <span class="sym">Σ</span>e²<sub>line</sub> / <span class="sym">Σ</span>e²<sub>mean</sub></p>
 </div>
@@ -1552,11 +1552,11 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p><code>Σe²</code> is a sum of squared residuals, as in least squares. <span class="hl">R²</span> is the proportion of the squared misses of the mean that the line removes, here 76%.</p>
+<p>Σe² is a sum of squared residuals, as in least squares. <span class="hl">R²</span> is the proportion of the squared misses of the mean that the line removes, here 76%.</p>
 </div>
 </section>
 <section id="reading-r²" class="slide level2">
-<h2>Reading <code>R²</code></h2>
+<h2>Reading R²</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">glance</span>(m)<span class="sc">$</span>r.squared</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1658,7 +1658,7 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <ol type="1">
 <li class="fragment">Fit a model of <code>bill_length_mm</code> as a function of <code>flipper_length_mm</code></li>
 <li class="fragment">Report the slope in a sentence. What does the intercept mean here?</li>
-<li class="fragment">What is <code>R²</code>? Compute it by hand with an intercept-only model</li>
+<li class="fragment">What is R²? Compute it by hand with an intercept-only model</li>
 <li class="fragment">Predict the bill length of penguins with 190 and 220 mm flippers</li>
 <li class="fragment">Bonus: plot the residuals against the fitted values with <code>augment()</code>, coloured by <code>species</code>. What do you see?</li>
 </ol>
@@ -1709,8 +1709,8 @@ F-statistic:  1071 on 1 and 340 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2>Summary</h2>
 <div class="takeaway">
 <ul>
-<li class="fragment"><code>y = b₀ + b₁ · x + e</code> predicts the <span class="hl">conditional mean</span> of <code>y</code> from <code>x</code></li>
-<li class="fragment">The <span class="hl">intercept</span> is the prediction at <code>x = 0</code>; the <span class="hl">slope</span> is the change in <code>y</code> when <code>x</code> goes up by 1</li>
+<li class="fragment">y = b₀ + b₁ · x + e predicts the <span class="hl">conditional mean</span> of y from x</li>
+<li class="fragment">The <span class="hl">intercept</span> is the prediction at x = 0; the <span class="hl">slope</span> is the change in y when x goes up by 1</li>
 <li class="fragment"><span class="hl">Least squares</span> picks the line with the smallest sum of squared residuals, and <code>lm(y ~ x)</code> finds it</li>
 <li class="fragment"><span class="hl">R²</span> is the proportion of variation the line accounts for, compared with the intercept-only model <code>y ~ 1</code></li>
 <li class="fragment">Check that the residuals are roughly normal, with the same spread along the line</li>

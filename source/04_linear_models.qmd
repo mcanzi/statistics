@@ -18,11 +18,11 @@ source("slides_setup.R", local = knitr::knit_global())
 
 options(width = 70, pillar.print_min = 4, pillar.print_max = 4)
 
-pengs   <- drop_na(penguins, flipper_length_mm, body_mass_g)
-m       <- lm(flipper_length_mm ~ body_mass_g, data = pengs)
-b0      <- coef(m)[1]
-b1      <- coef(m)[2]
-r2      <- glance(m)$r.squared
+pengs <- drop_na(penguins, flipper_length_mm, body_mass_g)
+m <- lm(flipper_length_mm ~ body_mass_g, data = pengs)
+b0 <- coef(m)[1]
+b1 <- coef(m)[2]
+r2 <- glance(m)$r.squared
 ```
 
 # From one variable to two
@@ -46,7 +46,7 @@ _Source: ALPECOLE, University of Zurich_
 - Intercepts, slopes and residuals
 - Fitting a line with least squares and `lm()`
 - Reading a model and making predictions
-- Measuring how well the line fits with `R²`
+- Measuring how well the line fits with R²
 - Checking the model, and a warning about groups
 
 ## Last week: one variable
@@ -86,8 +86,8 @@ If we know a penguin's body mass, we can do better: the [conditional mean]{.hl} 
 :::: {.columns}
 
 ::: {.column width="52%"}
-- The [outcome]{.hl} (dependent or response variable, `y`) is what you measure
-- The [predictor]{.hl} (independent variable, `x`) is what you manipulate, or measure alongside, to see whether the outcome changes with it
+- The [outcome]{.hl} (dependent or response variable, y) is what you measure
+- The [predictor]{.hl} (independent variable, x) is what you manipulate, or measure alongside, to see whether the outcome changes with it
 :::
 
 ::: {.column width="48%"}
@@ -118,9 +118,9 @@ _Source: Water Power Magazine_
 y = b₀ + b₁ · x + e
 :::
 
-- The [intercept]{.hl} `b₀` is where the line crosses the vertical axis, at `x = 0`
-- The [slope]{.hl} `b₁` is how much `y` changes when `x` goes up by 1
-- The [error]{.hl} `e` is the part of each observation the line misses
+- The [intercept]{.hl} b₀ is where the line crosses the vertical axis, at x = 0
+- The [slope]{.hl} b₁ is how much y changes when x goes up by 1
+- The [error]{.hl} e is the part of each observation the line misses
 :::
 
 ::: {.column width="50%"}
@@ -269,7 +269,7 @@ summary(m)
 | Part of the output | What it tells you |
 |:--|:--|
 | `Residuals` | How far the points are from the line: the median should be close to 0 |
-| `Coefficients`, `Estimate` | The intercept `b₀` and the slope `b₁` |
+| `Coefficients`, `Estimate` | The intercept b₀ and the slope b₁ |
 | `Std. Error`, `t value`, <code>Pr(&gt;&#124;t&#124;)</code> | How certain the estimates are: lecture 9 |
 | `Residual standard error` | The typical size of a residual, in mm |
 | `Multiple R-squared` | How much of the variation the model accounts for: later today |
@@ -345,7 +345,7 @@ predict(m, newdata = new_penguins)
 
 . . .
 
-Each prediction is `b₀ + b₁ · x`. For 4000 g: `r round(b0, 1)` + `r round(b1, 4)` × 4000 = `r round(b0 + b1 * 4000, 1)` mm.
+Each prediction is b₀ + b₁ · x. For 4000 g: `r round(b0, 1)` + `r round(b1, 4)` × 4000 = `r round(b0 + b1 * 4000, 1)` mm.
 
 ## Stay within the data
 
@@ -375,7 +375,7 @@ _Sources: Giacometti et al. (2002), Journal of Mammalogy; Büntgen et al. (2014)
 
 ## Writing the intercept as `1`
 
-The `1` in a formula stands for the intercept, and `R` adds it for you.
+The `1` in a formula stands for the intercept, and R adds it for you.
 
 ```{r}
 coef(lm(flipper_length_mm ~ 1 + body_mass_g, data = pengs))
@@ -405,7 +405,7 @@ bind_rows(`The mean: y ~ 1` = mutate(few, pred = mean(pengs$flipper_length_mm)),
 
 The left panel shows each penguin's distance from the mean, the residuals of `y ~ 1`. With our line (right, same 30 penguins) the residuals are much shorter.
 
-## `R²` step by step
+## R² step by step
 
 ::: {.formula}
 R² = 1 − <span class="sym">Σ</span>e²<sub>line</sub> / <span class="sym">Σ</span>e²<sub>mean</sub>
@@ -419,9 +419,9 @@ sq_line <- sum(residuals(m)^2)
 
 . . .
 
-`Σe²` is a sum of squared residuals, as in least squares. [R²]{.hl} is the proportion of the squared misses of the mean that the line removes, here `r round(r2 * 100)`%.
+Σe² is a sum of squared residuals, as in least squares. [R²]{.hl} is the proportion of the squared misses of the mean that the line removes, here `r round(r2 * 100)`%.
 
-## Reading `R²`
+## Reading R²
 
 ```{r}
 glance(m)$r.squared
@@ -530,7 +530,7 @@ With `penguins`, after `drop_na()` on the columns you use:
 
 1. Fit a model of `bill_length_mm` as a function of `flipper_length_mm`
 2. Report the slope in a sentence. What does the intercept mean here?
-3. What is `R²`? Compute it by hand with an intercept-only model
+3. What is R²? Compute it by hand with an intercept-only model
 4. Predict the bill length of penguins with 190 and 220 mm flippers
 5. Bonus: plot the residuals against the fitted values with `augment()`, coloured by `species`. What do you see?
 
@@ -561,8 +561,8 @@ augment(m_bill, data = bill_data) |>
 ## Summary
 
 ::: {.takeaway}
-- `y = b₀ + b₁ · x + e` predicts the [conditional mean]{.hl} of `y` from `x`
-- The [intercept]{.hl} is the prediction at `x = 0`; the [slope]{.hl} is the change in `y` when `x` goes up by 1
+- y = b₀ + b₁ · x + e predicts the [conditional mean]{.hl} of y from x
+- The [intercept]{.hl} is the prediction at x = 0; the [slope]{.hl} is the change in y when x goes up by 1
 - [Least squares]{.hl} picks the line with the smallest sum of squared residuals, and `lm(y ~ x)` finds it
 - [R²]{.hl} is the proportion of variation the line accounts for, compared with the intercept-only model `y ~ 1`
 - Check that the residuals are roughly normal, with the same spread along the line

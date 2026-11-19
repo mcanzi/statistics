@@ -7,7 +7,6 @@ footer: "massimiliano.canzi@uni-konstanz.de"
 ```{r}
 #| label: setup
 #| include: false
-# messages on in this lecture (execute: message in the YAML has no effect in revealjs)
 knitr::opts_chunk$set(message = TRUE)
 library(tidyverse)
 
@@ -57,7 +56,7 @@ Tell us, briefly:
 
 - Your name and your programme
 - The data you work with, or would like to work with
-- Your experience with `R`: none, some, lots
+- Your experience with R: none, some, lots
 - One thing you would like to take away from this course
 
 # The course
@@ -134,7 +133,7 @@ Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledg
 
 . . .
 
-- Written for linguists, with linguistic data throughout, and uses `R` and the `tidyverse`, like this course
+- Written for linguists, with linguistic data throughout, and uses R and the `tidyverse`, like this course
 - Builds everything around the [linear model]{.hl}
 
 ## Syllabus
@@ -181,7 +180,7 @@ _Source: Duke Lemur Center_
 
 You need two free programs:
 
-1. `R`, the language itself. Download it from [CRAN](https://cloud.r-project.org/)
+1. R, the language itself. Download it from [CRAN](https://cloud.r-project.org/)
 2. `RStudio`, the program you write and run R code in. Download it from [Posit](https://docs.posit.co/ide/user/download.html)
 
 . . .
@@ -235,7 +234,7 @@ Brackets work as in maths: without them, `3 + 2 * 4` gives `r 3 + 2 * 4`.
 
 ## Your first script
 
-Code typed in the `Console` is gone once you close RStudio. Write it in a [script]{.hl} instead: _File > New File > R Script_.
+Code typed in the Console is gone once you close RStudio. Write it in a [script]{.hl} instead: _File > New File > R Script_.
 
 . . .
 
@@ -260,7 +259,7 @@ x + 1
 
 . . .
 
-- The object now appears in your `Environment`
+- The object now appears in your Environment
 - Names are [case sensitive]{.hl}, so `x` and `X` are two different objects. They cannot start with a number or contain spaces: `word_freq` works, word freq does not
 
 ## Vectors {.smaller}
@@ -284,13 +283,13 @@ seq(0, 100, by = 25)
 
 ## Indexing {.smaller}
 
-Square brackets pick out elements by position:
+Square brackets pick out elements by position. A negative index drops that element:
 
 ```{r}
 x <- c(4, 8, 15, 16, 23, 42)
 x[1]
 x[2:4]
-x[-1]          # everything except the first
+x[-1]
 ```
 
 . . .
@@ -311,11 +310,11 @@ x > 15
 
 . . .
 
-`TRUE` counts as 1 and `FALSE` as 0, so you can count and take proportions:
+`TRUE` counts as 1 and `FALSE` as 0, so `sum()` counts the matches and `mean()` gives their proportion:
 
 ```{r}
-sum(x > 15)    # how many?
-mean(x > 15)   # what proportion?
+sum(x > 15)
+mean(x > 15)
 ```
 
 . . .
@@ -356,9 +355,11 @@ d
 
 . . .
 
+`d$freq` picks one column. `d[2, ]` picks the second row, with all columns:
+
 ```{r}
-d$freq          # one column
-d[2, ]          # second row, all columns
+d$freq
+d[2, ]
 ```
 
 ## Functions and arguments {.smaller}
@@ -385,12 +386,12 @@ mean(c(4, NA, 8), na.rm = TRUE)
 
 . . .
 
-R and its packages are written by researchers. Cite them in your work:
+R and its packages are written by researchers. Cite them in your work. `citation()` gives the reference for R, and `citation("tidyverse")` the reference for a package:
 
 ```{r}
 #| eval: false
-citation()                 # how to cite R
-citation("tidyverse")      # how to cite a package
+citation()
+citation("tidyverse")
 ```
 
 ## `swirl`

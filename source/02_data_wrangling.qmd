@@ -7,7 +7,6 @@ footer: "Data wrangling"
 ```{r}
 #| label: setup
 #| include: false
-# messages on in this lecture (execute: message in the YAML has no effect in revealjs)
 knitr::opts_chunk$set(message = TRUE)
 library(tidyverse)
 library(palmerpenguins)
@@ -20,11 +19,11 @@ options(width = 70, pillar.print_min = 3, pillar.print_max = 3,
 set.seed(42)
 rt_data <- tibble(
   participant = rep(sprintf("P%02d", 1:10), each = 20),
-  word        = rep(sprintf("w%02d", 1:20), times = 10),
-  frequency   = rep(rep(c("high", "low"), each = 10), times = 10),
-  rt          = round(rnorm(200, mean = 600, sd = 80) +
-                        rep(rep(c(0, 60), each = 10), times = 10)),
-  accuracy    = rbinom(200, size = 1, prob = 0.9)
+  word = rep(sprintf("w%02d", 1:20), times = 10),
+  frequency = rep(rep(c("high", "low"), each = 10), times = 10),
+  rt = round(rnorm(200, mean = 600, sd = 80) +
+    rep(rep(c(0, 60), each = 10), times = 10)),
+  accuracy = rbinom(200, size = 1, prob = 0.9)
 )
 ```
 
@@ -248,9 +247,6 @@ In this course we always load `{palmerpenguins}` first. If you get `object 'bill
 #| eval: false
 library(readr)
 data <- read_csv("data/my_file.csv")
-
-# ... do things with data ...
-
 write_csv(data, "data/my_file_clean.csv")
 ```
 
@@ -358,15 +354,14 @@ select(penguins, -year)
 
 Select by name pattern or type instead of typing every name:
 
-```{r}
-#| eval: false
-select(penguins, species:bill_depth_mm)   # a range of columns
-select(penguins, starts_with("bill"))     # names starting with "bill"
-select(penguins, ends_with("_mm"))        # names ending with "_mm"
-select(penguins, contains("length"))      # names containing "length"
-select(penguins, where(is.numeric))       # all numeric columns
-select(penguins, sex, everything())       # move sex to the front
-```
+| In `select(penguins, ...)` | Selects |
+|:--|:--|
+| `species:bill_depth_mm` | a range of columns |
+| `starts_with("bill")` | names starting with "bill" |
+| `ends_with("_mm")` | names ending with "_mm" |
+| `contains("length")` | names containing "length" |
+| `where(is.numeric)` | all numeric columns |
+| `sex, everything()` | all columns, with `sex` moved to the front |
 
 . . .
 
@@ -412,7 +407,7 @@ Create new columns, or overwrite existing ones:
 ```{r}
 penguins_2 <- mutate(penguins,
                      body_mass_kg = body_mass_g / 1000,
-                     bill_ratio   = bill_length_mm / bill_depth_mm)
+                     bill_ratio = bill_length_mm / bill_depth_mm)
 select(penguins_2, species, body_mass_kg, bill_ratio)
 ```
 
@@ -452,10 +447,13 @@ count(penguins_2, size)
 
 ```{r}
 #| eval: false
-# old
 mutate_if(penguins, is.factor, as.character)
+```
 
-# new
+is now written as:
+
+```{r}
+#| eval: false
 mutate(penguins, across(where(is.factor), as.character))
 ```
 
@@ -465,10 +463,10 @@ mutate(penguins, across(where(is.factor), as.character))
 
 ```{r}
 #| eval: false
-mutate(penguins, across(ends_with("_mm"), \(x) x / 10))  # mm to cm
+mutate(penguins, across(ends_with("_mm"), \(x) x / 10))
 ```
 
-`\(x) x / 10` is a short way to write a small function: _take x, divide it by 10_.
+`\(x) x / 10` is a short way to write a small function: _take x, divide it by 10_. Here it turns millimetres into centimetres.
 
 # Rows
 
@@ -596,8 +594,8 @@ Collapse many rows into one
 ```{r}
 summarise(penguins,
           mean_mass = mean(body_mass_g, na.rm = TRUE),
-          sd_mass   = sd(body_mass_g, na.rm = TRUE),
-          n         = n())
+          sd_mass = sd(body_mass_g, na.rm = TRUE),
+          n = n())
 ```
 
 . . .
@@ -612,7 +610,7 @@ One row per group
 penguins_grouped <- group_by(penguins, species)
 summarise(penguins_grouped,
           mean_mass = mean(body_mass_g, na.rm = TRUE),
-          n         = n())
+          n = n())
 ```
 
 . . .
@@ -626,8 +624,8 @@ Same result, without a separate `group_by()`:
 ```{r}
 summarise(penguins,
           mean_mass = mean(body_mass_g, na.rm = TRUE),
-          n         = n(),
-          .by       = c(species, sex))
+          n = n(),
+          .by = c(species, sex))
 ```
 
 . . .
@@ -654,7 +652,7 @@ Same counts as `summarise(penguins, n = n(), .by = c(species, island))`, but `co
 _Source: Guinness World Records_
 :::
 
-## The problem {.smaller}
+## Without the pipe {.smaller}
 
 Three steps, three intermediate objects:
 

@@ -1144,9 +1144,9 @@ Dr Massimiliano Canzi
 <h2>Plotting with <code>{ggplot2}</code></h2>
 <p>Last week’s promise: <code>{ggplot2}</code> builds a plot in layers, added with <code>+</code>.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> column)) <span class="sc">+</span>   <span class="co"># the data, and which column goes where</span></span>
-<span id="cb1-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span>              <span class="co"># how to draw it</span></span>
-<span id="cb1-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Axis label&quot;</span>)          <span class="co"># labels</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> column)) <span class="sc">+</span></span>
+<span id="cb1-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb1-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Axis label&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ul>
 <li class="fragment"><code>ggplot()</code> and <code>aes()</code> say which data to use and which column goes on <code>x</code>, <code>y</code> or <code>colour</code></li>
@@ -1198,8 +1198,9 @@ Dr Massimiliano Canzi
 <p>Two parameters describe it completely: the <span class="hl">mean</span> and the <span class="hl">standard deviation</span>.</p>
 </div>
 <div class="fragment">
+<p><code>set.seed()</code> makes R draw the same random numbers every time we knit:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)    <span class="co"># same random numbers every time we knit</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
 <span id="cb4-2"><a href aria-hidden="true" tabindex="-1"></a>normal <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">500</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
 <span id="cb4-3"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">round</span>(normal, <span class="dv">2</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1262,8 +1263,8 @@ Dr Massimiliano Canzi
 <p><em>Source: Hashimoto et al. (2016), Nature Communications</em></p>
 </div>
 </section>
-<section id="the-tools-of-the-trade" class="slide level2">
-<h2>The tools of the trade</h2>
+<section id="measures-of-centre-and-spread" class="slide level2">
+<h2>Measures of centre and spread</h2>
 <p>Descriptive measures come in two kinds:</p>
 <table class="caption-top">
 <thead>
@@ -1307,37 +1308,31 @@ Dr Massimiliano Canzi
 <p><code>NA</code> means “unknown” (lecture 1), so a mean that includes one is unknown too, unless R drops it.</p>
 </div>
 <div class="fragment">
-<p>Three ways to drop missing values give three different data sets:</p>
+<p>Three ways to drop missing values give three different data sets: keep all rows, drop rows with <code>NA</code> in bill length only, or drop rows with <code>NA</code> in any column.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins)                               <span class="co"># all rows</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre class="r-output"><code>[1] 344</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="fu">drop_na</span>(penguins, bill_length_mm))      <span class="co"># NA in bill length only</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre class="r-output"><code>[1] 342</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="fu">na.omit</span>(penguins))                      <span class="co"># NA in any column</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre class="r-output"><code>[1] 333</code></pre>
-</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins)</span>
+<span id="cb11-2"><a href aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">344</span></span>
+<span id="cb11-3"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="fu">drop_na</span>(penguins, bill_length_mm))</span>
+<span id="cb11-4"><a href aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">342</span></span>
+<span id="cb11-5"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(<span class="fu">na.omit</span>(penguins))</span>
+<span id="cb11-6"><a href aria-hidden="true" tabindex="-1"></a>[<span class="dv">1</span>] <span class="dv">333</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </section>
 <section id="na.omit-changes-your-result" class="slide level2">
 <h2><code>na.omit()</code> changes your result</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)   <span class="co"># 342 penguins</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 43.92193</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">na.omit</span>(penguins)<span class="sc">$</span>bill_length_mm)        <span class="co"># 333 penguins</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(<span class="fu">na.omit</span>(penguins)<span class="sc">$</span>bill_length_mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 43.99279</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p><code>na.omit()</code> also dropped 9 penguins with a known bill length but unknown <code>sex</code>.</p>
+<p>The first mean uses 342 penguins and the second 333. <code>na.omit()</code> also dropped 9 penguins with a known bill length but unknown <code>sex</code>.</p>
 </div>
 <div class="fragment">
 <p>Rule of thumb: drop <code>NA</code>s only in the columns you are analysing, with <code>na.rm = TRUE</code> or <code>drop_na(column)</code>.</p>
@@ -1351,12 +1346,12 @@ Dr Massimiliano Canzi
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>)</span>
-<span id="cb21-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>)</span>
+<span id="cb16-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(x) <span class="sc">/</span> <span class="fu">length</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 18</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 18</code></pre>
 </div>
@@ -1366,8 +1361,8 @@ Dr Massimiliano Canzi
 <section id="mean-1" class="slide level2 smaller">
 <h2><code>mean()</code></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb25-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bill =</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bill =</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 1 × 1
   mean_bill
@@ -1390,26 +1385,26 @@ Dr Massimiliano Canzi
 <p>The <span class="hl">median</span> is the middle value once all values are sorted from lowest to highest: half the values lie below it, half above.</p>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>))        <span class="co"># sorted: 1 3 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 3</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">7</span>))     <span class="co"># sorted: 1 3 5 7 -&gt; mean of 3 and 5</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">7</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 4</code></pre>
 </div>
 </div>
 </div>
 <div class="fragment">
-<p>With an even number of values, the median is the mean of the two middle values.</p>
+<p>Sorted, the values are 1 3 5 and 1 3 5 7. With an even number of values, the median is the mean of the two middle values, here 3 and 5.</p>
 </div>
 </section>
 <section id="median-1" class="slide level2 smaller">
 <h2><code>median()</code></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb31-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bill   =</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb31-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">median_bill =</span> <span class="fu">median</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb26-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bill =</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">median_bill =</span> <span class="fu">median</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 1 × 2
   mean_bill median_bill
@@ -1427,8 +1422,8 @@ Dr Massimiliano Canzi
 </div>
 </div>
 </section>
-<section id="one-number-can-hide-a-lot" class="slide level2">
-<h2>One number can hide a lot</h2>
+<section id="bill-length-by-species" class="slide level2">
+<h2>Bill length by species</h2>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1444,9 +1439,9 @@ Dr Massimiliano Canzi
 <h2>Skewed data: reaction times</h2>
 <p>Reaction times cannot be negative, and some responses are very slow:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb33-2"><a href aria-hidden="true" tabindex="-1"></a>rt <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">rt =</span> <span class="fu">rlnorm</span>(<span class="dv">2000</span>, <span class="at">meanlog =</span> <span class="fu">log</span>(<span class="dv">600</span>), <span class="at">sdlog =</span> <span class="fl">0.35</span>))</span>
-<span id="cb33-3"><a href aria-hidden="true" tabindex="-1"></a>rt <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(rt), <span class="at">median =</span> <span class="fu">median</span>(rt))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
+<span id="cb28-2"><a href aria-hidden="true" tabindex="-1"></a>rt <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">rt =</span> <span class="fu">rlnorm</span>(<span class="dv">2000</span>, <span class="at">meanlog =</span> <span class="fu">log</span>(<span class="dv">600</span>), <span class="at">sdlog =</span> <span class="fl">0.35</span>))</span>
+<span id="cb28-3"><a href aria-hidden="true" tabindex="-1"></a>rt <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(rt), <span class="at">median =</span> <span class="fu">median</span>(rt))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 1 × 2
    mean median
@@ -1472,13 +1467,13 @@ Dr Massimiliano Canzi
 <h2>Outliers</h2>
 <p>One participant fell asleep on one trial:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
-<span id="cb35-2"><a href aria-hidden="true" tabindex="-1"></a>rts <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rlnorm</span>(<span class="dv">40</span>, <span class="at">meanlog =</span> <span class="fu">log</span>(<span class="dv">600</span>), <span class="at">sdlog =</span> <span class="fl">0.25</span>))</span>
-<span id="cb35-3"><a href aria-hidden="true" tabindex="-1"></a>rts_sleepy <span class="ot">&lt;-</span> <span class="fu">c</span>(rts, <span class="dv">5000</span>)</span>
-<span id="cb35-4"><a href aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-5"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">data   =</span> <span class="fu">c</span>(<span class="st">&quot;40 trials&quot;</span>, <span class="st">&quot;40 trials + one 5000 ms&quot;</span>),</span>
-<span id="cb35-6"><a href aria-hidden="true" tabindex="-1"></a>       <span class="at">mean   =</span> <span class="fu">c</span>(<span class="fu">mean</span>(rts), <span class="fu">mean</span>(rts_sleepy)),</span>
-<span id="cb35-7"><a href aria-hidden="true" tabindex="-1"></a>       <span class="at">median =</span> <span class="fu">c</span>(<span class="fu">median</span>(rts), <span class="fu">median</span>(rts_sleepy)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">7</span>)</span>
+<span id="cb30-2"><a href aria-hidden="true" tabindex="-1"></a>rts <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">rlnorm</span>(<span class="dv">40</span>, <span class="at">meanlog =</span> <span class="fu">log</span>(<span class="dv">600</span>), <span class="at">sdlog =</span> <span class="fl">0.25</span>))</span>
+<span id="cb30-3"><a href aria-hidden="true" tabindex="-1"></a>rts_sleepy <span class="ot">&lt;-</span> <span class="fu">c</span>(rts, <span class="dv">5000</span>)</span>
+<span id="cb30-4"><a href aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">data =</span> <span class="fu">c</span>(<span class="st">&quot;40 trials&quot;</span>, <span class="st">&quot;40 trials + one 5000 ms&quot;</span>),</span>
+<span id="cb30-6"><a href aria-hidden="true" tabindex="-1"></a>       <span class="at">mean =</span> <span class="fu">c</span>(<span class="fu">mean</span>(rts), <span class="fu">mean</span>(rts_sleepy)),</span>
+<span id="cb30-7"><a href aria-hidden="true" tabindex="-1"></a>       <span class="at">median =</span> <span class="fu">c</span>(<span class="fu">median</span>(rts), <span class="fu">median</span>(rts_sleepy)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 2 × 3
   data                     mean median
@@ -1505,7 +1500,7 @@ Dr Massimiliano Canzi
 <div class="fragment">
 <p>With <code>count()</code> from last week:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">count</span>(island) <span class="sc">|&gt;</span> <span class="fu">slice_max</span>(n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span> <span class="fu">count</span>(island) <span class="sc">|&gt;</span> <span class="fu">slice_max</span>(n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 1 × 2
   island     n
@@ -1516,8 +1511,8 @@ Dr Massimiliano Canzi
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href aria-hidden="true" tabindex="-1"></a>words <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">word =</span> <span class="fu">c</span>(<span class="st">&quot;the&quot;</span>, <span class="st">&quot;cat&quot;</span>, <span class="st">&quot;saw&quot;</span>, <span class="st">&quot;the&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;and&quot;</span>, <span class="st">&quot;the&quot;</span>, <span class="st">&quot;bird&quot;</span>))</span>
-<span id="cb39-2"><a href aria-hidden="true" tabindex="-1"></a>words <span class="sc">|&gt;</span> <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href aria-hidden="true" tabindex="-1"></a>words <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">word =</span> <span class="fu">c</span>(<span class="st">&quot;the&quot;</span>, <span class="st">&quot;cat&quot;</span>, <span class="st">&quot;saw&quot;</span>, <span class="st">&quot;the&quot;</span>, <span class="st">&quot;dog&quot;</span>, <span class="st">&quot;and&quot;</span>, <span class="st">&quot;the&quot;</span>, <span class="st">&quot;bird&quot;</span>))</span>
+<span id="cb34-2"><a href aria-hidden="true" tabindex="-1"></a>words <span class="sc">|&gt;</span> <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 3 × 2
   word      n
@@ -1529,11 +1524,11 @@ Dr Massimiliano Canzi
 </div>
 </div>
 </section>
-<section id="mode-a-trap" class="slide level2 smaller">
-<h2>Mode: a trap</h2>
+<section id="the-mode-function" class="slide level2 smaller">
+<h2>The <code>mode()</code> function</h2>
 <p>R has a function called <code>mode()</code>, but it does not compute the mode:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(<span class="fu">c</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Goodbye&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mode</span>(<span class="fu">c</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Goodbye&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] &quot;character&quot;</code></pre>
 </div>
@@ -1541,12 +1536,12 @@ Dr Massimiliano Canzi
 <div class="fragment">
 <p>It returns the storage type. If you need a function, write your own:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href aria-hidden="true" tabindex="-1"></a>find_mode <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb43-2"><a href aria-hidden="true" tabindex="-1"></a>  u <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
-<span id="cb43-3"><a href aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">tabulate</span>(<span class="fu">match</span>(x, u))</span>
-<span id="cb43-4"><a href aria-hidden="true" tabindex="-1"></a>  u[tab <span class="sc">==</span> <span class="fu">max</span>(tab)]</span>
-<span id="cb43-5"><a href aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb43-6"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">find_mode</span>(<span class="fu">c</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Goodbye&quot;</span>, <span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Penguin&quot;</span>, <span class="st">&quot;Dog&quot;</span>, <span class="st">&quot;Mountain&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href aria-hidden="true" tabindex="-1"></a>find_mode <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb38-2"><a href aria-hidden="true" tabindex="-1"></a>  u <span class="ot">&lt;-</span> <span class="fu">unique</span>(x)</span>
+<span id="cb38-3"><a href aria-hidden="true" tabindex="-1"></a>  tab <span class="ot">&lt;-</span> <span class="fu">tabulate</span>(<span class="fu">match</span>(x, u))</span>
+<span id="cb38-4"><a href aria-hidden="true" tabindex="-1"></a>  u[tab <span class="sc">==</span> <span class="fu">max</span>(tab)]</span>
+<span id="cb38-5"><a href aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb38-6"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">find_mode</span>(<span class="fu">c</span>(<span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Goodbye&quot;</span>, <span class="st">&quot;Hello&quot;</span>, <span class="st">&quot;Penguin&quot;</span>, <span class="st">&quot;Dog&quot;</span>, <span class="st">&quot;Mountain&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] &quot;Hello&quot;</code></pre>
 </div>
@@ -1574,7 +1569,7 @@ Dr Massimiliano Canzi
 </div>
 <p>Both speakers have a mean of 150 ms. Speaker B is far less consistent.</p>
 </section>
-<section id="sd" class="slide level2">
+<section id="sd" class="slide level2 smaller">
 <h2><code>sd()</code></h2>
 <p>The <span class="hl">standard deviation</span> measures how spread out the values are around the mean: roughly, how far a typical value is from it.</p>
 <div class="formula">
@@ -1582,28 +1577,29 @@ Dr Massimiliano Canzi
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>)</span>
-<span id="cb45-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (<span class="fu">length</span>(x) <span class="sc">-</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>, <span class="dv">16</span>, <span class="dv">23</span>, <span class="dv">42</span>)</span>
+<span id="cb40-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">sum</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (<span class="fu">length</span>(x) <span class="sc">-</span> <span class="dv">1</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 13.49074</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 13.49074</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(x)       <span class="co"># the variance is the SD squared</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 182</code></pre>
 </div>
 </div>
+<p><code>var()</code> gives the variance, which is the SD squared.</p>
 </div>
 </section>
 <section id="sd-1" class="slide level2 smaller">
 <h2><code>sd()</code></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb51-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bill =</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb51-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_bill   =</span> <span class="fu">sd</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb46-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bill =</span> <span class="fu">mean</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb46-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">sd_bill =</span> <span class="fu">sd</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 1 × 2
   mean_bill sd_bill
@@ -1656,12 +1652,12 @@ Dr Massimiliano Canzi
 <section id="computing-the-mad-in-r" class="slide level2 smaller">
 <h2>Computing the MAD in R</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">9</span>)</span>
-<span id="cb53-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mad</span>(x, <span class="at">constant =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">6</span>, <span class="dv">9</span>)</span>
+<span id="cb48-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mad</span>(x, <span class="at">constant =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 1</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mad</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mad</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 1.4826</code></pre>
 </div>
@@ -1670,13 +1666,14 @@ Dr Massimiliano Canzi
 <p>By default, <code>mad()</code> multiplies the result by 1.4826. With normal data, this makes the MAD estimate the SD, so the two are comparable.</p>
 </div>
 <div class="fragment">
+<p>The SD and the MAD of the 40 trials, then with the 5000 ms trial added:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">sd =</span> <span class="fu">sd</span>(rts), <span class="at">mad =</span> <span class="fu">mad</span>(rts))                    <span class="co"># 40 trials</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">sd =</span> <span class="fu">sd</span>(rts), <span class="at">mad =</span> <span class="fu">mad</span>(rts))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>      sd      mad 
 187.2306 150.4839 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">sd =</span> <span class="fu">sd</span>(rts_sleepy), <span class="at">mad =</span> <span class="fu">mad</span>(rts_sleepy))      <span class="co"># + one 5000 ms trial</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">sd =</span> <span class="fu">sd</span>(rts_sleepy), <span class="at">mad =</span> <span class="fu">mad</span>(rts_sleepy))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>      sd      mad 
 701.8433 158.6382 </code></pre>
@@ -1687,9 +1684,9 @@ Dr Massimiliano Canzi
 <section id="mad-1" class="slide level2 smaller">
 <h2><code>mad()</code></h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb61-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_bill =</span> <span class="fu">median</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb61-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">mad_bill    =</span> <span class="fu">mad</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">median_bill =</span> <span class="fu">median</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb56-3"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">mad_bill =</span> <span class="fu">mad</span>(bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 1 × 2
   median_bill mad_bill
@@ -1712,11 +1709,11 @@ Dr Massimiliano Canzi
 <p><code>range()</code> returns the smallest and the largest value. The distance between them is what statisticians call the range.</p>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">range</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 32.1 59.6</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span>(<span class="fu">range</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span>(<span class="fu">range</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 27.5</code></pre>
 </div>
@@ -1730,25 +1727,25 @@ Dr Massimiliano Canzi
 <h2>Quantiles / Quartiles</h2>
 <p><span class="hl">Quantiles</span> cut the sorted values into groups of equal size. Quartiles cut them into four quarters:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>    0%    25%    50%    75%   100% 
 32.100 39.225 44.450 48.500 59.600 </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">IQR</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)     <span class="co"># 75% minus 25%</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">IQR</span>(penguins<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 9.275</code></pre>
 </div>
 </div>
 <div class="fragment">
-<p>The median is the 50% quantile. The <span class="hl">IQR</span> (interquartile range) holds the middle half of the data.</p>
+<p>The median is the 50% quantile. The <span class="hl">IQR</span> (interquartile range) is the 75% quantile minus the 25% quantile, and holds the middle half of the data.</p>
 </div>
 </section>
 <section id="summary" class="slide level2">
 <h2><code>summary()</code></h2>
 <p>Most of today in one line:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>bill_length_mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins<span class="sc">$</span>bill_length_mm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs 
   32.10   39.23   44.45   43.92   48.50   59.60       2 </code></pre>
@@ -1788,36 +1785,36 @@ Dr Massimiliano Canzi
 <div class="fragment">
 <p>The bad way to do it:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href aria-hidden="true" tabindex="-1"></a>Adelie    <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">&quot;Adelie&quot;</span>)</span>
-<span id="cb73-2"><a href aria-hidden="true" tabindex="-1"></a>Gentoo    <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">&quot;Gentoo&quot;</span>)</span>
-<span id="cb73-3"><a href aria-hidden="true" tabindex="-1"></a>Chinstrap <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">&quot;Chinstrap&quot;</span>)</span>
-<span id="cb73-4"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Adelie<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href aria-hidden="true" tabindex="-1"></a>Adelie <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">&quot;Adelie&quot;</span>)</span>
+<span id="cb68-2"><a href aria-hidden="true" tabindex="-1"></a>Gentoo <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">&quot;Gentoo&quot;</span>)</span>
+<span id="cb68-3"><a href aria-hidden="true" tabindex="-1"></a>Chinstrap <span class="ot">&lt;-</span> <span class="fu">filter</span>(penguins, species <span class="sc">==</span> <span class="st">&quot;Chinstrap&quot;</span>)</span>
+<span id="cb68-4"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Adelie<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 38.79139</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Gentoo<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Gentoo<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 47.50488</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Chinstrap<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(Chinstrap<span class="sc">$</span>bill_length_mm, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>[1] 48.83382</code></pre>
 </div>
 </div>
 </div>
 </section>
-<section id="the-good-way" class="slide level2 smaller">
-<h2>The good way</h2>
+<section id="summaries-per-group-with-.by" class="slide level2 smaller">
+<h2>Summaries per group with <code>.by</code></h2>
 <p>Last week: <code>group_by()</code> + <code>summarise()</code>, or <code>summarise(.by = )</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb79-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(bill_length_mm) <span class="sc">|&gt;</span></span>
-<span id="cb79-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n      =</span> <span class="fu">n</span>(),</span>
-<span id="cb79-4"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">mean   =</span> <span class="fu">mean</span>(bill_length_mm),</span>
-<span id="cb79-5"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">sd     =</span> <span class="fu">sd</span>(bill_length_mm),</span>
-<span id="cb79-6"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">median =</span> <span class="fu">median</span>(bill_length_mm),</span>
-<span id="cb79-7"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">IQR    =</span> <span class="fu">IQR</span>(bill_length_mm),</span>
-<span id="cb79-8"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">.by    =</span> species)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb74-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(bill_length_mm) <span class="sc">|&gt;</span></span>
+<span id="cb74-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb74-4"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">mean =</span> <span class="fu">mean</span>(bill_length_mm),</span>
+<span id="cb74-5"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">sd =</span> <span class="fu">sd</span>(bill_length_mm),</span>
+<span id="cb74-6"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">median =</span> <span class="fu">median</span>(bill_length_mm),</span>
+<span id="cb74-7"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">IQR =</span> <span class="fu">IQR</span>(bill_length_mm),</span>
+<span id="cb74-8"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">.by =</span> species)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 3 × 6
   species       n  mean    sd median   IQR
@@ -1834,11 +1831,11 @@ Dr Massimiliano Canzi
 <section id="grouping-by-two-variables" class="slide level2 smaller">
 <h2>Grouping by two variables</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb81-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(sex) <span class="sc">|&gt;</span></span>
-<span id="cb81-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, sex) <span class="sc">|&gt;</span></span>
-<span id="cb81-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bill =</span> <span class="fu">mean</span>(bill_length_mm),</span>
-<span id="cb81-5"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">median_bill =</span> <span class="fu">median</span>(bill_length_mm))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb76-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(sex) <span class="sc">|&gt;</span></span>
+<span id="cb76-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species, sex) <span class="sc">|&gt;</span></span>
+<span id="cb76-4"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_bill =</span> <span class="fu">mean</span>(bill_length_mm),</span>
+<span id="cb76-5"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">median_bill =</span> <span class="fu">median</span>(bill_length_mm))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre class="r-output r-message"><code>`summarise()` has regrouped the output.
 ℹ Summaries were computed grouped by species and sex.
@@ -1874,12 +1871,12 @@ Dr Massimiliano Canzi
 <h2>Many columns at once: <code>across()</code></h2>
 <p>From last week: <code>across(columns, function)</code></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
-<span id="cb84-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">&quot;_mm&quot;</span>),</span>
-<span id="cb84-3"><a href aria-hidden="true" tabindex="-1"></a>                   <span class="fu">list</span>(<span class="at">mean =</span> \(x) <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb84-4"><a href aria-hidden="true" tabindex="-1"></a>                        <span class="at">sd   =</span> \(x) <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))),</span>
-<span id="cb84-5"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">.by =</span> species) <span class="sc">|&gt;</span></span>
-<span id="cb84-6"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, <span class="fu">starts_with</span>(<span class="st">&quot;bill_length&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href aria-hidden="true" tabindex="-1"></a>penguins <span class="sc">|&gt;</span></span>
+<span id="cb79-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">ends_with</span>(<span class="st">&quot;_mm&quot;</span>),</span>
+<span id="cb79-3"><a href aria-hidden="true" tabindex="-1"></a>                   <span class="fu">list</span>(<span class="at">mean =</span> \(x) <span class="fu">mean</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb79-4"><a href aria-hidden="true" tabindex="-1"></a>                        <span class="at">sd =</span> \(x) <span class="fu">sd</span>(x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))),</span>
+<span id="cb79-5"><a href aria-hidden="true" tabindex="-1"></a>            <span class="at">.by =</span> species) <span class="sc">|&gt;</span></span>
+<span id="cb79-6"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species, <span class="fu">starts_with</span>(<span class="st">&quot;bill_length&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code># A tibble: 3 × 3
   species   bill_length_mm_mean bill_length_mm_sd
@@ -1896,15 +1893,15 @@ Dr Massimiliano Canzi
 <section id="plotting-group-summaries" class="slide level2 smaller">
 <h2>Plotting group summaries</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href aria-hidden="true" tabindex="-1"></a>bill_summary <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
-<span id="cb86-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(bill_length_mm) <span class="sc">|&gt;</span></span>
-<span id="cb86-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(bill_length_mm), <span class="at">sd =</span> <span class="fu">sd</span>(bill_length_mm), <span class="at">.by =</span> species)</span>
-<span id="cb86-4"><a href aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-5"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">drop_na</span>(penguins, bill_length_mm), <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> bill_length_mm)) <span class="sc">+</span></span>
-<span id="cb86-6"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">colour =</span> species), <span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
-<span id="cb86-7"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="at">data =</span> bill_summary, <span class="at">colour =</span> <span class="st">&quot;#e3e8e1&quot;</span>, <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="fl">0.8</span>,</span>
-<span id="cb86-8"><a href aria-hidden="true" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">y =</span> mean, <span class="at">ymin =</span> mean <span class="sc">-</span> sd, <span class="at">ymax =</span> mean <span class="sc">+</span> sd)) <span class="sc">+</span></span>
-<span id="cb86-9"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Bill length (mm)&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href aria-hidden="true" tabindex="-1"></a>bill_summary <span class="ot">&lt;-</span> penguins <span class="sc">|&gt;</span></span>
+<span id="cb81-2"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>(bill_length_mm) <span class="sc">|&gt;</span></span>
+<span id="cb81-3"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean =</span> <span class="fu">mean</span>(bill_length_mm), <span class="at">sd =</span> <span class="fu">sd</span>(bill_length_mm), <span class="at">.by =</span> species)</span>
+<span id="cb81-4"><a href aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-5"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">drop_na</span>(penguins, bill_length_mm), <span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> bill_length_mm)) <span class="sc">+</span></span>
+<span id="cb81-6"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="fu">aes</span>(<span class="at">colour =</span> species), <span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb81-7"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_pointrange</span>(<span class="at">data =</span> bill_summary, <span class="at">colour =</span> <span class="st">&quot;#e3e8e1&quot;</span>, <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">size =</span> <span class="fl">0.8</span>,</span>
+<span id="cb81-8"><a href aria-hidden="true" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">y =</span> mean, <span class="at">ymin =</span> mean <span class="sc">-</span> sd, <span class="at">ymax =</span> mean <span class="sc">+</span> sd)) <span class="sc">+</span></span>
+<span id="cb81-9"><a href aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">&quot;Bill length (mm)&quot;</span>) <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure>
@@ -1919,10 +1916,10 @@ Dr Massimiliano Canzi
 <h2>Reporting descriptives</h2>
 <p>In R Markdown, numbers in your text can come straight from R:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href aria-hidden="true" tabindex="-1"></a>gentoo <span class="ot">&lt;-</span> <span class="fu">filter</span>(bill_summary, species <span class="sc">==</span> <span class="st">&quot;Gentoo&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href aria-hidden="true" tabindex="-1"></a>gentoo <span class="ot">&lt;-</span> <span class="fu">filter</span>(bill_summary, species <span class="sc">==</span> <span class="st">&quot;Gentoo&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb88"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb88-1"><a href aria-hidden="true" tabindex="-1"></a>Gentoo bills were <span class="in">`r round(gentoo$mean, 1)`</span> mm long on average</span>
-<span id="cb88-2"><a href aria-hidden="true" tabindex="-1"></a>(SD = <span class="in">`r round(gentoo$sd, 1)`</span>).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb83"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb83-1"><a href aria-hidden="true" tabindex="-1"></a>Gentoo bills were <span class="in">`r round(gentoo$mean, 1)`</span> mm long on average</span>
+<span id="cb83-2"><a href aria-hidden="true" tabindex="-1"></a>(SD = <span class="in">`r round(gentoo$sd, 1)`</span>).</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment">
 <p>becomes</p>
 <blockquote>
