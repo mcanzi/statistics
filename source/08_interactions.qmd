@@ -68,11 +68,11 @@ In an [interaction]{.hl}, the effect of one predictor depends on the value of an
 
 ## Fitting an interaction in R
 
-`*` adds both predictors and their interaction:
+`*` adds both predictors and their interaction, so these two models are the same:
 
 ```{r}
 #| eval: false
-lm(y ~ x * group)            # is the same as
+lm(y ~ x * group)
 lm(y ~ x + group + x:group)
 ```
 
@@ -170,7 +170,7 @@ Only at `log_freq = 0`, a frequency that does not exist in our data (1 to 6).
 
 . . .
 
-With an interaction, each lower-order coefficient is a [simple effect]{.hl}: the effect of one predictor when the other is 0 (or at its reference level).
+With an interaction, each lower-order coefficient is a [simple effect]{.hl}: the effect of one predictor when the other is 0 (or at its reference level). See also Winter (2019), section 8.2.
 
 ## Centring rescues the coefficients
 
@@ -188,7 +188,7 @@ coef(lm(rt ~ log_freq_c * group, data = lex))
 ## Did the interaction help?
 
 ```{r}
-c(additive    = glance(m_add)$adj.r.squared,
+c(additive = glance(m_add)$adj.r.squared,
   interaction = glance(m_int)$adj.r.squared)
 ```
 
@@ -256,9 +256,9 @@ coef(m_vs)
 ```{r}
 b <- coef(m_vs)
 c(voiceless_casual = b[[1]],
-  voiced_casual    = b[[1]] + b[[2]],
-  voiceless_clear  = b[[1]] + b[[3]],
-  voiced_clear     = b[[1]] + b[[2]] + b[[3]] + b[[4]])
+  voiced_casual = b[[1]] + b[[2]],
+  voiceless_clear = b[[1]] + b[[3]],
+  voiced_clear = b[[1]] + b[[2]] + b[[3]] + b[[4]])
 ```
 
 . . .
@@ -270,7 +270,7 @@ The interaction coefficient is added only in the cell where both non-reference l
 ```{r}
 vs_sum <- vs
 contrasts(vs_sum$voicing) <- contr.sum(2)
-contrasts(vs_sum$style)   <- contr.sum(2)
+contrasts(vs_sum$style) <- contr.sum(2)
 coef(lm(duration ~ voicing * style, data = vs_sum))
 ```
 
@@ -344,7 +344,7 @@ ggplot(w, aes(x = length, y = rt)) +
   labs(x = "Length (letters)", y = "Reaction time (ms)", colour = "log10 frequency")
 ```
 
-The effect of length at three frequencies. Compare lecture 6: the lines now fan out.
+The effect of length at three frequencies. Compare lecture 6: the lines now fan out. See also Winter (2019), figure 8.4.
 
 ## A twisted plane
 
@@ -364,7 +364,7 @@ ggplot(plane, aes(x = log_freq, y = length)) +
   theme(legend.key.width = unit(2, "cm"))
 ```
 
-Without an interaction, the contour lines were straight and parallel (lecture 6). With one, they bend: the plane is twisted.
+Without an interaction, the contour lines were straight and parallel (lecture 6). With one, they bend: the plane is twisted. See also Winter (2019), figure 8.5.
 
 # Higher-order interactions
 
@@ -430,7 +430,7 @@ coef(lm(rise ~ age_c * tone, data = tones))
 coef(lm(vot ~ stop * generation, data = korean_stops))
 
 stops_sum <- korean_stops
-contrasts(stops_sum$stop)       <- contr.sum(3)
+contrasts(stops_sum$stop) <- contr.sum(3)
 contrasts(stops_sum$generation) <- contr.sum(2)
 coef(lm(vot ~ stop * generation, data = stops_sum))
 ```
