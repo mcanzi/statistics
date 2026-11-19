@@ -100,7 +100,7 @@ RStudio needs R to work, so install R first.
 
 ## Packages
 
-[Packages]{.hl} add functions and data sets to R. Every package this course uses comes with `{konstats}`, the course package.
+[Packages]{.hl} add functions and data sets to R. `{konstats}`, the course package, installs every package this course uses.
 
 . . .
 
@@ -108,25 +108,26 @@ You [install]{.hl} a package once. You [load]{.hl} it with `library()` in every 
 
 ## `{konstats}` {.smaller}
 
-`{konstats}` is on R-universe, not on CRAN. Install it once:
+`{konstats}` is on [R-universe]{.hl}. Install it once, and then the packages of the course with `install_course()`:
 
 ```{r}
 #| eval: false
 install.packages("konstats", repos = c("https://mcanzi.r-universe.dev",
                                        "https://cloud.r-project.org"))
+konstats::install_course("statistics")
 ```
 
 . . .
 
-This also installs the other packages of the course. Then `{konstats}` checks your setup and finds the [materials]{.hl} of each lecture:
+`check_setup()` tells you whether your computer is ready. `lectures()` lists the lectures with their chapters and data sets, `slides()` opens the slides of one, and `get_tutorial()` copies an exercise sheet into your folder:
 
 ```{r}
 #| eval: false
 library(konstats)
-check_setup("statistics")   # is your computer ready?
-lectures("statistics")      # the lectures, with their chapters and data sets
-slides(4)                   # opens the slides of lecture 4
-get_tutorial(2, ".")        # copies exercise sheet 2 into your folder
+check_setup("statistics")
+lectures("statistics")
+slides(4)
+get_tutorial(2, ".")
 ```
 
 . . .
@@ -329,7 +330,7 @@ citation("tidyverse")
 
 . . .
 
-It comes with `{konstats}`. To start a lesson:
+`install_course("statistics")` installs it with the other packages of the course. To start a lesson:
 
 ```{r}
 #| eval: false

@@ -43,16 +43,17 @@ Call it `statistics`, for example. When you open the project, R works inside tha
 
 ### 1.3 Installing konstats
 
-`{konstats}` is not on CRAN, but on R-universe. Type this in the `Console`, once:
+`{konstats}` is on R-universe. Type this in the `Console`, once:
 
 ```{r, eval = FALSE}
 install.packages("konstats", repos = c("https://mcanzi.r-universe.dev",
                                        "https://cloud.r-project.org"))
+konstats::install_course("statistics")
 ```
 
 . . .
 
-This also installs every package the course uses, from the `tidyverse` and `swirl` of lecture 1 to `{simling}`. It takes a few minutes the first time.
+The second line installs every package the course uses, from the `tidyverse` and `swirl` of lecture 1 to `{simling}`. It takes a few minutes the first time.
 
 . . .
 
@@ -90,11 +91,11 @@ slides("mixed models 1")
 
 ### 1.6 Exercise sheets
 
-From next week, each tutorial has an exercise sheet: an R Markdown file with the exercises and an empty code chunk for each answer.
+From next week, each tutorial has an exercise sheet: an R Markdown file with the exercises and an empty code chunk for each answer. `tutorials()` lists the sheets, and `get_tutorial()` copies one into your project folder:
 
 ```{r, eval = FALSE}
-tutorials("statistics")    # which sheets there are
-get_tutorial(2, ".")       # copy sheet 2 into your project folder
+tutorials("statistics")
+get_tutorial(2, ".")
 ```
 
 . . .
@@ -117,7 +118,7 @@ It has a section for each exercise.
 
 ### 2.1 What simling is
 
-`{simling}` has 56 simulated data sets, from 20 branches of linguistics. From lecture 5 on, most examples in the slides use them.
+`{simling}` has 57 simulated data sets, from 20 branches of linguistics. From lecture 5 on, most examples in the slides use them.
 
 . . .
 
@@ -125,7 +126,7 @@ The data are simulated, so we know the [true values]{.hl} behind them. You can c
 
 . . .
 
-`{konstats}` installed it already. Load it like any other package:
+`install_course()` installed it already. Load it like any other package:
 
 ```{r}
 library(simling)

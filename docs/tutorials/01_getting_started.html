@@ -1119,12 +1119,13 @@ looks for them.</p>
 </section>
 <section id="installing-konstats" class="slide level2">
 <h2>1.3 Installing konstats</h2>
-<p><code>{konstats}</code> is not on CRAN, but on R-universe. Type this
-in the <code>Console</code>, once:</p>
+<p><code>{konstats}</code> is on R-universe. Type this in the
+<code>Console</code>, once:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;konstats&quot;</span>, <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&quot;https://mcanzi.r-universe.dev&quot;</span>,</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">&quot;https://cloud.r-project.org&quot;</span>))</span></code></pre></div>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>                                       <span class="st">&quot;https://cloud.r-project.org&quot;</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>konstats<span class="sc">::</span><span class="fu">install_course</span>(<span class="st">&quot;statistics&quot;</span>)</span></code></pre></div>
 <div class="fragment">
-<p>This also installs every package the course uses, from the
+<p>The second line installs every package the course uses, from the
 <code>tidyverse</code> and <code>swirl</code> of lecture 1 to
 <code>{simling}</code>. It takes a few minutes the first time.</p>
 </div>
@@ -1180,9 +1181,11 @@ by number or by topic:</p>
 <section id="exercise-sheets" class="slide level2">
 <h2>1.6 Exercise sheets</h2>
 <p>From next week, each tutorial has an exercise sheet: an R Markdown
-file with the exercises and an empty code chunk for each answer.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tutorials</span>(<span class="st">&quot;statistics&quot;</span>)    <span class="co"># which sheets there are</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_tutorial</span>(<span class="dv">2</span>, <span class="st">&quot;.&quot;</span>)       <span class="co"># copy sheet 2 into your project folder</span></span></code></pre></div>
+file with the exercises and an empty code chunk for each answer.
+<code>tutorials()</code> lists the sheets, and
+<code>get_tutorial()</code> copies one into your project folder:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tutorials</span>(<span class="st">&quot;statistics&quot;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_tutorial</span>(<span class="dv">2</span>, <span class="st">&quot;.&quot;</span>)</span></code></pre></div>
 <div class="fragment">
 <p>You write your answers in your copy. If the sheet is already in the
 folder, <code>get_tutorial()</code> stops with an error, so your answers
@@ -1207,7 +1210,7 @@ assignment (konstats)</em></p>
 </section>
 <section id="what-simling-is" class="slide level2">
 <h2>2.1 What simling is</h2>
-<p><code>{simling}</code> has 56 simulated data sets, from 20 branches
+<p><code>{simling}</code> has 57 simulated data sets, from 20 branches
 of linguistics. From lecture 5 on, most examples in the slides use
 them.</p>
 <div class="fragment">
@@ -1216,8 +1219,8 @@ values</span> behind them. You can check whether your analysis finds
 them.</p>
 </div>
 <div class="fragment">
-<p><code>{konstats}</code> installed it already. Load it like any other
-package:</p>
+<p><code>install_course()</code> installed it already. Load it like any
+other package:</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simling)</span></code></pre></div>
 </div>
 </section>

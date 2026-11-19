@@ -1257,26 +1257,27 @@ Dr Massimiliano Canzi
 </section>
 <section id="packages" class="slide level2">
 <h2>Packages</h2>
-<p><span class="hl">Packages</span> add functions and data sets to R. Every package this course uses comes with <code>{konstats}</code>, the course package.</p>
+<p><span class="hl">Packages</span> add functions and data sets to R. <code>{konstats}</code>, the course package, installs every package this course uses.</p>
 <div class="fragment">
 <p>You <span class="hl">install</span> a package once. You <span class="hl">load</span> it with <code>library()</code> in every session.</p>
 </div>
 </section>
 <section id="konstats" class="slide level2 smaller">
 <h2><code>{konstats}</code></h2>
-<p><code>{konstats}</code> is on R-universe, not on CRAN. Install it once:</p>
+<p><code>{konstats}</code> is on <span class="hl">R-universe</span>. Install it once, and then the packages of the course with <code>install_course()</code>:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;konstats&quot;</span>, <span class="at">repos =</span> <span class="fu">c</span>(<span class="st">&quot;https://mcanzi.r-universe.dev&quot;</span>,</span>
-<span id="cb1-2"><a href aria-hidden="true" tabindex="-1"></a>                                       <span class="st">&quot;https://cloud.r-project.org&quot;</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-2"><a href aria-hidden="true" tabindex="-1"></a>                                       <span class="st">&quot;https://cloud.r-project.org&quot;</span>))</span>
+<span id="cb1-3"><a href aria-hidden="true" tabindex="-1"></a>konstats<span class="sc">::</span><span class="fu">install_course</span>(<span class="st">&quot;statistics&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="fragment">
-<p>This also installs the other packages of the course. Then <code>{konstats}</code> checks your setup and finds the <span class="hl">materials</span> of each lecture:</p>
+<p><code>check_setup()</code> tells you whether your computer is ready. <code>lectures()</code> lists the lectures with their chapters and data sets, <code>slides()</code> opens the slides of one, and <code>get_tutorial()</code> copies an exercise sheet into your folder:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(konstats)</span>
-<span id="cb2-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">check_setup</span>(<span class="st">&quot;statistics&quot;</span>)   <span class="co"># is your computer ready?</span></span>
-<span id="cb2-3"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">lectures</span>(<span class="st">&quot;statistics&quot;</span>)      <span class="co"># the lectures, with their chapters and data sets</span></span>
-<span id="cb2-4"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">slides</span>(<span class="dv">4</span>)                   <span class="co"># opens the slides of lecture 4</span></span>
-<span id="cb2-5"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">get_tutorial</span>(<span class="dv">2</span>, <span class="st">&quot;.&quot;</span>)        <span class="co"># copies exercise sheet 2 into your folder</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">check_setup</span>(<span class="st">&quot;statistics&quot;</span>)</span>
+<span id="cb2-3"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">lectures</span>(<span class="st">&quot;statistics&quot;</span>)</span>
+<span id="cb2-4"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">slides</span>(<span class="dv">4</span>)</span>
+<span id="cb2-5"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">get_tutorial</span>(<span class="dv">2</span>, <span class="st">&quot;.&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 <div class="fragment">
@@ -1535,7 +1536,7 @@ bird  cat  dog
 <h2><code>swirl</code></h2>
 <p><code>swirl</code> teaches you R, inside R. Its interactive lessons range from the basics to modelling, and some of your homework will use them (<a href="https://swirlstats.com/students.html">swirlstats.com</a>).</p>
 <div class="fragment">
-<p>It comes with <code>{konstats}</code>. To start a lesson:</p>
+<p><code>install_course(&quot;statistics&quot;)</code> installs it with the other packages of the course. To start a lesson:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(swirl)</span>
 <span id="cb56-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">swirl</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>

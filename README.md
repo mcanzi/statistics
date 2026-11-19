@@ -1,6 +1,6 @@
 # Statistics
 
-Slides and tutorials for Statistics (Dr Massimiliano Canzi, Department of Linguistics, University of Konstanz), an introduction to data analysis in R for MA students in linguistics. The course runs from the tidyverse and descriptive statistics to linear models, interactions, significance testing, mixed models (`lme4`) and mixed-effects logistic regression. The lectures follow **Winter (2019)**, *Statistics for Linguists: An Introduction Using R* (Routledge). All of the examples and exercise sheets use simulated linguistic data from the [`simling`](https://github.com/mcanzi) package.
+Slides and tutorials for Statistics (Dr Massimiliano Canzi, Department of Linguistics, University of Konstanz), an introduction to data analysis in R for MA students in linguistics. The course runs from the tidyverse and descriptive statistics to linear models, interactions, significance testing, mixed models (`lme4`) and mixed-effects logistic regression. The lectures follow Winter (2019), *Statistics for Linguists: An Introduction Using R* (Routledge), with new examples and data sets. The course is not endorsed by Winter or Routledge. From lecture 5 on, the examples use simulated linguistic data from the [`simling`](https://mcanzi.de/simling/) package, and so do most exercise sheets.
 
 | | Lecture | Winter (2019) |
 |---|---|---|
