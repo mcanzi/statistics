@@ -182,7 +182,7 @@ Run the current line with `Ctrl + Enter` (`Cmd + Enter` on a Mac). Save the scri
 `<-` stores a value in an [object]{.hl} (read it as "gets"):
 
 ```{r}
-x <- 2 * 3
+x <- 5 * 4
 x
 x + 1
 ```
@@ -324,9 +324,11 @@ citation()
 citation("tidyverse")
 ```
 
+See also Winter (2019), section 1.13.
+
 ## `swirl`
 
-`swirl` teaches you R, inside R. Its interactive lessons range from the basics to modelling, and some of your homework will use them ([swirlstats.com](https://swirlstats.com/students.html)).
+`swirl` is a package of interactive lessons that run in the R console. They range from the basics to modelling, and some of your homework will use them ([swirlstats.com](https://swirlstats.com/students.html)).
 
 . . .
 

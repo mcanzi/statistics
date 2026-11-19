@@ -110,7 +110,7 @@ Both give the same answer; the tidyverse version reads more like a sentence.
 
 ## The typical workflow {.smaller}
 
-Almost every analysis goes through the same steps, and each has its own tools:
+Almost every analysis goes through the same steps, and each has its own tools (Wickham, Çetinkaya-Rundel & Grolemund, 2023):
 
 | Import | Tidy | Transform | Visualise | Model | Communicate |
 |:--|:--|:--|:--|:--|:--|
@@ -123,7 +123,7 @@ The steps are not a straight line: plotting often sends you back to transform, a
 
 ## Tidy data {.smaller}
 
-A data set is [tidy]{.hl} when
+A data set is [tidy]{.hl} when (Wickham, 2014)
 
 1. each [variable]{.hl} is a column
 2. each [observation]{.hl} is a row
@@ -683,7 +683,7 @@ penguins_4 <- select(
 :::
 
 - The [pipe]{.hl} takes the result on the left and passes it as the first argument of the function on the right
-- Read it aloud as "then", so you do not repeat the object at every step
+- Read it aloud as "then" (Wickham, Çetinkaya-Rundel & Grolemund, 2023), so you do not repeat the object at every step
 
 . . .
 
@@ -795,6 +795,10 @@ Note: `{ggplot2}` layers are added with `+`, not `|>`. More next class.
 This lecture follows chapter 2 of Winter (2019).
 
 Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
+Wickham, H. (2014). Tidy data. _Journal of Statistical Software_, _59_(10), 1–23. https://doi.org/10.18637/jss.v059.i10
+
+Wickham, H., Çetinkaya-Rundel, M., & Grolemund, G. (2023). _R for data science_ (2nd ed.). O'Reilly. https://r4ds.hadley.nz
 
 ## Slides and code
 
