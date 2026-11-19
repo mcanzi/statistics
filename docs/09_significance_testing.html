@@ -1166,10 +1166,10 @@ Dr Massimiliano Canzi
 </section>
 <section id="a-population-we-know" class="slide level2">
 <h2>A population we know</h2>
-<p>To see how samples behave, simulate a population whose truth we know:</p>
+<p>To see how samples behave, simulate a population whose truth we know: 100,000 vowel durations, in ms.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb1-2"><a href aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>, <span class="at">mean =</span> <span class="dv">140</span>, <span class="at">sd =</span> <span class="dv">25</span>)    <span class="co"># 100,000 vowel durations (ms)</span></span>
+<span id="cb1-2"><a href aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100000</span>, <span class="at">mean =</span> <span class="dv">140</span>, <span class="at">sd =</span> <span class="dv">25</span>)</span>
 <span id="cb1-3"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">mean =</span> <span class="fu">mean</span>(pop), <span class="at">sd =</span> <span class="fu">sd</span>(pop))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>     mean        sd 
@@ -1263,7 +1263,7 @@ Dr Massimiliano Canzi
 </section>
 <section id="computing-cohens-d-in-r" class="slide level2">
 <h2>Computing Cohen’s d in R</h2>
-<p>With the <code>{effsize}</code> package, which came with <code>{konstats}</code>:</p>
+<p>With the <code>{effsize}</code> package, which <code>install_course(&quot;statistics&quot;)</code> installed with the other packages of the course:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(effsize)</span>
 <span id="cb13-2"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">cohen.d</span>(duration <span class="sc">~</span> voicing, <span class="at">data =</span> vowels)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1292,7 +1292,7 @@ d estimate: -1.911677 (large)
 </div>
 </div>
 </div>
-<p>Cohen’s benchmarks: 0.2 small, 0.5 medium, 0.8 large. They are rough conventions: what counts as large depends on the field and the measure.</p>
+<p>Cohen’s benchmarks (Cohen, 1988): 0.2 small, 0.5 medium, 0.8 large. They are rough conventions: what counts as large depends on the field and the measure.</p>
 </section></section>
 <section>
 <section id="standard-errors-and-confidence-intervals" class="title-slide slide level1">
@@ -1343,12 +1343,12 @@ d estimate: -1.911677 (large)
 </section>
 <section id="confidence-intervals" class="slide level2">
 <h2>Confidence intervals</h2>
-<p>A <span class="hl">95% confidence interval</span> (CI) is the estimate, plus and minus about two standard errors.</p>
+<p>A <span class="hl">95% confidence interval</span> (CI) is the estimate, plus and minus about two standard errors. For a sample of 20, the multiplier <code>t_crit</code> is about 2.09.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">3</span>)</span>
-<span id="cb17-2"><a href aria-hidden="true" tabindex="-1"></a>x  <span class="ot">&lt;-</span> <span class="fu">sample</span>(pop, <span class="dv">20</span>)</span>
+<span id="cb17-2"><a href aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sample</span>(pop, <span class="dv">20</span>)</span>
 <span id="cb17-3"><a href aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sd</span>(x) <span class="sc">/</span> <span class="fu">sqrt</span>(<span class="fu">length</span>(x))</span>
-<span id="cb17-4"><a href aria-hidden="true" tabindex="-1"></a>t_crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="fu">length</span>(x) <span class="sc">-</span> <span class="dv">1</span>)      <span class="co"># about 2.09 for n = 20</span></span>
+<span id="cb17-4"><a href aria-hidden="true" tabindex="-1"></a>t_crit <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="at">df =</span> <span class="fu">length</span>(x) <span class="sc">-</span> <span class="dv">1</span>)</span>
 <span id="cb17-5"><a href aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-6"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">lower =</span> <span class="fu">mean</span>(x) <span class="sc">-</span> t_crit <span class="sc">*</span> se, <span class="at">mean =</span> <span class="fu">mean</span>(x), <span class="at">upper =</span> <span class="fu">mean</span>(x) <span class="sc">+</span> t_crit <span class="sc">*</span> se)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
@@ -1374,7 +1374,7 @@ attr(,&quot;conf.level&quot;)
 </div>
 </div>
 </div>
-<p>100 samples of 20. Pink: the 8 intervals that miss the true mean. In the long run, 95% of intervals contain it.</p>
+<p>100 samples of 20. Pink: the 8 intervals that miss the true mean. In the long run, 95% of intervals contain it. See also Cumming (2012) and Winter (2019), figure 9.4.</p>
 </section>
 <section id="what-a-confidence-interval-means" class="slide level2">
 <h2>What a confidence interval means</h2>
@@ -1500,9 +1500,9 @@ attr(,&quot;conf.level&quot;)
 <section id="computing-p" class="slide level2">
 <h2>Computing p</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href aria-hidden="true" tabindex="-1"></a>t_obs  <span class="ot">&lt;-</span> <span class="fu">t.test</span>(duration <span class="sc">~</span> style, <span class="at">data =</span> small)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href aria-hidden="true" tabindex="-1"></a>t_obs <span class="ot">&lt;-</span> <span class="fu">t.test</span>(duration <span class="sc">~</span> style, <span class="at">data =</span> small)</span>
 <span id="cb27-2"><a href aria-hidden="true" tabindex="-1"></a>df_obs <span class="ot">&lt;-</span> t_obs<span class="sc">$</span>parameter</span>
-<span id="cb27-3"><a href aria-hidden="true" tabindex="-1"></a>t_val  <span class="ot">&lt;-</span> <span class="fu">abs</span>(t_obs<span class="sc">$</span>statistic)</span>
+<span id="cb27-3"><a href aria-hidden="true" tabindex="-1"></a>t_val <span class="ot">&lt;-</span> <span class="fu">abs</span>(t_obs<span class="sc">$</span>statistic)</span>
 <span id="cb27-4"><a href aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">pt</span>(<span class="sc">-</span>t_val, <span class="at">df =</span> df_obs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre class="r-output"><code>        t 
@@ -1553,7 +1553,7 @@ mean in group casual  mean in group clear
 </ul>
 </div>
 <div class="fragment">
-<p>Chapter 10 of Winter is about these misinterpretations: we come back to it in lecture 13.</p>
+<p>Winter (2019), chapter 10, is about these misinterpretations: we come back to it in lecture 13.</p>
 </div>
 </section>
 <section id="significance" class="slide level2">
@@ -1593,7 +1593,7 @@ mean in group voiceless    mean in group voiced
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">4</span>)</span>
 <span id="cb33-2"><a href aria-hidden="true" tabindex="-1"></a>big <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">group =</span> <span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>), <span class="at">each =</span> <span class="dv">5000</span>),</span>
-<span id="cb33-3"><a href aria-hidden="true" tabindex="-1"></a>              <span class="at">y     =</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(<span class="dv">5000</span>, <span class="dv">100</span>, <span class="dv">15</span>), <span class="fu">rnorm</span>(<span class="dv">5000</span>, <span class="dv">101</span>, <span class="dv">15</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb33-3"><a href aria-hidden="true" tabindex="-1"></a>              <span class="at">y =</span> <span class="fu">c</span>(<span class="fu">rnorm</span>(<span class="dv">5000</span>, <span class="dv">100</span>, <span class="dv">15</span>), <span class="fu">rnorm</span>(<span class="dv">5000</span>, <span class="dv">101</span>, <span class="dv">15</span>)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -1653,7 +1653,7 @@ mean in group voiceless    mean in group voiced
 </div>
 </div>
 <div class="fragment">
-<p>The slope’s <code>t value</code> and <code>p.value</code> in <code>lm()</code> are exactly a t-test (with equal variances assumed). Significance tests for regression coefficients: Chapter 11.</p>
+<p>The slope’s <code>t value</code> and <code>p.value</code> in <code>lm()</code> are exactly a t-test (with equal variances assumed). Significance tests for regression coefficients: Winter (2019), chapter 11.</p>
 </div>
 </section>
 <section id="reporting" class="slide level2">
@@ -1753,6 +1753,8 @@ attr(,&quot;conf.level&quot;)
 <h2>Reading</h2>
 <p>This lecture follows chapter 9 of Winter (2019).</p>
 <p>Winter, B. (2019). <em>Statistics for linguists: An introduction using R</em>. Routledge. https://doi.org/10.4324/9781315165547</p>
+<p>Cohen, J. (1988). <em>Statistical power analysis for the behavioral sciences</em> (2nd ed.). Lawrence Erlbaum. https://doi.org/10.4324/9780203771587</p>
+<p>Cumming, G. (2012). <em>Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis</em>. Routledge. https://doi.org/10.4324/9780203807002</p>
 </section>
 <section id="slides-and-code" class="slide level2">
 <h2>Slides and code</h2>

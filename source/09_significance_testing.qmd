@@ -67,11 +67,11 @@ We use the statistic as our estimate of the parameter. Today is about how good t
 
 ## A population we know
 
-To see how samples behave, simulate a population whose truth we know:
+To see how samples behave, simulate a population whose truth we know: 100,000 vowel durations, in ms.
 
 ```{r}
 set.seed(1)
-pop <- rnorm(100000, mean = 140, sd = 25)    # 100,000 vowel durations (ms)
+pop <- rnorm(100000, mean = 140, sd = 25)
 c(mean = mean(pop), sd = sd(pop))
 ```
 
@@ -158,7 +158,7 @@ The voiced mean is almost 2 SDs above the voiceless mean.
 
 ## Computing Cohen's d in R
 
-With the `{effsize}` package, which came with `{konstats}`:
+With the `{effsize}` package, which `install_course("statistics")` installed with the other packages of the course:
 
 ```{r}
 library(effsize)
@@ -186,7 +186,7 @@ tibble(d = c(0.2, 0.5, 0.8, 2)) |>
   theme(legend.position = "none", axis.text = element_blank())
 ```
 
-Cohen's benchmarks: 0.2 small, 0.5 medium, 0.8 large. They are rough conventions: what counts as large depends on the field and the measure.
+Cohen's benchmarks (Cohen, 1988): 0.2 small, 0.5 medium, 0.8 large. They are rough conventions: what counts as large depends on the field and the measure.
 
 # Standard errors and confidence intervals
 
@@ -238,13 +238,13 @@ To halve the SE, you need four times as many observations.
 
 ## Confidence intervals
 
-A [95% confidence interval]{.hl} (CI) is the estimate, plus and minus about two standard errors.
+A [95% confidence interval]{.hl} (CI) is the estimate, plus and minus about two standard errors. For a sample of 20, the multiplier `t_crit` is about 2.09.
 
 ```{r}
 set.seed(3)
-x  <- sample(pop, 20)
+x <- sample(pop, 20)
 se <- sd(x) / sqrt(length(x))
-t_crit <- qt(0.975, df = length(x) - 1)      # about 2.09 for n = 20
+t_crit <- qt(0.975, df = length(x) - 1)
 
 c(lower = mean(x) - t_crit * se, mean = mean(x), upper = mean(x) + t_crit * se)
 t.test(x)$conf.int
@@ -271,7 +271,7 @@ ggplot(cis, aes(x = i, y = mean, ymin = lower, ymax = upper, colour = hit)) +
   theme(legend.position = "none")
 ```
 
-100 samples of 20. Pink: the `r sum(!cis$hit)` intervals that miss the true mean. In the long run, 95% of intervals contain it.
+100 samples of 20. Pink: the `r sum(!cis$hit)` intervals that miss the true mean. In the long run, 95% of intervals contain it. See also Cumming (2012) and Winter (2019), figure 9.4.
 
 ## What a confidence interval means
 
@@ -390,7 +390,7 @@ If H₀ is true, t follows a known shape, the [t-distribution]{.hl}, which depen
 #| fig-height: 3.6
 t_obs <- t.test(duration ~ style, data = small)
 df_obs <- t_obs$parameter
-t_val  <- abs(t_obs$statistic)
+t_val <- abs(t_obs$statistic)
 
 tibble(t = seq(-5, 5, by = 0.01)) |>
   mutate(density = dt(t, df = df_obs), tail = abs(t) >= t_val) |>
@@ -407,9 +407,9 @@ The [p-value]{.hl} is the pink area: the probability of a t at least this extrem
 ## Computing p
 
 ```{r}
-t_obs  <- t.test(duration ~ style, data = small)
+t_obs <- t.test(duration ~ style, data = small)
 df_obs <- t_obs$parameter
-t_val  <- abs(t_obs$statistic)
+t_val <- abs(t_obs$statistic)
 2 * pt(-t_val, df = df_obs)
 ```
 
@@ -446,7 +446,7 @@ It is not:
 
 . . .
 
-Chapter 10 of Winter is about these misinterpretations: we come back to it in lecture 13.
+Winter (2019), chapter 10, is about these misinterpretations: we come back to it in lecture 13.
 
 ## Significance
 
@@ -472,7 +472,7 @@ With 60 tokens per group, t is about `r round(abs(t.test(duration ~ voicing, dat
 ```{r}
 set.seed(4)
 big <- tibble(group = rep(c("a", "b"), each = 5000),
-              y     = c(rnorm(5000, 100, 15), rnorm(5000, 101, 15)))
+              y = c(rnorm(5000, 100, 15), rnorm(5000, 101, 15)))
 ```
 
 ```{r}
@@ -511,7 +511,7 @@ t.test(duration ~ voicing, data = vowels, var.equal = TRUE)$statistic
 
 . . .
 
-The slope's `t value` and `p.value` in `lm()` are exactly a t-test (with equal variances assumed). Significance tests for regression coefficients: Chapter 11.
+The slope's `t value` and `p.value` in `lm()` are exactly a t-test (with equal variances assumed). Significance tests for regression coefficients: Winter (2019), chapter 11.
 
 ## Reporting
 
@@ -579,6 +579,10 @@ Speech rate differs clearly, while H1-H2 does not reach significance. A non-sign
 This lecture follows chapter 9 of Winter (2019).
 
 Winter, B. (2019). _Statistics for linguists: An introduction using R_. Routledge. https://doi.org/10.4324/9781315165547
+
+Cohen, J. (1988). _Statistical power analysis for the behavioral sciences_ (2nd ed.). Lawrence Erlbaum. https://doi.org/10.4324/9780203771587
+
+Cumming, G. (2012). _Understanding the new statistics: Effect sizes, confidence intervals, and meta-analysis_. Routledge. https://doi.org/10.4324/9780203807002
 
 ## Slides and code
 
