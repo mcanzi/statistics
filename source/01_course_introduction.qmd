@@ -134,6 +134,25 @@ get_tutorial(2, ".")
 
 Tutorial 1 goes through it step by step.
 
+## `{simling}`
+
+[`{simling}`](https://mcanzi.de/simling/) is a package of [simulated]{.hl} linguistic data sets, from phonetics to typology. `install_course()` installs it with the other packages. From lecture 5 on, most examples and exercise sheets use it.
+
+. . .
+
+The help page of each data set states the [true model]{.hl} the data were simulated from, so you can check whether your analysis recovers it:
+
+```{r}
+#| eval: false
+library(simling)
+simling_datasets()   # lists them by branch, language and size
+?vowel_voicing
+```
+
+. . .
+
+You take a first look at it in tutorial 1.
+
 # First steps in R
 
 ::: {.fact}
